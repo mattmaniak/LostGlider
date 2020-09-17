@@ -7,10 +7,12 @@
 2. Description
 3. Technology
 4. Overview
-    4.1. Setting
-    4.2. Plot
-    4.3. Characters
-    4.4. Levels
+
+4.1. Setting
+4.2. Plot
+4.3. Characters
+4.4. Levels
+
 5. Gameplay
 6. Graphics
 7. Sound
