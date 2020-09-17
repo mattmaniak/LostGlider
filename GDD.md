@@ -1,6 +1,5 @@
 # Game Design Document
 ## Lost Glider
----
 
 ### Table of Contents
 1. Objective
