@@ -31,9 +31,13 @@ clouds to fly as long as possible and to avoid storms.
 **Unity 2019.4.10** engine with as 2D template used.
 
 ### 4. Overview
+
 #### 4.1 Setting
+
 #### 4.2 Plot
+
 #### 4.3 Characters
+
 #### 4.4 Levels
 
 ### 5. Gameplay
