@@ -34,7 +34,7 @@ public class Controls : MonoBehaviour
     {
         CalculateJoystickPosition();
 #if (DEBUG)
-        Debug.Log("Player position: " + player.transform.position);
+        // Debug.Log("Player position: " + player.transform.position);
 #endif
     }
 
