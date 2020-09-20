@@ -8,3 +8,4 @@ An Android game.
 - Save Sprites with the Photoshop File Format (**.psd** extension) as it support layers.
 - Git workflow is as basic as [Trunk-Based Development For Smaller Teams](https://trunkbaseddevelopment.com/#trunk-based-development-for-smaller-teams).
 - Also keep commits [atomic](https://dev.to/cbillowes/why-i-create-atomic-commits-in-git-kfi).
+- Keep versions [semantic](https://semver.org/)
