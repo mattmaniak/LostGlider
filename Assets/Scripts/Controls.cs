@@ -6,25 +6,25 @@ public class Controls : MonoBehaviour
     public float playerSpeed = 2.0f;
     public Transform player;
 
-    bool _screenPressed;
-    Vector2 _pressPoint;
-    Vector2 _dragPoint;
+    bool screenPressed;
+    Vector2 pressPoint;
+    Vector2 dragPoint;
 
     public Transform innerJoystick;
     public Transform outerJoystick;
 
     void FixedUpdate()
     {
-        _controlByJoystick();
-        _controlByKeyboard();
+        ControlByJoystick();
+        ControlByKeyboard();
     }
 
     void Update()
     {
-        _calculateJoystickPosition();
+        CalculateJoystickPosition();
     }
 
-    void _calculateJoystickPosition()
+    void CalculateJoystickPosition()
     {
         Vector3 worldPressPoint = Camera.main.ScreenToWorldPoint(
             new Vector3(Input.mousePosition.x, Input.mousePosition.y,
@@ -34,59 +34,59 @@ public class Controls : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             innerJoystick.transform.position =
-                outerJoystick.transform.position = _pressPoint = worldPressPoint;
+                outerJoystick.transform.position = pressPoint = worldPressPoint;
 
-            _toggleJoystickVisibility(true);
+            ToggleJoystickVisibility(true);
         }
 
         // Button is held.
         if (Input.GetMouseButton(0))
         {
-            _dragPoint = worldPressPoint;
-           _screenPressed = true;
+            dragPoint = worldPressPoint;
+            screenPressed = true;
         }
         else
         {
-           _screenPressed = false;
+            screenPressed = false;
         }
     }
 
-    void _controlByJoystick()
+    void ControlByJoystick()
     {
         Vector2 direction;
 
-        if (_screenPressed)
+        if (screenPressed)
         {
-            direction = Vector2.ClampMagnitude(_dragPoint - _pressPoint, 1.0f);
+            direction = Vector2.ClampMagnitude(dragPoint - pressPoint, 1.0f);
             player.transform.Translate(direction * playerSpeed
                                        * Time.deltaTime);        
 
             innerJoystick.transform.position =
-                new Vector2(_pressPoint.x + direction.x,
-                            _pressPoint.y + direction.y);
+                new Vector2(pressPoint.x + direction.x,
+                            pressPoint.y + direction.y);
         }
         else
         {
-            _toggleJoystickVisibility(false);
+            ToggleJoystickVisibility(false);
         }
     }
 
     [Obsolete("Use only for debugging/testing purposes.")]
-    void _controlByKeyboard()
+    void ControlByKeyboard()
     {
-        if (!_screenPressed)
+        if (!screenPressed)
         {
-            _movePlayer(new Vector2(Input.GetAxis("Horizontal"),
-                                    Input.GetAxis("Vertical")));
+            MovePlayer(new Vector2(Input.GetAxis("Horizontal"),
+                                   Input.GetAxis("Vertical")));
         }
     }
 
-    void _movePlayer(Vector2 direction)
+    void MovePlayer(Vector2 direction)
     {
         player.transform.Translate(direction * playerSpeed * Time.deltaTime);    
     }
 
-    void _toggleJoystickVisibility(bool visible)
+    void ToggleJoystickVisibility(bool visible)
     {
         innerJoystick.GetComponent<SpriteRenderer>().enabled =
             outerJoystick.GetComponent<SpriteRenderer>().enabled = visible;
