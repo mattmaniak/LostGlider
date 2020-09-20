@@ -1,4 +1,6 @@
-﻿using System;
+﻿#define DEBUG
+
+using System;
 using UnityEngine;
 
 public class Controls : MonoBehaviour
@@ -16,7 +18,10 @@ public class Controls : MonoBehaviour
     void FixedUpdate()
     {
         ControlByJoystick();
+#if (DEBUG)
         ControlByKeyboard();
+        Debug.Log("Player position: " + player.transform.position);
+#endif
     }
 
     void Update()
@@ -76,6 +81,10 @@ public class Controls : MonoBehaviour
     {
         if (!screenPressed)
         {
+            if (Input.GetKey("escape"))
+            {
+                Application.Quit();
+            }
             MovePlayer(new Vector2(Input.GetAxis("Horizontal"),
                                    Input.GetAxis("Vertical")));
         }
