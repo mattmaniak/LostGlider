@@ -26,7 +26,6 @@ public class Controls : MonoBehaviour
         ControlByJoystick();
 #if (DEBUG)
         ControlByKeyboard();
-        Debug.Log("Player position: " + player.transform.position);
 #endif
         MovePlayer();
     }
@@ -34,6 +33,9 @@ public class Controls : MonoBehaviour
     void Update()
     {
         CalculateJoystickPosition();
+#if (DEBUG)
+        Debug.Log("Player position: " + player.transform.position);
+#endif
     }
 
     void CalculateJoystickPosition()
