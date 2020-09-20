@@ -16,6 +16,7 @@ public class Controls : MonoBehaviour
     Transform outerJoystick;
 
     bool screenPressed;
+    Vector2 deltaDirection;
     Vector2 dragPoint;
     Vector2 pressPoint;
 
@@ -26,6 +27,7 @@ public class Controls : MonoBehaviour
         ControlByKeyboard();
         Debug.Log("Player position: " + player.transform.position);
 #endif
+        MovePlayer();
     }
 
     void Update()
@@ -62,17 +64,13 @@ public class Controls : MonoBehaviour
 
     void ControlByJoystick()
     {
-        Vector2 direction;
-
         if (screenPressed)
         {
-            direction = Vector2.ClampMagnitude(dragPoint - pressPoint, 1.0f);
-            player.transform.Translate(direction * playerSpeed
-                                       * Time.deltaTime);        
-
+            deltaDirection = Vector2.ClampMagnitude(dragPoint - pressPoint,
+                                                    1.0f);
             innerJoystick.transform.position =
-                new Vector2(pressPoint.x + direction.x,
-                            pressPoint.y + direction.y);
+                new Vector2(pressPoint.x + deltaDirection.x,
+                            pressPoint.y + deltaDirection.y);
         }
         else
         {
@@ -85,18 +83,19 @@ public class Controls : MonoBehaviour
     {
         if (!screenPressed)
         {
+            deltaDirection = new Vector2(Input.GetAxis("Horizontal"),
+                                         Input.GetAxis("Vertical"));
             if (Input.GetKey("escape"))
             {
                 Application.Quit();
             }
-            MovePlayer(new Vector2(Input.GetAxis("Horizontal"),
-                                   Input.GetAxis("Vertical")));
         }
     }
 
-    void MovePlayer(Vector2 direction)
+    void MovePlayer()
     {
-        player.transform.Translate(direction * playerSpeed * Time.deltaTime);    
+        player.transform.Translate(deltaDirection * playerSpeed
+                                   * Time.deltaTime);    
     }
 
     void ToggleJoystickVisibility(bool visible)
