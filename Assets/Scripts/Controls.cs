@@ -5,15 +5,19 @@ using UnityEngine;
 
 public class Controls : MonoBehaviour
 {
-    public float playerSpeed = 2.0f;
-    public Transform player;
+    [SerializeField]
+    float playerSpeed = 2.0f;
+    [SerializeField]
+    Transform player;
+
+    [SerializeField]
+    Transform innerJoystick;
+    [SerializeField]
+    Transform outerJoystick;
 
     bool screenPressed;
-    Vector2 pressPoint;
     Vector2 dragPoint;
-
-    public Transform innerJoystick;
-    public Transform outerJoystick;
+    Vector2 pressPoint;
 
     void FixedUpdate()
     {
