@@ -5,14 +5,19 @@ namespace DebugUtils
 {
     public class StatsView : MonoBehaviour
     {
-        // public Text buildGUID;
+        [SerializeField]
+        Text appSummaryText;
+
         [SerializeField]
         Text gitBranchText;
 
         [SerializeField]
         Text gitRevisionText;
 
+        const string debugDisclaimer = "[DEBUG] ";
+
         static bool statsUpdated;
+        static string appSummary;
         static string gitBranch;
         static string gitRevision;
 
@@ -33,6 +38,7 @@ namespace DebugUtils
         // Get Data from StatsModel.
         public static void UpdateStats()
         {
+            appSummary = DebugUtils.StatsModel.AppSummary;
             gitBranch = DebugUtils.StatsModel.GitBranch;
             gitRevision = DebugUtils.StatsModel.GitRevision;
 
@@ -41,8 +47,10 @@ namespace DebugUtils
 
         void DisplayStats()
         {
-            gitBranchText.text = "Git branch: " + gitBranch;
-            gitRevisionText.text = "Last Git revision: " + gitRevision;
+            appSummaryText.text  = debugDisclaimer + appSummary;
+            gitBranchText.text   = debugDisclaimer + "Git branch: " + gitBranch;
+            gitRevisionText.text = debugDisclaimer + "Last Git revision: "
+                                   + gitRevision;
         }
     }
 }

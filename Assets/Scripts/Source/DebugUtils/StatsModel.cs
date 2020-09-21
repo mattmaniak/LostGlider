@@ -10,10 +10,20 @@ namespace DebugUtils
     public class StatsModel
     {
         const string onErrorPlaceholder = "[not found]";
+
+        static string appSummary = Application.productName + " "
+                                   + Application.version + " by "
+                                   + Application.companyName + " using Unity "
+                                   + Application.unityVersion;
         static string gitBranch;
         static string gitRevision;
         static string gitRevisionPath;
         static string gitRepositoryPath = @Application.dataPath + @"/../.git/";
+
+        public static string AppSummary
+        {
+            get { return appSummary; }
+        }
 
         public static string GitBranch
         {
