@@ -9,11 +9,13 @@ public class Controls : MonoBehaviour
     [SerializeField]
     [Range(0.1f, 10.0f)]
     float playerSpeed = 2.0f;
+
     [SerializeField]
     Transform player;
 
     [SerializeField]
     Transform innerJoystick;
+    
     [SerializeField]
     Transform outerJoystick;
 
