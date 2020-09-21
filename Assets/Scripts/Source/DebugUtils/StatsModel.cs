@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Text;
 using UnityEngine;
 
@@ -10,6 +11,7 @@ namespace DebugUtils
         static string gitBranch;
         static string gitRevision;
         static string gitRevisionPath;
+        static string gitRepositoryPath = @Application.dataPath + @"/../.git/";
 
         public static string GitBranch
         {
@@ -27,6 +29,10 @@ namespace DebugUtils
 
         public static void ReadGitRepositoryData()
         {
+            if (!Directory.Exists(gitRepositoryPath))
+            {
+                return;
+            }
             ReadGitBranch();
             ReadGitRevision();
             DebugUtils.StatsView.UpdateStats();
@@ -34,15 +40,15 @@ namespace DebugUtils
 
         static void ReadGitBranch()
         {
-            string branchPath = Application.dataPath + "/../.git/HEAD";
+            string gitBranchPath = gitRepositoryPath + @"HEAD";
 
-            if (File.Exists(branchPath))
+            if (File.Exists(gitBranchPath))
             {
                 gitRevisionPath = Encoding.ASCII.GetString(
-                    File.ReadAllBytes(branchPath)).Split(' ')[1];
+                    File.ReadAllBytes(gitBranchPath)).Split(' ')[1];
 
                 gitBranch = gitRevisionPath.TrimStart(
-                    "refs/heads/".ToCharArray());
+                    @"refs/heads/".ToCharArray());
             }
             else
             {
@@ -52,18 +58,21 @@ namespace DebugUtils
 
         static void ReadGitRevision()
         {
-            gitRevisionPath = Application.dataPath + "/../.git/"
-                              + gitRevisionPath;
+            gitRevisionPath = gitRepositoryPath + gitRevisionPath.Trim();
 
-            // TODO: SOMETHING IS WRONG WITH THE PATH.
-            if (File.Exists(gitRevisionPath))
+            using (var stream = new StreamReader(gitRevisionPath))
             {
-                gitRevision = Encoding.ASCII.GetString(
-                    File.ReadAllBytes(gitRevisionPath));
-            }
-            else
-            {
-                gitRevision = onErrorPlaceholder;
+                try
+                {
+                    gitRevision = stream.ReadLine();
+                }
+                catch (Exception ex)
+                {
+                    gitRevision = onErrorPlaceholder;
+#if DEBUG
+                    Debug.Log(ex);
+#endif
+                }
             }
         }
     }
