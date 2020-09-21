@@ -78,6 +78,7 @@ public class Controls : MonoBehaviour
         }
         else
         {
+            deltaDirection = Vector2.zero;
             ToggleJoystickVisibility(false);
         }
     }
