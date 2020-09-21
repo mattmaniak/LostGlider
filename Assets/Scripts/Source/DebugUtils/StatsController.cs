@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿#define DEBUG
+
+using UnityEngine;
 
 namespace DebugUtils
 {
@@ -6,7 +8,9 @@ namespace DebugUtils
     {
         void Start()
         {
+#if DEBUG
             DebugUtils.StatsModel.ReadGitRepositoryData();
+#endif
         }
     }
 }

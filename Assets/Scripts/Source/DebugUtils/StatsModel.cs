@@ -1,4 +1,6 @@
-﻿using System;
+﻿#define DEBUG
+
+using System;
 using System.IO;
 using System.Text;
 using UnityEngine;

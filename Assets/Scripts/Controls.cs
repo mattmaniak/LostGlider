@@ -1,5 +1,4 @@
-﻿#define DEBUG
-#undef DEBUG
+﻿#undef DEBUG
 
 using System;
 using UnityEngine;
@@ -27,7 +26,7 @@ public class Controls : MonoBehaviour
     void FixedUpdate()
     {
         ControlByJoystick();
-#if DEBUG
+#if (DEBUG)
         ControlByKeyboard();
 #endif
 
@@ -37,7 +36,7 @@ public class Controls : MonoBehaviour
     void Update()
     {
         CalculateJoystickPosition();
-#if DEBUG
+#if (DEBUG)
         Debug.Log("Player position: " + player.transform.position);
 #endif
     }
