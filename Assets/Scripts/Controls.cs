@@ -27,16 +27,17 @@ public class Controls : MonoBehaviour
     void FixedUpdate()
     {
         ControlByJoystick();
-#if (DEBUG)
+#if DEBUG
         ControlByKeyboard();
 #endif
+
         MovePlayer();
     }
 
     void Update()
     {
         CalculateJoystickPosition();
-#if (DEBUG)
+#if DEBUG
         Debug.Log("Player position: " + player.transform.position);
 #endif
     }
