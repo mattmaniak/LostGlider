@@ -7,18 +7,42 @@ namespace DebugUtils
     {
         // public Text buildGUID;
         [SerializeField]
-        Text gitBranchUI;
+        Text gitBranchText;
 
         [SerializeField]
-        Text gitRevisionUI;
+        Text gitRevisionText;
+
+        static bool statsUpdated;
+        static string gitBranch;
+        static string gitRevision;
 
         void Start()
         {
-            gitBranchUI.text = "Git branch: "
-                                + DebugUtils.StatsModel.GitBranch;
+            statsUpdated = false;
+        }
 
-            gitRevisionUI.text = "Last Git revision: "
-                                 + DebugUtils.StatsModel.GitRevision;
+        void Update()
+        {
+            if (statsUpdated)
+            {
+                DisplayStats();
+                statsUpdated = false;
+            }
+        }
+
+        // Get Data from StatsModel.
+        public static void UpdateStats()
+        {
+            gitBranch = DebugUtils.StatsModel.GitBranch;
+            gitRevision = DebugUtils.StatsModel.GitRevision;
+
+            statsUpdated = true;
+        }
+
+        void DisplayStats()
+        {
+            gitBranchText.text = "Git branch: " + gitBranch;
+            gitRevisionText.text = "Last Git revision: " + gitRevision;
         }
     }
 }

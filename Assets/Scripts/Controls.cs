@@ -1,4 +1,5 @@
 ﻿#define DEBUG
+#undef DEBUG
 
 using System;
 using UnityEngine;
@@ -34,7 +35,7 @@ public class Controls : MonoBehaviour
     {
         CalculateJoystickPosition();
 #if (DEBUG)
-        // Debug.Log("Player position: " + player.transform.position);
+        Debug.Log("Player position: " + player.transform.position);
 #endif
     }
 
