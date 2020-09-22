@@ -2,14 +2,14 @@
 
 using UnityEngine;
 
-namespace DebugUtils
+namespace UtilsDebug
 {
     public class StatsController : MonoBehaviour
     {
         void Start()
         {
 #if DEBUG
-            DebugUtils.StatsModel.ReadGitRepositoryData();
+            UtilsDebug.StatsModel.ReadGitRepositoryData();
 #endif
         }
     }

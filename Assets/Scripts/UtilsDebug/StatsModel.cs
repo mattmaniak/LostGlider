@@ -5,7 +5,7 @@ using System.IO;
 using System.Text;
 using UnityEngine;
 
-namespace DebugUtils
+namespace UtilsDebug
 {
     public class StatsModel
     {
@@ -47,7 +47,7 @@ namespace DebugUtils
             }
             ReadGitBranch();
             ReadGitRevision();
-            DebugUtils.StatsView.UpdateStats();
+            UtilsDebug.StatsView.UpdateStats();
         }
 
         static void ReadGitBranch()

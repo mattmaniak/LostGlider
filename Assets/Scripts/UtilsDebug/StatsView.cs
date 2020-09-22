@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-namespace DebugUtils
+namespace UtilsDebug
 {
     public class StatsView : MonoBehaviour
     {
@@ -38,9 +38,9 @@ namespace DebugUtils
         // Get Data from StatsModel.
         public static void UpdateStats()
         {
-            appSummary = DebugUtils.StatsModel.AppSummary;
-            gitBranch = DebugUtils.StatsModel.GitBranch;
-            gitRevision = DebugUtils.StatsModel.GitRevision;
+            appSummary = UtilsDebug.StatsModel.AppSummary;
+            gitBranch = UtilsDebug.StatsModel.GitBranch;
+            gitRevision = UtilsDebug.StatsModel.GitRevision;
 
             statsUpdated = true;
         }
