@@ -22,11 +22,7 @@ namespace OverlayDebug
         static string gitRepoSummary;
 #endregion
 
-        static string unityProjectInfo = Application.productName + " "
-                                         + Application.version + " by "
-                                         + Application.companyName
-                                         + " using Unity "
-                                         + Application.unityVersion;
+        static string unityProjectInfo;
 
         public static string GitRepoSummary
         {
@@ -42,7 +38,7 @@ namespace OverlayDebug
             get { return unityProjectInfo; }
         }
 
-        public static void ReadGitRepoSummary()
+        public static void UpdateGitRepoSummary()
         {
             if (!Directory.Exists(gitRepoPath))
             {
@@ -51,7 +47,18 @@ namespace OverlayDebug
             ReadGitBranch();
             ReadGitRevision();
 
-            OverlayDebug.OverlayView.UpdateOverlay();
+            OverlayDebug.OverlayView.DisplayOverlay();
+        }
+
+        public static void UpdateUnityProjectInfo()
+        {
+            unityProjectInfo = Application.productName ?? onErrorPlaceholder
+                               + " "
+                               + Application.version ?? onErrorPlaceholder
+                               + " by "
+                               + Application.companyName ?? onErrorPlaceholder
+                               + " using Unity "
+                               + Application.unityVersion ?? onErrorPlaceholder;
         }
 
         static void ReadGitBranch()

@@ -9,7 +9,8 @@ namespace OverlayDebug
         void Start()
         {
 #if DEBUG
-            OverlayDebug.OverlayModel.ReadGitRepoSummary();
+            OverlayDebug.OverlayModel.UpdateGitRepoSummary();
+            OverlayDebug.OverlayModel.UpdateUnityProjectInfo();
 #endif
         }
     }

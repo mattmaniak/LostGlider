@@ -26,13 +26,13 @@ namespace OverlayDebug
         {
             if (OverlayUpdated)
             {
-                DisplayOverlay();
+                RenderOverlay();
                 OverlayUpdated = false;
             }
         }
 
         // Get Data from OverlayModel.
-        public static void UpdateOverlay()
+        public static void DisplayOverlay()
         {
             gitRepoSummary      = OverlayDebug.OverlayModel.GitRepoSummary;
             unityProjectInfo = OverlayDebug.OverlayModel.UnityProjectInfo;
@@ -40,7 +40,7 @@ namespace OverlayDebug
             OverlayUpdated = true;
         }
 
-        void DisplayOverlay()
+        void RenderOverlay()
         {
             gitRepoSummaryText.text  = debugLabel + gitRepoSummary;
             unityProjectInfoText.text = debugLabel + unityProjectInfo;
