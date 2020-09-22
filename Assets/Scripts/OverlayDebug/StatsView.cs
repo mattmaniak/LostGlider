@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-namespace UtilsDebug
+namespace OverlayDebug
 {
     public class StatsView : MonoBehaviour
     {
@@ -34,8 +34,8 @@ namespace UtilsDebug
         // Get Data from StatsModel.
         public static void UpdateStats()
         {
-            gitRepoData      = UtilsDebug.StatsModel.GitRepoData;
-            unityProjectInfo = UtilsDebug.StatsModel.UnityProjectInfo;
+            gitRepoData      = OverlayDebug.StatsModel.GitRepoData;
+            unityProjectInfo = OverlayDebug.StatsModel.UnityProjectInfo;
 
             statsUpdated = true;
         }
