@@ -19,25 +19,15 @@ namespace UtilsDebug
         static string gitBranch;
         static string gitRevision;
         static string gitRevisionPath;
-        static string gitRepositoryPath = @Application.dataPath + @"/../.git/";
-
         static string gitRepoData;
+        static string gitRepoPath = @Application.dataPath + @"/../.git/";
 
-        public static string GitBranch
+        public static string GitRepoData
         {
-            get { return gitBranch ?? onErrorPlaceholder; }
-            internal set
+            get
             {
-                gitBranch = (value != null) ? value : onErrorPlaceholder;
-            }
-        }
-
-        public static string GitRevision
-        {
-            get { return gitRevision ?? onErrorPlaceholder; }
-            internal set
-            {
-                gitRevision = (value != null) ? value : onErrorPlaceholder;
+                return "Modifying last Git revision: "
+                       + ShortenGitRevision() + " on branch: " + gitBranch;
             }
         }
 
@@ -46,18 +36,9 @@ namespace UtilsDebug
             get { return unityProjectInfo; }
         }
 
-        public static string GitRepoData
+        public static void ReadGitRepoData()
         {
-            get
-            {
-                return "Modifying last Git revision: "
-                + gitRevision.Substring(0, 7) + " on branch: " + gitBranch;
-            }
-        }
-
-        public static void ReadGitRepositoryData()
-        {
-            if (!Directory.Exists(gitRepositoryPath))
+            if (!Directory.Exists(gitRepoPath))
             {
                 return;
             }
@@ -69,7 +50,7 @@ namespace UtilsDebug
 
         static void ReadGitBranch()
         {
-            string gitBranchPath = gitRepositoryPath + @"HEAD";
+            string gitBranchPath = gitRepoPath + @"HEAD";
 
             if (File.Exists(gitBranchPath))
             {
@@ -87,7 +68,7 @@ namespace UtilsDebug
 
         static void ReadGitRevision()
         {
-            gitRevisionPath = gitRepositoryPath + gitRevisionPath.Trim();
+            gitRevisionPath = gitRepoPath + gitRevisionPath.Trim();
 
             using (var stream = new StreamReader(gitRevisionPath))
             {
@@ -103,6 +84,12 @@ namespace UtilsDebug
 #endif
                 }
             }
+        }
+
+        static string ShortenGitRevision()
+        {
+            const int length = 7;
+            return gitRevision.Substring(0, length);
         }
     }
 }

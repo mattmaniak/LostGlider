@@ -9,7 +9,7 @@ namespace UtilsDebug
         void Start()
         {
 #if DEBUG
-            UtilsDebug.StatsModel.ReadGitRepositoryData();
+            UtilsDebug.StatsModel.ReadGitRepoData();
 #endif
         }
     }
