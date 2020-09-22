@@ -38,7 +38,14 @@ namespace OverlayDebug
             get { return unityProjectInfo; }
         }
 
-        public static void UpdateGitRepoSummary()
+        public static void UpdateModel()
+        {
+            UpdateGitRepoSummary();
+            UpdateUnityProjectInfo();
+            OverlayDebug.OverlayController.NotifiyModelUpdated();
+        }
+
+        static void UpdateGitRepoSummary()
         {
             if (!Directory.Exists(gitRepoPath))
             {
@@ -46,11 +53,9 @@ namespace OverlayDebug
             }
             ReadGitBranch();
             ReadGitRevision();
-
-            OverlayDebug.OverlayView.DisplayOverlay();
         }
 
-        public static void UpdateUnityProjectInfo()
+        static void UpdateUnityProjectInfo()
         {
             unityProjectInfo = Application.productName ?? onErrorPlaceholder
                                + " "

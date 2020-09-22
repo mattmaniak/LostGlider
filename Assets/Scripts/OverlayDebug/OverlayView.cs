@@ -13,36 +13,26 @@ namespace OverlayDebug
         [SerializeField]
         Text gitRepoSummaryText;
 
-        static bool OverlayUpdated;
         static string gitRepoSummary;
         static string unityProjectInfo;
 
-        void Start()
-        {
-            OverlayUpdated = false;
-        }
-
         void Update()
         {
-            if (OverlayUpdated)
+            if (OverlayDebug.OverlayController.ShouldUpdateView)
             {
-                RenderOverlay();
-                OverlayUpdated = false;
+                Display();
+                OverlayDebug.OverlayController.DisableViewUpdateAction();
             }
         }
-
-        // Get Data from OverlayModel.
-        public static void DisplayOverlay()
+        public static void UpdateView()
         {
-            gitRepoSummary      = OverlayDebug.OverlayModel.GitRepoSummary;
+            gitRepoSummary   = OverlayDebug.OverlayModel.GitRepoSummary;
             unityProjectInfo = OverlayDebug.OverlayModel.UnityProjectInfo;
-
-            OverlayUpdated = true;
         }
 
-        void RenderOverlay()
+        void Display()
         {
-            gitRepoSummaryText.text  = debugLabel + gitRepoSummary;
+            gitRepoSummaryText.text   = debugLabel + gitRepoSummary;
             unityProjectInfoText.text = debugLabel + unityProjectInfo;
         }
     }
