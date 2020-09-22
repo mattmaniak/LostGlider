@@ -11,16 +11,22 @@ namespace OverlayDebug
     {
         const string onErrorPlaceholder = "[not found]";
 
+#region Directories
+        static string gitBranchBasename;
+        static string gitRepoPath = @Application.dataPath + @"/../.git/";
+#endregion
+
+#region Git data holders
+        static string gitBranch;
+        static string gitRevision;
+        static string gitRepoData;
+#endregion
+
         static string unityProjectInfo = Application.productName + " "
                                          + Application.version + " by "
                                          + Application.companyName
                                          + " using Unity "
                                          + Application.unityVersion;
-        static string gitBranch;
-        static string gitRevision;
-        static string gitBranchBasename;
-        static string gitRepoData;
-        static string gitRepoPath = @Application.dataPath + @"/../.git/";
 
         public static string GitRepoData
         {
