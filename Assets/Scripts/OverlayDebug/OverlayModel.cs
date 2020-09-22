@@ -18,7 +18,7 @@ namespace OverlayDebug
                                          + Application.unityVersion;
         static string gitBranch;
         static string gitRevision;
-        static string gitRevisionPath;
+        static string gitBranchBasename;
         static string gitRepoData;
         static string gitRepoPath = @Application.dataPath + @"/../.git/";
 
@@ -50,15 +50,16 @@ namespace OverlayDebug
 
         static void ReadGitBranch()
         {
-            string gitBranchPath = gitRepoPath + @"HEAD";
+            string gitHeadFilename = gitRepoPath + @"HEAD";
 
-            if (File.Exists(gitBranchPath))
+            if (File.Exists(gitHeadFilename))
             {
-                gitRevisionPath = Encoding.ASCII.GetString(
-                    File.ReadAllBytes(gitBranchPath)).Split(' ')[1];
+                gitBranchBasename = Encoding.ASCII.GetString(
+                    File.ReadAllBytes(gitHeadFilename)).Split(' ')[1].Trim();
 
-                gitBranch = gitRevisionPath.TrimStart(
-                    @"refs/heads/".ToCharArray());
+                // Remove the relative directory that points to a branch file.
+                gitBranch = gitBranchBasename.TrimStart(
+                    @"refs/heads/".ToCharArray()).Trim();
             }
             else
             {
@@ -68,9 +69,9 @@ namespace OverlayDebug
 
         static void ReadGitRevision()
         {
-            gitRevisionPath = gitRepoPath + gitRevisionPath.Trim();
+            string gitBranchFilename = gitRepoPath + gitBranchBasename;
 
-            using (var stream = new StreamReader(gitRevisionPath))
+            using (var stream = new StreamReader(gitBranchFilename))
             {
                 try
                 {
