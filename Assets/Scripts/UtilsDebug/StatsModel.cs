@@ -11,32 +11,48 @@ namespace UtilsDebug
     {
         const string onErrorPlaceholder = "[not found]";
 
-        static string appSummary = Application.productName + " "
-                                   + Application.version + " by "
-                                   + Application.companyName + " using Unity "
-                                   + Application.unityVersion;
+        static string unityProjectInfo = Application.productName + " "
+                                         + Application.version + " by "
+                                         + Application.companyName
+                                         + " using Unity "
+                                         + Application.unityVersion;
         static string gitBranch;
         static string gitRevision;
         static string gitRevisionPath;
         static string gitRepositoryPath = @Application.dataPath + @"/../.git/";
 
-        public static string AppSummary
-        {
-            get { return appSummary; }
-        }
+        static string gitRepoData;
 
         public static string GitBranch
         {
             get { return gitBranch ?? onErrorPlaceholder; }
-            internal set { gitBranch = (value != null)
-                           ? value : onErrorPlaceholder; }
+            internal set
+            {
+                gitBranch = (value != null) ? value : onErrorPlaceholder;
+            }
         }
 
         public static string GitRevision
         {
             get { return gitRevision ?? onErrorPlaceholder; }
-            internal set { gitRevision = (value != null)
-                           ? value : onErrorPlaceholder; }
+            internal set
+            {
+                gitRevision = (value != null) ? value : onErrorPlaceholder;
+            }
+        }
+
+        public static string UnityProjectInfo
+        {
+            get { return unityProjectInfo; }
+        }
+
+        public static string GitRepoData
+        {
+            get
+            {
+                return "Modifying last Git revision: "
+                + gitRevision.Substring(0, 7) + " on branch: " + gitBranch;
+            }
         }
 
         public static void ReadGitRepositoryData()
@@ -47,6 +63,7 @@ namespace UtilsDebug
             }
             ReadGitBranch();
             ReadGitRevision();
+
             UtilsDebug.StatsView.UpdateStats();
         }
 
