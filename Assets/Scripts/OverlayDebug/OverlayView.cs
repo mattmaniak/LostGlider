@@ -24,7 +24,7 @@ namespace OverlayDebug
                 OverlayDebug.OverlayController.DisableViewUpdateAction();
             }
         }
-        public static void UpdateView()
+        internal static void UpdateView()
         {
             gitRepoSummary   = OverlayDebug.OverlayModel.GitRepoSummary;
             unityProjectInfo = OverlayDebug.OverlayModel.UnityProjectInfo;

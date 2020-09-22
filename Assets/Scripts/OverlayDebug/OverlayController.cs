@@ -8,7 +8,7 @@ namespace OverlayDebug
     {
         static bool shouldUpdateView = false;
 
-        public static bool ShouldUpdateView
+        internal static bool ShouldUpdateView
         {
             get { return shouldUpdateView; }
         }
@@ -20,13 +20,13 @@ namespace OverlayDebug
 #endif
         }
 
-        public static void NotifiyModelUpdated()
+        internal static void NotifiyModelUpdated()
         {
             shouldUpdateView = true;
             OverlayDebug.OverlayView.UpdateView();
         }
 
-        public static void DisableViewUpdateAction()
+        internal static void DisableViewUpdateAction()
         {
             shouldUpdateView = false;
         }

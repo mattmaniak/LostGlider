@@ -24,7 +24,7 @@ namespace OverlayDebug
 
         static string unityProjectInfo;
 
-        public static string GitRepoSummary
+        internal static string GitRepoSummary
         {
             get
             {
@@ -33,12 +33,12 @@ namespace OverlayDebug
             }
         }
 
-        public static string UnityProjectInfo
+        internal static string UnityProjectInfo
         {
             get { return unityProjectInfo; }
         }
 
-        public static void UpdateModel()
+        internal static void UpdateModel()
         {
             UpdateGitRepoSummary();
             UpdateUnityProjectInfo();
