@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace OverlayDebug
 {
-    public class OverlayModel
+    internal class OverlayModel
     {
         const string onErrorPlaceholder = "[not found]";
 
