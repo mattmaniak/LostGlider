@@ -296,7 +296,7 @@ GameObject:
   - component: {fileID: 399124198}
   - component: {fileID: 399124202}
   m_Layer: 5
-  m_Name: UtilsDebug.StatsView
+  m_Name: DebugOverlayView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -621,7 +621,7 @@ GameObject:
   - component: {fileID: 1791993016}
   - component: {fileID: 1791993017}
   m_Layer: 0
-  m_Name: UtilsDebug.StatsController
+  m_Name: DebugOverlayController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

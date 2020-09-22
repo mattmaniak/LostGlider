@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace OverlayDebug
 {
-    public class StatsModel
+    public class OverlayModel
     {
         const string onErrorPlaceholder = "[not found]";
 
@@ -45,7 +45,7 @@ namespace OverlayDebug
             ReadGitBranch();
             ReadGitRevision();
 
-            OverlayDebug.StatsView.UpdateStats();
+            OverlayDebug.OverlayView.UpdateOverlay();
         }
 
         static void ReadGitBranch()

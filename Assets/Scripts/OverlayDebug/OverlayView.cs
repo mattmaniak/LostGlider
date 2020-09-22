@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 namespace OverlayDebug
 {
-    public class StatsView : MonoBehaviour
+    public class OverlayView : MonoBehaviour
     {
         const string debugLabel = "[DEBUG] ";
 
@@ -13,34 +13,34 @@ namespace OverlayDebug
         [SerializeField]
         Text gitRepoDataText;
 
-        static bool statsUpdated;
+        static bool OverlayUpdated;
         static string gitRepoData;
         static string unityProjectInfo;
 
         void Start()
         {
-            statsUpdated = false;
+            OverlayUpdated = false;
         }
 
         void Update()
         {
-            if (statsUpdated)
+            if (OverlayUpdated)
             {
-                DisplayStats();
-                statsUpdated = false;
+                DisplayOverlay();
+                OverlayUpdated = false;
             }
         }
 
-        // Get Data from StatsModel.
-        public static void UpdateStats()
+        // Get Data from OverlayModel.
+        public static void UpdateOverlay()
         {
-            gitRepoData      = OverlayDebug.StatsModel.GitRepoData;
-            unityProjectInfo = OverlayDebug.StatsModel.UnityProjectInfo;
+            gitRepoData      = OverlayDebug.OverlayModel.GitRepoData;
+            unityProjectInfo = OverlayDebug.OverlayModel.UnityProjectInfo;
 
-            statsUpdated = true;
+            OverlayUpdated = true;
         }
 
-        void DisplayStats()
+        void DisplayOverlay()
         {
             gitRepoDataText.text  = debugLabel + gitRepoData;
             unitySummaryText.text = debugLabel + unityProjectInfo;

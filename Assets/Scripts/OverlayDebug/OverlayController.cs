@@ -4,12 +4,12 @@ using UnityEngine;
 
 namespace OverlayDebug
 {
-    public class StatsController : MonoBehaviour
+    public class OverlayController : MonoBehaviour
     {
         void Start()
         {
 #if DEBUG
-            OverlayDebug.StatsModel.ReadGitRepoData();
+            OverlayDebug.OverlayModel.ReadGitRepoData();
 #endif
         }
     }
