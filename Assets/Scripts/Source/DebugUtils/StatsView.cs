@@ -14,7 +14,7 @@ namespace DebugUtils
         [SerializeField]
         Text gitRevisionText;
 
-        const string debugDisclaimer = "[DEBUG] ";
+        const string debugLabel = "[DEBUG] ";
 
         static bool statsUpdated;
         static string appSummary;
@@ -47,9 +47,9 @@ namespace DebugUtils
 
         void DisplayStats()
         {
-            appSummaryText.text  = debugDisclaimer + appSummary;
-            gitBranchText.text   = debugDisclaimer + "Git branch: " + gitBranch;
-            gitRevisionText.text = debugDisclaimer + "Last Git revision: "
+            appSummaryText.text  = debugLabel + appSummary;
+            gitBranchText.text   = debugLabel + "Git branch: " + gitBranch;
+            gitRevisionText.text = debugLabel + "Last Git revision: "
                                    + gitRevision;
         }
     }
