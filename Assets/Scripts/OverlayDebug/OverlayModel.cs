@@ -19,7 +19,7 @@ namespace OverlayDebug
 #region Git data holders
         static string gitBranch;
         static string gitRevision;
-        static string gitRepoData;
+        static string gitRepoSummary;
 #endregion
 
         static string unityProjectInfo = Application.productName + " "
@@ -28,7 +28,7 @@ namespace OverlayDebug
                                          + " using Unity "
                                          + Application.unityVersion;
 
-        public static string GitRepoData
+        public static string GitRepoSummary
         {
             get
             {
@@ -42,7 +42,7 @@ namespace OverlayDebug
             get { return unityProjectInfo; }
         }
 
-        public static void ReadGitRepoData()
+        public static void ReadGitRepoSummary()
         {
             if (!Directory.Exists(gitRepoPath))
             {

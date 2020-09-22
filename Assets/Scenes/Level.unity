@@ -214,7 +214,7 @@ GameObject:
   - component: {fileID: 103473822}
   - component: {fileID: 103473821}
   m_Layer: 5
-  m_Name: GitRepoData
+  m_Name: GitRepoSummary
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -395,8 +395,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8dec5e7147d87a94bba5db5f7f4770dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitySummaryText: {fileID: 2098596578}
-  gitRepoDataText: {fileID: 103473821}
+  unityProjectInfoText: {fileID: 2098596578}
+  gitRepoSummaryText: {fileID: 103473821}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0

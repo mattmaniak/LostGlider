@@ -9,7 +9,7 @@ namespace OverlayDebug
         void Start()
         {
 #if DEBUG
-            OverlayDebug.OverlayModel.ReadGitRepoData();
+            OverlayDebug.OverlayModel.ReadGitRepoSummary();
 #endif
         }
     }

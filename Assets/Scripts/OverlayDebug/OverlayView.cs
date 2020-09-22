@@ -8,13 +8,13 @@ namespace OverlayDebug
         const string debugLabel = "[DEBUG] ";
 
         [SerializeField]
-        Text unitySummaryText;
+        Text unityProjectInfoText;
 
         [SerializeField]
-        Text gitRepoDataText;
+        Text gitRepoSummaryText;
 
         static bool OverlayUpdated;
-        static string gitRepoData;
+        static string gitRepoSummary;
         static string unityProjectInfo;
 
         void Start()
@@ -34,7 +34,7 @@ namespace OverlayDebug
         // Get Data from OverlayModel.
         public static void UpdateOverlay()
         {
-            gitRepoData      = OverlayDebug.OverlayModel.GitRepoData;
+            gitRepoSummary      = OverlayDebug.OverlayModel.GitRepoSummary;
             unityProjectInfo = OverlayDebug.OverlayModel.UnityProjectInfo;
 
             OverlayUpdated = true;
@@ -42,8 +42,8 @@ namespace OverlayDebug
 
         void DisplayOverlay()
         {
-            gitRepoDataText.text  = debugLabel + gitRepoData;
-            unitySummaryText.text = debugLabel + unityProjectInfo;
+            gitRepoSummaryText.text  = debugLabel + gitRepoSummary;
+            unityProjectInfoText.text = debugLabel + unityProjectInfo;
         }
     }
 }
