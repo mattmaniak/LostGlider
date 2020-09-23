@@ -10,13 +10,13 @@ public class Controls : MonoBehaviour
     float playerSpeed = 2.0f;
 
     [SerializeField]
-    Transform player;
-
-    [SerializeField]
     Transform innerJoystick;
     
     [SerializeField]
     Transform outerJoystick;
+
+    [SerializeField]
+    Transform player;
 
     bool screenPressed;
     Vector2 deltaDirection;

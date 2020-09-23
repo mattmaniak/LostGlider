@@ -8,10 +8,10 @@ namespace OverlayDebug
         const string debugLabel = "[DEBUG] ";
 
         [SerializeField]
-        Text unityProjectInfoText;
+        Text gitRepoSummaryText;
 
         [SerializeField]
-        Text gitRepoSummaryText;
+        Text unityProjectInfoText;
 
         static string gitRepoSummary;
         static string unityProjectInfo;
