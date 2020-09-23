@@ -57,13 +57,10 @@ namespace OverlayDebug
 
         static void UpdateUnityProjectInfo()
         {
-            unityProjectInfo = Application.productName ?? onErrorPlaceholder
-                               + " "
-                               + Application.version ?? onErrorPlaceholder
-                               + " by "
-                               + Application.companyName ?? onErrorPlaceholder
-                               + " using Unity "
-                               + Application.unityVersion ?? onErrorPlaceholder;
+            unityProjectInfo = Application.productName + " "
+                               + Application.version + " (dev) by "
+                               + Application.companyName + " using Unity "
+                               + Application.unityVersion;
         }
 
         static void ReadGitBranch()
