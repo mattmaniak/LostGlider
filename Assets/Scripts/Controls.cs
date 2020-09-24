@@ -13,7 +13,7 @@ public class Controls : MonoBehaviour
     Transform innerJoystick;
     
     [SerializeField]
-    Transform outerJoystick;
+    Transform outerJoystick;    
 
     [SerializeField]
     Transform player;
@@ -21,7 +21,13 @@ public class Controls : MonoBehaviour
     bool screenPressed;
     Vector2 deltaDirection;
     Vector2 dragPoint;
-    Vector2 pressPoint;
+    Vector2 touchPoint;
+
+    void Start()
+    {
+        touchPoint = new Vector2(outerJoystick.transform.position.x,
+                                 outerJoystick.transform.position.y);
+    }
 
     void FixedUpdate()
     {
@@ -43,23 +49,27 @@ public class Controls : MonoBehaviour
 
     void CalculateJoystickPosition()
     {
-        Vector3 worldPressPoint = Camera.main.ScreenToWorldPoint(
+        Vector3 touchPointWorld = Camera.main.ScreenToWorldPoint(
             new Vector3(Input.mousePosition.x, Input.mousePosition.y,
                         Camera.main.transform.position.z));
 
         // Button is clicked.
         if (Input.GetMouseButtonDown(0))
         {
-            innerJoystick.transform.position =
-                outerJoystick.transform.position = pressPoint = worldPressPoint;
+            var joystickCollider = outerJoystick.GetComponent<Collider2D>();
+            var touchPosition = new Vector2(touchPointWorld.x,
+                                            touchPointWorld.y);
 
-            ToggleJoystickVisibility(true);
+            if (Physics2D.OverlapPoint(touchPosition) == joystickCollider)
+            {
+                innerJoystick.transform.position = touchPointWorld;
+            }
         }
 
         // Button is held.
         if (Input.GetMouseButton(0))
         {
-            dragPoint = worldPressPoint;
+            dragPoint = touchPointWorld;
             screenPressed = true;
         }
         else
@@ -72,16 +82,16 @@ public class Controls : MonoBehaviour
     {
         if (screenPressed)
         {
-            deltaDirection = Vector2.ClampMagnitude(dragPoint - pressPoint,
+            deltaDirection = Vector2.ClampMagnitude(dragPoint - touchPoint,
                                                     1.0f);
             innerJoystick.transform.position =
-                new Vector2(pressPoint.x + deltaDirection.x,
-                            pressPoint.y + deltaDirection.y);
+                new Vector2(touchPoint.x + deltaDirection.x,
+                            touchPoint.y + deltaDirection.y);
         }
         else
         {
-            deltaDirection = Vector2.zero;
-            ToggleJoystickVisibility(false);
+            innerJoystick.transform.position = deltaDirection = dragPoint
+                = Vector2.zero;
         }
     }
 
@@ -103,11 +113,5 @@ public class Controls : MonoBehaviour
     {
         player.transform.Translate(deltaDirection * playerSpeed
                                    * Time.deltaTime);    
-    }
-
-    void ToggleJoystickVisibility(bool visible)
-    {
-        innerJoystick.GetComponent<SpriteRenderer>().enabled =
-            outerJoystick.GetComponent<SpriteRenderer>().enabled = visible;
     }
 }
