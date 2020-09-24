@@ -13,21 +13,11 @@ public class Controls : MonoBehaviour
     Transform innerJoystick;
     
     [SerializeField]
-    Transform outerJoystick;    
-
-    [SerializeField]
     Transform player;
 
-    bool screenPressed;
+    bool joystickPressed;
     Vector2 deltaDirection;
     Vector2 dragPoint;
-    Vector2 touchPoint;
-
-    void Start()
-    {
-        touchPoint = new Vector2(outerJoystick.transform.position.x,
-                                 outerJoystick.transform.position.y);
-    }
 
     void FixedUpdate()
     {
@@ -47,46 +37,32 @@ public class Controls : MonoBehaviour
 #endif
     }
 
-    void CalculateJoystickPosition()
+    void OnMouseDown()
     {
-        Vector3 touchPointWorld = Camera.main.ScreenToWorldPoint(
-            new Vector3(Input.mousePosition.x, Input.mousePosition.y,
-                        Camera.main.transform.position.z));
-
-        // Button is clicked.
-        if (Input.GetMouseButtonDown(0))
-        {
-            var joystickCollider = outerJoystick.GetComponent<Collider2D>();
-            var touchPosition = new Vector2(touchPointWorld.x,
-                                            touchPointWorld.y);
-
-            if (Physics2D.OverlapPoint(touchPosition) == joystickCollider)
-            {
-                innerJoystick.transform.position = touchPointWorld;
-            }
-        }
-
-        // Button is held.
-        if (Input.GetMouseButton(0))
-        {
-            dragPoint = touchPointWorld;
-            screenPressed = true;
-        }
-        else
-        {
-            screenPressed = false;
-        }
+        joystickPressed = true;
     }
 
-    void ControlByJoystick()
+
+    void OnMouseUp()
     {
-        if (screenPressed)
+        joystickPressed = false;
+    }
+
+    void CalculateJoystickPosition()
+    {
+        bool touching = Input.GetMouseButton(0);
+        Vector3 touchPointWorld = Camera.main.ScreenToWorldPoint(
+            new Vector3(Input.mousePosition.x, Input.mousePosition.y,
+                        -Camera.main.transform.position.z));
+
+        var joystickCollider = GetComponent<Collider2D>();
+        var touchPosition = new Vector2(touchPointWorld.x,
+                                        touchPointWorld.y);
+
+        if (touching && joystickPressed
+            && (Physics2D.OverlapPoint(touchPosition) == joystickCollider))
         {
-            deltaDirection = Vector2.ClampMagnitude(dragPoint - touchPoint,
-                                                    1.0f);
-            innerJoystick.transform.position =
-                new Vector2(touchPoint.x + deltaDirection.x,
-                            touchPoint.y + deltaDirection.y);
+            innerJoystick.transform.position = dragPoint = touchPointWorld;
         }
         else
         {
@@ -95,10 +71,26 @@ public class Controls : MonoBehaviour
         }
     }
 
+    void ControlByJoystick()
+    {
+        var joystickPosition2D = new Vector2(transform.position.x,
+                                             transform.position.y);
+
+        if (joystickPressed)
+        {
+            deltaDirection
+                = Vector2.ClampMagnitude(dragPoint - joystickPosition2D, 1.0f);
+
+            innerJoystick.transform.position =
+                new Vector2(transform.position.x + deltaDirection.x,
+                            transform.position.y + deltaDirection.y);
+        }
+    }
+
     [Obsolete("Use only for debugging/testing purposes.")]
     void ControlByKeyboard()
     {
-        if (!screenPressed)
+        if (!joystickPressed)
         {
             deltaDirection = new Vector2(Input.GetAxis("Horizontal"),
                                          Input.GetAxis("Vertical"));
