@@ -1,4 +1,4 @@
-﻿#define DEBUG
+﻿#undef DEBUG
 
 using System;
 using UnityEngine;
@@ -19,7 +19,7 @@ public class Controls : MonoBehaviour
 
     bool joystickPressed;
     SpriteRenderer sprite;
-    Vector2 deltaDirection;
+    float deltaDirection;
     Vector2 dragPoint;
 
     void Start()
@@ -55,7 +55,6 @@ public class Controls : MonoBehaviour
         joystickPressed = true;
     }
 
-
     void OnMouseUp()
     {
         joystickPressed = false;
@@ -63,42 +62,41 @@ public class Controls : MonoBehaviour
 
     void CalculateJoystickPosition()
     {
-        bool touching = Input.GetMouseButton(0);
-
         Vector3 touchPointWorld = Camera.main.ScreenToWorldPoint(
             new Vector3(Screen.width - sprite.bounds.size.x - paddingPx,
                         Input.mousePosition.y,
                         -Camera.main.transform.position.z));
 
         var joystickCollider = GetComponent<Collider2D>();
-        var touchPosition = new Vector2(touchPointWorld.x,
+        var touchPosition = new Vector2(transform.position.x,
                                         touchPointWorld.y);
 
-        if (touching && joystickPressed
+        if (joystickPressed
             && (Physics2D.OverlapPoint(touchPosition) == joystickCollider))
         {
             innerJoystick.transform.position = dragPoint = touchPointWorld;
         }
         else
         {
-            innerJoystick.transform.position = deltaDirection = dragPoint
+            innerJoystick.transform.position = dragPoint
                 = transform.position;
+
+            deltaDirection = 0.0f;
         }
     }
 
     void ControlByJoystick()
     {
-        var joystickPosition2D = new Vector2(transform.position.x,
-                                             transform.position.y);
-
         if (joystickPressed)
         {
-            deltaDirection
-                = Vector2.ClampMagnitude(dragPoint - joystickPosition2D, 1.0f);
+            deltaDirection = dragPoint.y - transform.position.y;
+                // = Vector2.ClampMagnitude(dragPoint - joystickPosition2D, 1.0f);
+
+            Debug.Log(deltaDirection);
 
             innerJoystick.transform.position =
-                new Vector2(transform.position.x + deltaDirection.x,
-                            transform.position.y + deltaDirection.y);
+                new Vector2(transform.position.x,
+                            transform.position.y + deltaDirection);
         }
     }
 
@@ -107,8 +105,7 @@ public class Controls : MonoBehaviour
     {
         if (!joystickPressed)
         {
-            deltaDirection = new Vector2(Input.GetAxis("Horizontal"),
-                                         Input.GetAxis("Vertical"));
+            deltaDirection = Input.GetAxis("Vertical");
             if (Input.GetKey("escape"))
             {
                 Application.Quit();
@@ -118,7 +115,8 @@ public class Controls : MonoBehaviour
 
     void MovePlayer()
     {
-        player.transform.Translate(deltaDirection * playerSpeed
-                                   * Time.deltaTime);    
+        player.transform.Translate(
+            new Vector3(0.0f, deltaDirection * playerSpeed * Time.deltaTime,
+                        0.0f));    
     }
 }
