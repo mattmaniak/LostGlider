@@ -73,18 +73,25 @@ public class Controls : MonoBehaviour
                         -Camera.main.transform.position.z));
 
         var joystickCollider = GetComponent<Collider2D>();
-        var touchPosition = new Vector2(
-            transform.position.x,
-            Mathf.Clamp(touchPointWorld.y,
-                        transform.position.y - (innerJoysticSliderSize / 2.0f),
-                        transform.position.y + (innerJoysticSliderSize / 2.0f)));
+        var touchPosition = new Vector2(transform.position.x,
+                                        touchPointWorld.y);
 
-
-        if (joystickPressed
-            && (Physics2D.OverlapPoint(touchPosition) == joystickCollider))
+        if (joystickPressed)
         {
+            // TODO MATHF.CLAMP DOESN"T WORK.
+            if (touchPosition.y
+                > (transform.position.y + (innerJoysticSliderSize / 2.0f)))
+            {
+                touchPointWorld.y
+                    = transform.position.y + (innerJoysticSliderSize / 2.0f);
+            }
+            if (touchPosition.y
+                < (transform.position.y - (innerJoysticSliderSize / 2.0f)))
+            {
+                touchPointWorld.y
+                    = transform.position.y - (innerJoysticSliderSize / 2.0f);
+            }
             innerJoystick.transform.position = dragPoint = touchPointWorld;
-            Debug.Log(innerJoystick.transform.position.y + " " + touchPosition.y);
         }
         else
         {
