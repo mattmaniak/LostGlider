@@ -15,7 +15,7 @@ public class Controls : MonoBehaviour
     [SerializeField]
     Transform player;
 
-    const int paddingPx = 100;
+    const int paddingPx = 128;
 
     bool joystickPressed;
     SpriteRenderer sprite;
