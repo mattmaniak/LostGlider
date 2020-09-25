@@ -20,6 +20,7 @@ public class Controls : MonoBehaviour
     bool joystickPressed;
     SpriteRenderer sprite;
     float deltaDirection;
+    float innerJoysticSliderSize;
     Vector2 dragPoint;
 
     void Start()
@@ -30,6 +31,10 @@ public class Controls : MonoBehaviour
             new Vector3(Screen.width - sprite.bounds.size.x - paddingPx,
                         sprite.bounds.size.y + paddingPx,
                         -Camera.main.transform.position.z));
+
+        innerJoysticSliderSize
+            = sprite.bounds.size.y
+            - innerJoystick.GetComponent<SpriteRenderer>().bounds.size.y;
     }
 
     void FixedUpdate()
@@ -68,19 +73,22 @@ public class Controls : MonoBehaviour
                         -Camera.main.transform.position.z));
 
         var joystickCollider = GetComponent<Collider2D>();
-        var touchPosition = new Vector2(transform.position.x,
-                                        touchPointWorld.y);
+        var touchPosition = new Vector2(
+            transform.position.x,
+            Mathf.Clamp(touchPointWorld.y,
+                        transform.position.y - (innerJoysticSliderSize / 2.0f),
+                        transform.position.y + (innerJoysticSliderSize / 2.0f)));
+
 
         if (joystickPressed
             && (Physics2D.OverlapPoint(touchPosition) == joystickCollider))
         {
             innerJoystick.transform.position = dragPoint = touchPointWorld;
+            Debug.Log(innerJoystick.transform.position.y + " " + touchPosition.y);
         }
         else
         {
-            innerJoystick.transform.position = dragPoint
-                = transform.position;
-
+            innerJoystick.transform.position = dragPoint = transform.position;
             deltaDirection = 0.0f;
         }
     }
@@ -89,14 +97,8 @@ public class Controls : MonoBehaviour
     {
         if (joystickPressed)
         {
-            deltaDirection = dragPoint.y - transform.position.y;
-                // = Vector2.ClampMagnitude(dragPoint - joystickPosition2D, 1.0f);
-
-            Debug.Log(deltaDirection);
-
-            innerJoystick.transform.position =
-                new Vector2(transform.position.x,
-                            transform.position.y + deltaDirection);
+            deltaDirection = (dragPoint.y - transform.position.y)
+                             / (innerJoysticSliderSize / 2.0f);
         }
     }
 
