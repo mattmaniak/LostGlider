@@ -1,4 +1,4 @@
-﻿#undef DEBUG
+﻿#define DEBUG
 
 using System;
 using UnityEngine;
@@ -15,13 +15,21 @@ public class Controls : MonoBehaviour
     [SerializeField]
     Transform player;
 
+    const int paddingPx = 100;
+
     bool joystickPressed;
+    SpriteRenderer sprite;
     Vector2 deltaDirection;
     Vector2 dragPoint;
 
     void Start()
     {
+        sprite = GetComponent<SpriteRenderer>();
 
+        transform.position = Camera.main.ScreenToWorldPoint(
+            new Vector3(Screen.width - sprite.bounds.size.x - paddingPx,
+                        sprite.bounds.size.y + paddingPx,
+                        -Camera.main.transform.position.z));
     }
 
     void FixedUpdate()
@@ -57,9 +65,9 @@ public class Controls : MonoBehaviour
     {
         bool touching = Input.GetMouseButton(0);
 
-        // TODO: TEMPONARY X-AXIS SOLUTION.
         Vector3 touchPointWorld = Camera.main.ScreenToWorldPoint(
-            new Vector3(Screen.width / 2, Input.mousePosition.y,
+            new Vector3(Screen.width - sprite.bounds.size.x - paddingPx,
+                        Input.mousePosition.y,
                         -Camera.main.transform.position.z));
 
         var joystickCollider = GetComponent<Collider2D>();
@@ -74,7 +82,7 @@ public class Controls : MonoBehaviour
         else
         {
             innerJoystick.transform.position = deltaDirection = dragPoint
-                = Vector2.zero;
+                = transform.position;
         }
     }
 

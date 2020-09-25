@@ -242,7 +242,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98d09ae02fe018d4ba46235a33d91a2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  orthograhicCamera: {fileID: 519420031}
   playerSpeed: 2
   innerJoystick: {fileID: 1698848563}
   player: {fileID: 2029498115}
