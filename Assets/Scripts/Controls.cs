@@ -19,6 +19,11 @@ public class Controls : MonoBehaviour
     Vector2 deltaDirection;
     Vector2 dragPoint;
 
+    void Start()
+    {
+
+    }
+
     void FixedUpdate()
     {
         ControlByJoystick();
@@ -51,8 +56,10 @@ public class Controls : MonoBehaviour
     void CalculateJoystickPosition()
     {
         bool touching = Input.GetMouseButton(0);
+
+        // TODO: TEMPONARY X-AXIS SOLUTION.
         Vector3 touchPointWorld = Camera.main.ScreenToWorldPoint(
-            new Vector3(Input.mousePosition.x, Input.mousePosition.y,
+            new Vector3(Screen.width / 2, Input.mousePosition.y,
                         -Camera.main.transform.position.z));
 
         var joystickCollider = GetComponent<Collider2D>();
