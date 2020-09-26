@@ -18,7 +18,7 @@ namespace OverlayDebug
 
 #region Git data holders
         static string gitBranch;
-        static string gitRevision;
+        static string gitShortRev;
         static string gitRepoSummary;
 #endregion
 
@@ -26,11 +26,8 @@ namespace OverlayDebug
 
         internal static string GitRepoSummary
         {
-            get
-            {
-                return "Modifying last Git revision: "
-                       + ShortenGitRevision() + " on branch: " + gitBranch;
-            }
+            get => "Modifying last Git revision: " + gitShortRev
+                    + " on branch: " + gitBranch;
         }
 
         internal static string UnityProjectInfo
@@ -47,18 +44,24 @@ namespace OverlayDebug
 
         static void UpdateGitRepoSummary()
         {
+            const int shortGitRevLength = 7;
+
             if (!Directory.Exists(gitRepoPath))
             {
+                gitBranch = gitShortRev = onErrorPlaceholder;
                 return;
             }
-            gitBranchBasename = ReadString(
-                gitRepoPath + @"HEAD").Split(' ')[1].Trim();
+            gitBranchBasename = ReadString(gitRepoPath + @"HEAD")?.
+                Split(' ')?[1]?.Trim();
 
             // Remove the relative directory that points to a branch file.
-            gitBranch = gitBranchBasename.TrimStart(
-                @"refs/heads/".ToCharArray()).Trim();
+            gitBranch = gitBranchBasename?.
+                TrimStart(@"refs/heads/".ToCharArray())?.Trim()
+                ?? onErrorPlaceholder;
 
-            gitRevision = ReadString(gitRepoPath + gitBranchBasename);
+            gitShortRev = ReadString(gitRepoPath + gitBranchBasename)?.
+                Substring(0, shortGitRevLength)
+                ?? onErrorPlaceholder;;
         }
 
         static void UpdateUnityProjectInfo()
@@ -71,26 +74,20 @@ namespace OverlayDebug
 
         static string ReadString(string path)
         {
-            using (var stream = new StreamReader(path))
+            try
             {
-                try
+                using (var stream = new StreamReader(path))
                 {
                     return stream.ReadLine();
                 }
-                catch (Exception ex)
-                {
-#if DEBUG
-                    Debug.Log(ex);
-#endif
-                    return onErrorPlaceholder;
-                }
             }
-        }
-
-        static string ShortenGitRevision()
-        {
-            const int length = 7;
-            return gitRevision.Substring(0, length);
+            catch (Exception ex)
+            {
+#if DEBUG
+                Debug.Log(ex);
+#endif
+                return null;
+            }
         }
     }
 }
