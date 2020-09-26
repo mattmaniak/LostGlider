@@ -104,7 +104,7 @@ public class Controls : MonoBehaviour
     {
         if (joystickPressed)
         {
-            deltaDirection = (dragPoint.y - transform.position.y)
+            deltaDirection = -(dragPoint.y - transform.position.y)
                              / (innerJoysticSliderSize / 2.0f);
         }
     }
