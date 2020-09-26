@@ -51,8 +51,14 @@ namespace OverlayDebug
             {
                 return;
             }
-            ReadGitBranch();
-            ReadGitRevision();
+            gitBranchBasename = ReadString(
+                gitRepoPath + @"HEAD").Split(' ')[1].Trim();
+
+            // Remove the relative directory that points to a branch file.
+            gitBranch = gitBranchBasename.TrimStart(
+                @"refs/heads/".ToCharArray()).Trim();
+
+            gitRevision = ReadString(gitRepoPath + gitBranchBasename);
         }
 
         static void UpdateUnityProjectInfo()
@@ -63,41 +69,20 @@ namespace OverlayDebug
                                + Application.unityVersion;
         }
 
-        static void ReadGitBranch()
+        static string ReadString(string path)
         {
-            string gitHeadFilename = gitRepoPath + @"HEAD";
-
-            if (File.Exists(gitHeadFilename))
-            {
-                gitBranchBasename = Encoding.ASCII.GetString(
-                    File.ReadAllBytes(gitHeadFilename)).Split(' ')[1].Trim();
-
-                // Remove the relative directory that points to a branch file.
-                gitBranch = gitBranchBasename.TrimStart(
-                    @"refs/heads/".ToCharArray()).Trim();
-            }
-            else
-            {
-                gitBranch = onErrorPlaceholder;
-            }
-        }
-
-        static void ReadGitRevision()
-        {
-            string gitBranchFilename = gitRepoPath + gitBranchBasename;
-
-            using (var stream = new StreamReader(gitBranchFilename))
+            using (var stream = new StreamReader(path))
             {
                 try
                 {
-                    gitRevision = stream.ReadLine();
+                    return stream.ReadLine();
                 }
                 catch (Exception ex)
                 {
-                    gitRevision = onErrorPlaceholder;
 #if DEBUG
                     Debug.Log(ex);
 #endif
+                    return onErrorPlaceholder;
                 }
             }
         }
