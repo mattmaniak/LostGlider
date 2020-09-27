@@ -23,6 +23,7 @@ public class Controls : MonoBehaviour
     const int paddingPx = 128;
     const float playerMaxFallingSpeed = 0.5f; // Per one second.
 
+    static bool controlsEnabled = true;
     bool joystickPressed;
     SpriteRenderer sprite;
     float deltaDirection;
@@ -70,6 +71,11 @@ public class Controls : MonoBehaviour
         joystickPressed = false;
     }
 
+    public static void DisableControls()
+    {
+        controlsEnabled = false;
+    }
+
     void CalculateJoystickPosition()
     {
         Vector3 touchPointWorld = Camera.main.ScreenToWorldPoint(
@@ -81,7 +87,7 @@ public class Controls : MonoBehaviour
         var touchPosition = new Vector2(transform.position.x,
                                         touchPointWorld.y);
 
-        if (joystickPressed)
+        if (controlsEnabled && joystickPressed)
         {
             // TODO MATHF.CLAMP DOESN"T WORK.
             if (touchPosition.y
@@ -117,7 +123,7 @@ public class Controls : MonoBehaviour
     [Obsolete("Use only for debugging/testing purposes.")]
     void ControlByKeyboard()
     {
-        if (!joystickPressed)
+        if (controlsEnabled && !joystickPressed)
         {
             deltaDirection = Input.GetAxis("Vertical");
             if (Input.GetKey("escape"))
