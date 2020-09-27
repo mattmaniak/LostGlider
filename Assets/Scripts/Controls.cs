@@ -109,7 +109,7 @@ public class Controls : MonoBehaviour
     {
         if (joystickPressed)
         {
-            deltaDirection = -(dragPoint.y - transform.position.y)
+            deltaDirection = (transform.position.y - dragPoint.y)
                              / (innerJoysticSliderSize / 2.0f);
         }
     }
@@ -135,7 +135,7 @@ public class Controls : MonoBehaviour
         if (playerRigidbody.velocity.magnitude > playerMaxFallingSpeed)
         {
             playerRigidbody.velocity = playerRigidbody.velocity.normalized
-                                       *playerMaxFallingSpeed;
+                                       * playerMaxFallingSpeed;
         }
     }
 }
