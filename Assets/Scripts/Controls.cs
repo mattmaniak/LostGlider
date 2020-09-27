@@ -3,11 +3,13 @@
 using System;
 using UnityEngine;
 
+[RequireComponent(typeof(SpriteRenderer))]
+
 public class Controls : MonoBehaviour
 {
     [SerializeField]
     [Range(0.1f, 10.0f)]
-    float playerSpeed = 2.0f;
+    float playerSpeed = 10.0f;
 
     [SerializeField]
     Transform innerJoystick;
@@ -124,8 +126,7 @@ public class Controls : MonoBehaviour
 
     void MovePlayer()
     {
-        player.transform.Translate(
-            new Vector3(0.0f, deltaDirection * playerSpeed * Time.deltaTime,
-                        0.0f));    
+        float deltaY = deltaDirection * playerSpeed * Time.deltaTime;
+        player.transform.Translate(new Vector3(0.0f, deltaY, 0.0f));
     }
 }
