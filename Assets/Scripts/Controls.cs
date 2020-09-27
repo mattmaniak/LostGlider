@@ -12,12 +12,16 @@ public class Controls : MonoBehaviour
     float playerSpeed = 10.0f;
 
     [SerializeField]
+    Rigidbody2D playerRigidbody;
+
+    [SerializeField]
     Transform innerJoystick;
     
     [SerializeField]
     Transform player;
 
     const int paddingPx = 128;
+    const float playerMaxFallingSpeed = 0.5f; // Per one second.
 
     bool joystickPressed;
     SpriteRenderer sprite;
@@ -45,7 +49,6 @@ public class Controls : MonoBehaviour
 #if (DEBUG)
         ControlByKeyboard();
 #endif
-
         MovePlayer();
     }
 
@@ -128,5 +131,11 @@ public class Controls : MonoBehaviour
     {
         float deltaY = deltaDirection * playerSpeed * Time.deltaTime;
         player.transform.Translate(new Vector3(0.0f, deltaY, 0.0f));
+
+        if (playerRigidbody.velocity.magnitude > playerMaxFallingSpeed)
+        {
+            playerRigidbody.velocity = playerRigidbody.velocity.normalized
+                                       *playerMaxFallingSpeed;
+        }
     }
 }
