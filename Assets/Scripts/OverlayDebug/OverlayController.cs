@@ -1,9 +1,10 @@
-﻿#define DEBUG
+﻿#undef DEBUG
 
 using UnityEngine;
 
+
 namespace OverlayDebug
-{
+{    
     public class OverlayController : MonoBehaviour
     {
         static bool shouldUpdateView = false;
