@@ -8,10 +8,6 @@ using UnityEngine;
 public class Controls : MonoBehaviour
 {
     [SerializeField]
-    [Range(0.1f, 10.0f)]
-    float playerSpeed = 10.0f;
-
-    [SerializeField]
     Rigidbody2D playerRigidbody;
 
     [SerializeField]
@@ -50,7 +46,7 @@ public class Controls : MonoBehaviour
 #if DEBUG
         ControlByKeyboard();
 #endif
-        MovePlayer();
+        MovePlayerVertically();
     }
 
     void Update()
@@ -133,9 +129,9 @@ public class Controls : MonoBehaviour
         }
     }
 
-    void MovePlayer()
+    void MovePlayerVertically()
     {
-        float deltaY = deltaDirection * playerSpeed * Time.deltaTime;
+        float deltaY = deltaDirection * Player.MaxSpeed * Time.deltaTime;
         player.transform.Translate(new Vector3(0.0f, deltaY, 0.0f));
 
         if ((playerRigidbody.velocity.y < 0.0f)
