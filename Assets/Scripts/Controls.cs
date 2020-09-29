@@ -3,8 +3,8 @@
 using System;
 using UnityEngine;
 
+[RequireComponent(typeof(BoxCollider2D))]
 [RequireComponent(typeof(SpriteRenderer))]
-
 public class Controls : MonoBehaviour
 {
     [SerializeField]
