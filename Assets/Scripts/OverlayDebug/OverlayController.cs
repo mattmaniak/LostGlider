@@ -1,12 +1,12 @@
-﻿#undef DEBUG
-
-using UnityEngine;
-
+﻿using UnityEngine;
 
 namespace OverlayDebug
 {    
     public class OverlayController : MonoBehaviour
     {
+        [SerializeField]
+        bool overlayEnabled = true;
+
         static bool shouldUpdateView = false;
 
         internal static bool ShouldUpdateView
@@ -16,9 +16,10 @@ namespace OverlayDebug
 
         void Start()
         {
-#if DEBUG
-            OverlayDebug.OverlayModel.UpdateModel();
-#endif
+            if (overlayEnabled)
+            {
+                OverlayDebug.OverlayModel.UpdateModel();
+            }
         }
 
         internal static void NotifiyModelUpdated()
