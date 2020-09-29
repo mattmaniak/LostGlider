@@ -42,6 +42,7 @@ public class LevelGenerator : MonoBehaviour
                   sprite.bounds.size;
         }
         // TODO: TEMPONARY POSITION.
-        groundsPool[0].transform.Translate(Vector3.right * 2.0f) ;
+        groundsPool[0].transform.Translate(Vector3.left * 2.0f) ;
+        groundsPool[1].transform.Translate(Vector3.right * 2.0f) ;
     }
 }

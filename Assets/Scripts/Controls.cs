@@ -21,22 +21,15 @@ public class Controls : MonoBehaviour
 
     static bool controlsEnabled = true;
     bool joystickPressed;
-    SpriteRenderer sprite;
     float deltaDirection;
     float innerJoysticSliderSize;
     Vector2 dragPoint;
 
     void Start()
     {
-        sprite = GetComponent<SpriteRenderer>();
-
-        transform.position = Camera.main.ScreenToWorldPoint(
-            new Vector3(Screen.width - sprite.bounds.size.x - paddingPx,
-                        sprite.bounds.size.y + paddingPx,
-                        -Camera.main.transform.position.z));
-
+        
         innerJoysticSliderSize
-            = sprite.bounds.size.y
+            = GetComponent<SpriteRenderer>().bounds.size.y
             - innerJoystick.GetComponent<SpriteRenderer>().bounds.size.y;
     }
 
@@ -51,21 +44,24 @@ public class Controls : MonoBehaviour
 
     void Update()
     {
+        if (Input.GetMouseButton(0))
+        {
+            Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Vector2 mousePos2D = new Vector2(mousePos.x, mousePos.y);
+
+            RaycastHit2D hit = Physics2D.Raycast(mousePos2D, Vector2.zero);
+            if (hit.collider != null)
+            {
+                joystickPressed = (hit.collider.gameObject.name
+                                   == "OuterJoystick");
+            }
+        }
         CalculateJoystickPosition();
 #if DEBUG
         Debug.Log("Player position: " + player.transform.position);
 #endif
     }
 
-    void OnMouseDown()
-    {
-        joystickPressed = true;
-    }
-
-    void OnMouseUp()
-    {
-        joystickPressed = false;
-    }
 
     public static void DisableControls()
     {
@@ -74,31 +70,28 @@ public class Controls : MonoBehaviour
 
     void CalculateJoystickPosition()
     {
-        Vector3 touchPointWorld = Camera.main.ScreenToWorldPoint(
-            new Vector3(Screen.width - sprite.bounds.size.x - paddingPx,
-                        Input.mousePosition.y,
-                        -Camera.main.transform.position.z));
+        var touchPosition = Camera.main.ScreenToWorldPoint(
+            new Vector3(0.0f, Input.mousePosition.y, 0.0f));
 
-        var joystickCollider = GetComponent<Collider2D>();
-        var touchPosition = new Vector2(transform.position.x,
-                                        touchPointWorld.y);
+        var joystickPosition = new Vector2(transform.position.x,
+                                           touchPosition.y);
 
         if (controlsEnabled && joystickPressed)
         {
             // TODO MATHF.CLAMP DOESN"T WORK.
-            if (touchPosition.y
+            if (joystickPosition.y
                 > (transform.position.y + (innerJoysticSliderSize / 2.0f)))
             {
-                touchPointWorld.y
+                joystickPosition.y
                     = transform.position.y + (innerJoysticSliderSize / 2.0f);
             }
-            if (touchPosition.y
+            if (joystickPosition.y
                 < (transform.position.y - (innerJoysticSliderSize / 2.0f)))
             {
-                touchPointWorld.y
+                joystickPosition.y
                     = transform.position.y - (innerJoysticSliderSize / 2.0f);
             }
-            innerJoystick.transform.position = dragPoint = touchPointWorld;
+            innerJoystick.transform.position = dragPoint = joystickPosition;
         }
         else
         {
