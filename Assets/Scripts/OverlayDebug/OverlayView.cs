@@ -26,13 +26,13 @@ namespace OverlayDebug
         }
         internal static void UpdateView()
         {
-            gitRepoSummary   = OverlayDebug.OverlayModel.GitRepoSummary;
+            gitRepoSummary = OverlayDebug.OverlayModel.GitRepoSummary;
             unityProjectInfo = OverlayDebug.OverlayModel.UnityProjectInfo;
         }
 
         void Display()
         {
-            gitRepoSummaryText.text   = debugLabel + gitRepoSummary;
+            gitRepoSummaryText.text = debugLabel + gitRepoSummary;
             unityProjectInfoText.text = debugLabel + unityProjectInfo;
         }
     }
