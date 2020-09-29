@@ -16,7 +16,7 @@ public class LevelGenerator : MonoBehaviour
 
         for (int i = 0; i < filesNumber; i++)
         {
-            spriteFilename = "Sprites/Ground" + i + ".psd";
+            spriteFilename = "Sprites/ground" + i + ".psd";
             loadedSprite = Resources.Load<Sprite>(spriteFilename);
 
             if (loadedSprite == null)
