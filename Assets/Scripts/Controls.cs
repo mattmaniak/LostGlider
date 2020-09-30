@@ -17,7 +17,7 @@ public class Controls : MonoBehaviour
     Transform player;
 
     const int paddingPx = 128;
-    const float playerMaxFallingSpeed = 0.25f; // Per one second.
+    const float playerMaxFallingSpeed = 0.1f; // Per one second.
 
     static bool controlsEnabled = true;
     bool joystickPressed;
@@ -27,7 +27,6 @@ public class Controls : MonoBehaviour
 
     void Start()
     {
-        
         innerJoysticSliderSize = GetComponent<SpriteRenderer>().bounds.size.y
                                  - innerJoystick.GetComponent<SpriteRenderer>().
                                    bounds.size.y;

@@ -8,7 +8,12 @@ public class LevelGenerator : MonoBehaviour
     [SerializeField]
     GameObject groundPrefab;
 
+    [SerializeField]
+    Transform playerTransform;
+
     List<GameObject> groundsPool = new List<GameObject>();
+    float groundWidth;
+    float rightScreenEdgeX;
 
     void Start()
     {
@@ -34,15 +39,35 @@ public class LevelGenerator : MonoBehaviour
             groundsPool[i].GetComponent<SpriteRenderer>().sprite = loadedSprite;
 
             groundsPool[i].GetComponent<BoxCollider2D>().offset
-                = groundsPool[i].GetComponent<SpriteRenderer>().
-                  sprite.bounds.center;
+                = groundsPool[i].GetComponent<SpriteRenderer>().sprite.bounds.
+                  center;
             
-            groundsPool[i].GetComponent<BoxCollider2D>().size
-                = groundsPool[i].GetComponent<SpriteRenderer>().
-                  sprite.bounds.size;
+            groundsPool[i].GetComponent<BoxCollider2D>().size = groundsPool[i].
+                GetComponent<SpriteRenderer>().sprite.bounds.size;
+
+            groundsPool[i].transform.position = new Vector2(0.0f, -1.0f);
         }
-        // TODO: TEMPONARY POSITION.
-        groundsPool[0].transform.Translate(Vector3.left * 2.0f) ;
-        groundsPool[1].transform.Translate(Vector3.right * 2.0f) ;
+        groundWidth = groundsPool[0].GetComponent<SpriteRenderer>().bounds.size.
+                      x;
+
+        rightScreenEdgeX = Camera.main.ScreenToWorldPoint(
+            new Vector3(Screen.width, 0.0f, 0.0f)).x;
+
+        groundsPool[0].GetComponent<SpriteRenderer>().transform.Translate(
+            (groundWidth / 2.0f) - rightScreenEdgeX, 0.0f, 0.0f);
+        groundsPool[1].GetComponent<SpriteRenderer>().transform.Translate(
+            (groundWidth * 1.5f) - rightScreenEdgeX, 0.0f, 0.0f);
+    }
+
+    void Update()
+    {
+        rightScreenEdgeX = Camera.main.ScreenToWorldPoint(
+            new Vector3(Screen.width, 0.0f, 0.0f)).x;
+
+        // Shift player left to imitate infinite movement without overflows.
+        if (rightScreenEdgeX > (groundWidth * 1.5f))
+        {
+            playerTransform.transform.Translate(-groundWidth, 0.0f, 0.0f);
+        }
     }
 }
