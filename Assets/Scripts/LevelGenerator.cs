@@ -13,6 +13,7 @@ public class LevelGenerator : MonoBehaviour
 
     List<GameObject> groundsPool = new List<GameObject>();
     float groundWidth;
+    float nextGroundTransitionX;
     float rightScreenEdgeX;
 
     void Start()
@@ -54,9 +55,11 @@ public class LevelGenerator : MonoBehaviour
             new Vector3(Screen.width, 0.0f, 0.0f)).x;
 
         groundsPool[0].GetComponent<SpriteRenderer>().transform.Translate(
-            (groundWidth / 2.0f) - rightScreenEdgeX, 0.0f, 0.0f);
+            (groundWidth * 0.5f) - rightScreenEdgeX, 0.0f, 0.0f);
         groundsPool[1].GetComponent<SpriteRenderer>().transform.Translate(
             (groundWidth * 1.5f) - rightScreenEdgeX, 0.0f, 0.0f);
+
+        nextGroundTransitionX = groundWidth * 1.5f;
     }
 
     void Update()
@@ -64,10 +67,13 @@ public class LevelGenerator : MonoBehaviour
         rightScreenEdgeX = Camera.main.ScreenToWorldPoint(
             new Vector3(Screen.width, 0.0f, 0.0f)).x;
 
-        // Shift player left to imitate infinite movement without overflows.
-        if (rightScreenEdgeX > (groundWidth * 1.5f))
+        if (rightScreenEdgeX >= nextGroundTransitionX)
         {
-            playerTransform.transform.Translate(-groundWidth, 0.0f, 0.0f);
+            foreach (var ground in groundsPool)
+            {
+                ground.transform.Translate(groundWidth, 0.0f, 0.0f);
+            }
+            nextGroundTransitionX += groundWidth;
         }
     }
 }

@@ -6,8 +6,8 @@
 public class Player : MonoBehaviour
 {
     [SerializeField]
-    // [Range(0.1f, 10.0f)]
-    static float maxSpeed = 1.0f;
+    [Range(0.1f, 10.0f)]
+    static float maxSpeed = 5.0f;
 
     public static float MaxSpeed
     {
