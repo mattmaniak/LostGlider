@@ -5,7 +5,7 @@ namespace OverlayDebug
     public class OverlayController : MonoBehaviour
     {
         [SerializeField]
-        bool overlayEnabled = true;
+        bool overlayDisplayed = true;
 
         static bool shouldUpdateView = false;
 
@@ -16,7 +16,7 @@ namespace OverlayDebug
 
         void Start()
         {
-            if (overlayEnabled)
+            if (overlayDisplayed)
             {
                 OverlayDebug.OverlayModel.UpdateModel();
             }
