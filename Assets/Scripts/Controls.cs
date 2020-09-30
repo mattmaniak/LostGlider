@@ -28,9 +28,9 @@ public class Controls : MonoBehaviour
     void Start()
     {
         
-        innerJoysticSliderSize
-            = GetComponent<SpriteRenderer>().bounds.size.y
-            - innerJoystick.GetComponent<SpriteRenderer>().bounds.size.y;
+        innerJoysticSliderSize = GetComponent<SpriteRenderer>().bounds.size.y
+                                 - innerJoystick.GetComponent<SpriteRenderer>().
+                                   bounds.size.y;
     }
 
     void FixedUpdate()
@@ -44,17 +44,26 @@ public class Controls : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetMouseButton(0))
+        bool leftMouseButtonHeld = Input.GetMouseButton(0);
+        
+        if (leftMouseButtonHeld)
         {
-            Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            Vector2 mousePos2D = new Vector2(mousePos.x, mousePos.y);
+            Vector3 mousePosition = Camera.main.
+                                    ScreenToWorldPoint(Input.mousePosition);
 
-            RaycastHit2D hit = Physics2D.Raycast(mousePos2D, Vector2.zero);
-            if (hit.collider != null)
+            Vector2 mousePosition2D = new Vector2(mousePosition.x,
+                                                  mousePosition.y);
+
+            RaycastHit2D hit = Physics2D.Raycast(mousePosition2D, Vector2.zero);
+            if ((hit.collider != null)
+                && (hit.collider.gameObject.name == "OuterJoystick"))
             {
-                joystickPressed = (hit.collider.gameObject.name
-                                   == "OuterJoystick");
+                joystickPressed = true;
             }
+        }
+        else
+        {
+            joystickPressed = false;
         }
         CalculateJoystickPosition();
 #if DEBUG
