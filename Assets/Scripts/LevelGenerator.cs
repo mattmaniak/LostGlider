@@ -46,7 +46,10 @@ public class LevelGenerator : MonoBehaviour
             groundsPool[i].GetComponent<BoxCollider2D>().size = groundsPool[i].
                 GetComponent<SpriteRenderer>().sprite.bounds.size;
 
-            groundsPool[i].transform.position = new Vector2(0.0f, -1.0f);
+            groundsPool[i].transform.position
+                = new Vector2(0.0f, (groundsPool[i].transform.
+                  GetComponent<SpriteRenderer>().sprite.bounds.size.y / 2.0f)
+                  - 1.0f);
         }
         groundWidth = groundsPool[0].GetComponent<SpriteRenderer>().bounds.size.
                       x;
