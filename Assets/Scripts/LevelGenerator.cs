@@ -6,27 +6,28 @@ using UnityEngine;
 public class LevelGenerator : MonoBehaviour
 {
     [SerializeField]
-    GameObject groundPrefab;
+    GameObject groundChunkPrefab;
 
     [SerializeField]
     Transform playerTransform;
 
-    List<GameObject> groundsPool = new List<GameObject>();
-    float groundWidth;
-    float nextGroundTransitionX;
+    List<GameObject> groundChunksPool = new List<GameObject>();
+    float groundChunkWidth;
+    float nextGroundChunkTransitionX;
     float rightScreenEdgeX;
-    int currentGroundIndex = 0;
-    int nextGroundIndex = 0;
+    int currentGroundChunkIndex = 0;
+    int nextGroundChunkIndex = 0;
 
     void Start()
     {
         const int spritesNumber = 2;
+
         Sprite loadedSprite;
         string spriteBasename;
 
         for (int i = 0; i < spritesNumber; i++)
         {
-            spriteBasename = "Sprites/Level/Grounds/ground" + i;
+            spriteBasename = "Sprites/Level/Grounds/ground_chunk_" + i;
             loadedSprite = Resources.Load<Sprite>(spriteBasename);
 
             if (loadedSprite == null)
@@ -38,64 +39,69 @@ public class LevelGenerator : MonoBehaviour
 #endif
                 return;
             }
-            groundsPool.Add(Instantiate(groundPrefab));
-            groundsPool[i].GetComponent<SpriteRenderer>().sprite = loadedSprite;
-
-            groundsPool[i].GetComponent<BoxCollider2D>().offset
-                = groundsPool[i].GetComponent<SpriteRenderer>().sprite.bounds.
-                  center;
+            groundChunksPool.Add(Instantiate(groundChunkPrefab));
             
-            groundsPool[i].GetComponent<BoxCollider2D>().size = groundsPool[i].
-                GetComponent<SpriteRenderer>().sprite.bounds.size;
+            groundChunksPool[i].GetComponent<SpriteRenderer>().sprite
+                = loadedSprite;
 
-            groundsPool[i].transform.position
-                = new Vector2(0.0f, (groundsPool[i].transform.
-                  GetComponent<SpriteRenderer>().sprite.bounds.size.y / 2.0f)
-                  - 1.0f);
+            groundChunksPool[i].GetComponent<BoxCollider2D>().offset
+                = groundChunksPool[i].GetComponent<SpriteRenderer>().sprite.
+                  bounds.center;
+            
+            groundChunksPool[i].GetComponent<BoxCollider2D>().size
+                = groundChunksPool[i].GetComponent<SpriteRenderer>().sprite.
+                  bounds.size;
+
+            groundChunksPool[i].transform.position
+                = new Vector2(0.0f, (groundChunksPool[i].transform.
+                              GetComponent<SpriteRenderer>().sprite.bounds.size.
+                              y / 2.0f) - 1.0f);
         }
-        groundWidth = groundsPool[0].GetComponent<SpriteRenderer>().bounds.size.
-                      x;
+        groundChunkWidth = groundChunksPool[0].GetComponent<SpriteRenderer>().
+                           bounds.size.x;
 
         rightScreenEdgeX = Camera.main.ScreenToWorldPoint(
             new Vector3(Screen.width, 0.0f, 0.0f)).x;
 
-        currentGroundIndex = 0;
-        nextGroundIndex = 1;
+        currentGroundChunkIndex = 0;
+        nextGroundChunkIndex = 1;
 
-        groundsPool[currentGroundIndex].GetComponent<SpriteRenderer>().
-            transform.Translate((groundWidth * 0.5f) - rightScreenEdgeX, 0.0f,
-            0.0f);
+        groundChunksPool[currentGroundChunkIndex].
+            GetComponent<SpriteRenderer>().transform.Translate(
+                (groundChunkWidth * 0.5f) - rightScreenEdgeX, 0.0f, 0.0f);
 
-        groundsPool[nextGroundIndex].GetComponent<SpriteRenderer>().transform.
-            Translate((groundWidth * 1.5f) - rightScreenEdgeX, 0.0f, 0.0f);
+        groundChunksPool[nextGroundChunkIndex].GetComponent<SpriteRenderer>().
+            transform.Translate((groundChunkWidth * 1.5f) - rightScreenEdgeX,
+                                0.0f, 0.0f);
 
-        nextGroundTransitionX = rightScreenEdgeX = Camera.main.
+        nextGroundChunkTransitionX = rightScreenEdgeX = Camera.main.
             ScreenToWorldPoint(new Vector3(Screen.width, 0.0f, 0.0f)).x
-            + groundWidth;
+            + groundChunkWidth;
     }
 
     void Update()
     {
-        int previousGroundIndex;
+        int previousGroundChunkIndex;
 
         rightScreenEdgeX = Camera.main.ScreenToWorldPoint(
             new Vector3(Screen.width, 0.0f, 0.0f)).x;
 
-        if (rightScreenEdgeX >= nextGroundTransitionX)
+        if (rightScreenEdgeX >= nextGroundChunkTransitionX)
         {
             // Swap...
-            previousGroundIndex = currentGroundIndex;
-            currentGroundIndex = nextGroundIndex;
-            nextGroundIndex = previousGroundIndex;
+            previousGroundChunkIndex = currentGroundChunkIndex;
+            currentGroundChunkIndex = nextGroundChunkIndex;
+            nextGroundChunkIndex = previousGroundChunkIndex;
 
-            for (int i = 0; i < groundsPool.Count; i++)
+            for (int i = 0; i < groundChunksPool.Count; i++)
             {
-                if (i == nextGroundIndex)
+                if (i == nextGroundChunkIndex)
                 {
-                    groundsPool[i].transform.Translate(groundWidth * groundsPool.Count, 0.0f, 0.0f);                        
+                    groundChunksPool[i].transform.Translate(
+                        groundChunkWidth* groundChunksPool.Count, 0.0f, 0.0f);                        
                 }
             }
-            nextGroundTransitionX += groundWidth;
+            nextGroundChunkTransitionX += groundChunkWidth;
         }
     }
 }

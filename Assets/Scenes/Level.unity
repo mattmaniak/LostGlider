@@ -665,7 +665,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e28f60ee238baa049820484e1412caf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  groundPrefab: {fileID: 2153497403874687727, guid: 3af6f8153ba283744bc5cfaa67930b7d,
+  groundChunkPrefab: {fileID: 2153497403874687727, guid: 3af6f8153ba283744bc5cfaa67930b7d,
     type: 3}
   playerTransform: {fileID: 2029498115}
 --- !u!4 &1697224650
