@@ -15,6 +15,8 @@ public class LevelGenerator : MonoBehaviour
     float groundWidth;
     float nextGroundTransitionX;
     float rightScreenEdgeX;
+    int currentGroundIndex = 0;
+    int nextGroundIndex = 0;
 
     void Start()
     {
@@ -57,24 +59,41 @@ public class LevelGenerator : MonoBehaviour
         rightScreenEdgeX = Camera.main.ScreenToWorldPoint(
             new Vector3(Screen.width, 0.0f, 0.0f)).x;
 
-        groundsPool[0].GetComponent<SpriteRenderer>().transform.Translate(
-            (groundWidth * 0.5f) - rightScreenEdgeX, 0.0f, 0.0f);
-        groundsPool[1].GetComponent<SpriteRenderer>().transform.Translate(
-            (groundWidth * 1.5f) - rightScreenEdgeX, 0.0f, 0.0f);
+        currentGroundIndex = 0;
+        nextGroundIndex = 1;
 
-        nextGroundTransitionX = groundWidth * 1.5f;
+        groundsPool[currentGroundIndex].GetComponent<SpriteRenderer>().
+            transform.Translate((groundWidth * 0.5f) - rightScreenEdgeX, 0.0f,
+            0.0f);
+
+        groundsPool[nextGroundIndex].GetComponent<SpriteRenderer>().transform.
+            Translate((groundWidth * 1.5f) - rightScreenEdgeX, 0.0f, 0.0f);
+
+        nextGroundTransitionX = rightScreenEdgeX = Camera.main.
+            ScreenToWorldPoint(new Vector3(Screen.width, 0.0f, 0.0f)).x
+            + groundWidth;
     }
 
     void Update()
     {
+        int previousGroundIndex;
+
         rightScreenEdgeX = Camera.main.ScreenToWorldPoint(
             new Vector3(Screen.width, 0.0f, 0.0f)).x;
 
         if (rightScreenEdgeX >= nextGroundTransitionX)
         {
-            foreach (var ground in groundsPool)
+            // Swap...
+            previousGroundIndex = currentGroundIndex;
+            currentGroundIndex = nextGroundIndex;
+            nextGroundIndex = previousGroundIndex;
+
+            for (int i = 0; i < groundsPool.Count; i++)
             {
-                ground.transform.Translate(groundWidth, 0.0f, 0.0f);
+                if (i == nextGroundIndex)
+                {
+                    groundsPool[i].transform.Translate(groundWidth * groundsPool.Count, 0.0f, 0.0f);                        
+                }
             }
             nextGroundTransitionX += groundWidth;
         }
