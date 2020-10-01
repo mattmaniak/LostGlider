@@ -27,7 +27,7 @@ public class LevelGenerator : MonoBehaviour
 
         for (int i = 0; i < spritesNumber; i++)
         {
-            spriteBasename = "Sprites/Level/Grounds/ground_chunk_" + i;
+            spriteBasename = "Sprites/Level/ground_chunk_" + i;
             loadedSprite = Resources.Load<Sprite>(spriteBasename);
 
             if (loadedSprite == null)
