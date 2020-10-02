@@ -24,10 +24,8 @@ public class LevelGenerator : MonoBehaviour
     {
         Sprite loadedSprite;
         string spriteBasename;
-        float groundChunkOffset;
         
         currentGroundChunkIndex = Random.Range(0, spritesNumber);
-
         for (int i = 0; i < spritesNumber; i++)
         {
             spriteBasename = "Sprites/Level/ground_chunk_" + i;
@@ -68,9 +66,9 @@ public class LevelGenerator : MonoBehaviour
 
         groundChunksPool[currentGroundChunkIndex].transform.position
             = new Vector2((groundChunkWidth / 2.0f) - cameraHalfWidthInWorld,
-                          (groundChunksPool[currentGroundChunkIndex].
+                          groundChunksPool[currentGroundChunkIndex].
                           transform.GetComponent<SpriteRenderer>().sprite.
-                          bounds.size.y / 2.0f) - 1.0f);
+                          bounds.size.y / 2.0f);
 
         nextGroundChunkTransitionX
             = Camera.main.transform.position.x - cameraHalfWidthInWorld;
@@ -106,9 +104,9 @@ public class LevelGenerator : MonoBehaviour
                 {
                     groundChunksPool[i].transform.position = new Vector2(
                         nextGroundChunkTransitionX + (groundChunkWidth * 1.5f),
-                        (groundChunksPool[i].transform.
+                        groundChunksPool[i].transform.
                          GetComponent<SpriteRenderer>().sprite.bounds.size.y
-                         / 2.0f) - 1.0f);
+                        / 2.0f);
                 }
                 else if (i != currentGroundChunkIndex)
                 {
