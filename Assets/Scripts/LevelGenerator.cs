@@ -1,5 +1,6 @@
 ﻿#undef DEBUG
 
+using System.IO;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -23,12 +24,6 @@ public class LevelGenerator : MonoBehaviour
 
     void Start()
     {
-        BoxCollider2D groundChunkCollider;
-        GameObject groundChunk;
-        Sprite loadedSprite;
-        SpriteRenderer groundChunkRenderer;
-        string spriteBasename;
-
         initialGroundChunk = true;
 
         currentGroundChunkIndex = Random.Range(0, spritesNumber);
@@ -40,44 +35,16 @@ public class LevelGenerator : MonoBehaviour
         nextGroundChunkTransitionX
             = Camera.main.transform.position.x - cameraHalfWidthInWorld;
 
-        for (int i = 0; i < spritesNumber; i++)
+        try
         {
-            spriteBasename = "Sprites/Level/ground_chunk_" + i;
-            loadedSprite = Resources.Load<Sprite>(spriteBasename);
-
-            if (loadedSprite == null)
-            {
+            LoadGroundChunkSprites();
+        }
+        catch (System.Exception ex)
+        {
 #if DEBUG
-                Debug.Log(GetType().Name +
-                          " initialization aborted. Unable to load: "
-                          + spriteBasename);
+            Debug.Log(ex);
 #endif
-                return;
-            }
-            groundChunksPool.Add(Instantiate(groundChunkPrefab));
-            
-            groundChunk = groundChunksPool[i];
-            groundChunkCollider = groundChunk.GetComponent<BoxCollider2D>();
-            groundChunkRenderer = groundChunk.GetComponent<SpriteRenderer>();
-
-            groundChunkRenderer.sprite = loadedSprite;
-            groundChunkCollider.size = groundChunkRenderer.sprite.bounds.size;
-            groundChunkCollider.offset
-                = groundChunkRenderer.sprite.bounds.center;
-            
-            if (i == currentGroundChunkIndex)
-            {
-                groundChunkWidth = groundChunkRenderer.sprite.bounds.size.x;
-
-                groundChunk.transform.position = new Vector2(
-                    (groundChunkWidth / 2.0f) - cameraHalfWidthInWorld,
-                    CenterObjectVertically(
-                        groundChunksPool[currentGroundChunkIndex]));
-            }
-            else
-            {
-                groundChunk.transform.position = invisiblePosition;
-            }
+            Application.Quit(1);
         }
     }
 
@@ -126,6 +93,56 @@ public class LevelGenerator : MonoBehaviour
                 }
             }
             nextGroundChunkTransitionX += groundChunkWidth;
+        }
+    }
+
+    void LoadGroundChunkSprites()
+    {
+        BoxCollider2D groundChunkCollider;
+        GameObject groundChunk;
+        Sprite loadedSprite;
+        SpriteRenderer groundChunkRenderer;
+        string spriteBasename;
+
+        for (int i = 0; i < spritesNumber; i++)
+        {
+            spriteBasename = "Sprites/Level/ground_chunk_" + i;
+            loadedSprite = Resources.Load<Sprite>(spriteBasename);
+
+            if (loadedSprite == null)
+            {
+                string errMsg = GetType().Name +
+                                " initialization aborted. Unable to load: "
+                                + spriteBasename;
+#if DEBUG
+                Debug.Log(errMsg);
+#endif
+                throw new FileNotFoundException(errMsg);
+            }
+            groundChunksPool.Add(Instantiate(groundChunkPrefab));
+            
+            groundChunk = groundChunksPool[i];
+            groundChunkCollider = groundChunk.GetComponent<BoxCollider2D>();
+            groundChunkRenderer = groundChunk.GetComponent<SpriteRenderer>();
+
+            groundChunkRenderer.sprite = loadedSprite;
+            groundChunkCollider.size = groundChunkRenderer.sprite.bounds.size;
+            groundChunkCollider.offset
+                = groundChunkRenderer.sprite.bounds.center;
+            
+            if (i == currentGroundChunkIndex)
+            {
+                groundChunkWidth = groundChunkRenderer.sprite.bounds.size.x;
+
+                groundChunk.transform.position = new Vector2(
+                    (groundChunkWidth / 2.0f) - cameraHalfWidthInWorld,
+                    CenterObjectVertically(
+                        groundChunksPool[currentGroundChunkIndex]));
+            }
+            else
+            {
+                groundChunk.transform.position = invisiblePosition;
+            }
         }
     }
 }
