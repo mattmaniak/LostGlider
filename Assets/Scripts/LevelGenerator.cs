@@ -79,6 +79,8 @@ public class LevelGenerator : MonoBehaviour
 
     void Update()
     {   
+        int previousGroundChunkIndex;
+
         // Ignore the initial groundChunk transition.
         if (leftCameraEdgeX <= nextGroundChunkTransitionX)
         {
@@ -89,12 +91,14 @@ public class LevelGenerator : MonoBehaviour
 
         if (!initialChunk && (leftCameraEdgeX >= nextGroundChunkTransitionX))
         {
+            previousGroundChunkIndex = currentGroundChunkIndex;
             currentGroundChunkIndex = nextGroundChunkIndex;
             do
             {
                 nextGroundChunkIndex = Random.Range(0, spritesNumber);
             }
-            while (nextGroundChunkIndex == currentGroundChunkIndex);
+            while ((nextGroundChunkIndex == previousGroundChunkIndex)
+                   || (nextGroundChunkIndex == currentGroundChunkIndex));
 
             for (int i = 0; i < spritesNumber; i++)
             {
