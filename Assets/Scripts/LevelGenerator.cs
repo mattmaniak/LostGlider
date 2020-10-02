@@ -11,14 +11,13 @@ public class LevelGenerator : MonoBehaviour
     [SerializeField]
     GameObject groundChunkPrefab;
 
-    List<GameObject> groundChunksPool = new List<GameObject>();
+    float cameraHalfWidthInWorld;
     float groundChunkWidth;
     float nextGroundChunkTransitionX;
     float leftCameraEdgeX;
-    float cameraHalfWidthInWorld;
-    int currentGroundChunkIndex = 0;
-    int nextGroundChunkIndex = 0;
-    bool initialChunk = true;
+    int currentGroundChunkIndex;
+    int nextGroundChunkIndex;
+    List<GameObject> groundChunksPool = new List<GameObject>();
 
     void Start()
     {
@@ -26,6 +25,7 @@ public class LevelGenerator : MonoBehaviour
         string spriteBasename;
         
         currentGroundChunkIndex = Random.Range(0, spritesNumber);
+
         for (int i = 0; i < spritesNumber; i++)
         {
             spriteBasename = "Sprites/Level/ground_chunk_" + i;
@@ -72,22 +72,15 @@ public class LevelGenerator : MonoBehaviour
 
         nextGroundChunkTransitionX
             = Camera.main.transform.position.x - cameraHalfWidthInWorld;
-        leftCameraEdgeX = -cameraHalfWidthInWorld;
     }
 
     void Update()
     {   
         int previousGroundChunkIndex;
-
-        // Ignore the initial groundChunk transition.
-        if (leftCameraEdgeX <= nextGroundChunkTransitionX)
-        {
-            initialChunk = false;
-        }
         leftCameraEdgeX
             = Camera.main.transform.position.x - cameraHalfWidthInWorld;
 
-        if (!initialChunk && (leftCameraEdgeX >= nextGroundChunkTransitionX))
+        if (leftCameraEdgeX >= nextGroundChunkTransitionX)
         {
             previousGroundChunkIndex = currentGroundChunkIndex;
             currentGroundChunkIndex = nextGroundChunkIndex;
@@ -105,7 +98,7 @@ public class LevelGenerator : MonoBehaviour
                     groundChunksPool[i].transform.position = new Vector2(
                         nextGroundChunkTransitionX + (groundChunkWidth * 1.5f),
                         groundChunksPool[i].transform.
-                         GetComponent<SpriteRenderer>().sprite.bounds.size.y
+                        GetComponent<SpriteRenderer>().sprite.bounds.size.y
                         / 2.0f);
                 }
                 else if (i != currentGroundChunkIndex)
