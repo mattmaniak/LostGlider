@@ -6,7 +6,7 @@ using UnityEngine;
 public class LevelGenerator : MonoBehaviour
 {
     const int spritesNumber = 3;
-    readonly Vector2 invisiblePosition = new Vector2(-100.0f, -1.0f);
+    readonly Vector2 invisiblePosition = new Vector2(-100.0f, 0.0f);
 
     [SerializeField]
     GameObject groundChunkPrefab;
@@ -14,7 +14,8 @@ public class LevelGenerator : MonoBehaviour
     List<GameObject> groundChunksPool = new List<GameObject>();
     float groundChunkWidth;
     float nextGroundChunkTransitionX;
-    float rightScreenEdgeX;
+    float leftCameraEdgeX;
+    float CameraHalfWidthInWorld;
     int currentGroundChunkIndex = 0;
     int nextGroundChunkIndex = 0;
 
@@ -58,40 +59,33 @@ public class LevelGenerator : MonoBehaviour
                 = groundChunksPool[i].GetComponent<SpriteRenderer>().sprite.
                   bounds.size;
             
-            if ((i != currentGroundChunkIndex) && (i != nextGroundChunkIndex))
+            if (i != currentGroundChunkIndex)
             {
                 groundChunksPool[i].transform.position = invisiblePosition;
             }
         }
-        groundChunkWidth = groundChunksPool[0].GetComponent<SpriteRenderer>().
-                           bounds.size.x;
+        groundChunkWidth
+            = groundChunksPool[0].GetComponent<SpriteRenderer>().bounds.size.x;
 
-        groundChunkOffset = (groundChunkWidth / 2.0f)
-            - (Camera.main.ScreenToWorldPoint(
-            new Vector3(Screen.width, 0.0f, 0.0f)).x);
-
-        nextGroundChunkTransitionX = (groundChunkWidth * 1.5f)
-                                     - groundChunkOffset;
+        CameraHalfWidthInWorld = Camera.main.ScreenToWorldPoint(new Vector3(
+            Screen.width, 0.0f, 0.0f)).x;
 
         groundChunksPool[currentGroundChunkIndex].transform.position
-            = new Vector2(groundChunkOffset,
+            = new Vector2((groundChunkWidth / 2.0f) - CameraHalfWidthInWorld,
                           (groundChunksPool[currentGroundChunkIndex].
                           transform.GetComponent<SpriteRenderer>().sprite.
                           bounds.size.y / 2.0f) - 1.0f);
 
-        groundChunksPool[nextGroundChunkIndex].transform.position
-            = new Vector2(groundChunkOffset + groundChunkWidth,
-                          (groundChunksPool[nextGroundChunkIndex].transform.
-                           GetComponent<SpriteRenderer>().sprite.bounds.size.y
-                           / 2.0f) - 1.0f);
+        nextGroundChunkTransitionX
+            = Camera.main.transform.position.x - CameraHalfWidthInWorld;
     }
 
     void Update()
     {
-        rightScreenEdgeX = Camera.main.ScreenToWorldPoint(new Vector3(
-            Screen.width, 0.0f, 0.0f)).x;
+        leftCameraEdgeX
+            = Camera.main.transform.position.x - CameraHalfWidthInWorld;
 
-        if (rightScreenEdgeX >= nextGroundChunkTransitionX)
+        if (leftCameraEdgeX >= nextGroundChunkTransitionX)
         {
             currentGroundChunkIndex = nextGroundChunkIndex;
             do
@@ -105,7 +99,7 @@ public class LevelGenerator : MonoBehaviour
                 if (i == nextGroundChunkIndex)
                 {
                     groundChunksPool[i].transform.position = new Vector2(
-                        nextGroundChunkTransitionX + (groundChunkWidth / 1.5f),
+                        nextGroundChunkTransitionX + (groundChunkWidth / 2.0f),
                         (groundChunksPool[i].transform.
                         GetComponent<SpriteRenderer>().sprite.bounds.size.y
                         / 2.0f) - 1.0f);
