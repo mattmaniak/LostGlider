@@ -15,9 +15,10 @@ public class LevelGenerator : MonoBehaviour
     float groundChunkWidth;
     float nextGroundChunkTransitionX;
     float leftCameraEdgeX;
-    float CameraHalfWidthInWorld;
+    float cameraHalfWidthInWorld;
     int currentGroundChunkIndex = 0;
     int nextGroundChunkIndex = 0;
+    bool initialChunk = true;
 
     void Start()
     {
@@ -26,11 +27,6 @@ public class LevelGenerator : MonoBehaviour
         float groundChunkOffset;
         
         currentGroundChunkIndex = Random.Range(0, spritesNumber);
-        do
-        {
-            nextGroundChunkIndex = Random.Range(0, spritesNumber);
-        }
-        while (nextGroundChunkIndex == currentGroundChunkIndex);
 
         for (int i = 0; i < spritesNumber; i++)
         {
@@ -67,25 +63,31 @@ public class LevelGenerator : MonoBehaviour
         groundChunkWidth
             = groundChunksPool[0].GetComponent<SpriteRenderer>().bounds.size.x;
 
-        CameraHalfWidthInWorld = Camera.main.ScreenToWorldPoint(new Vector3(
+        cameraHalfWidthInWorld = Camera.main.ScreenToWorldPoint(new Vector3(
             Screen.width, 0.0f, 0.0f)).x;
 
         groundChunksPool[currentGroundChunkIndex].transform.position
-            = new Vector2((groundChunkWidth / 2.0f) - CameraHalfWidthInWorld,
+            = new Vector2((groundChunkWidth / 2.0f) - cameraHalfWidthInWorld,
                           (groundChunksPool[currentGroundChunkIndex].
                           transform.GetComponent<SpriteRenderer>().sprite.
                           bounds.size.y / 2.0f) - 1.0f);
 
         nextGroundChunkTransitionX
-            = Camera.main.transform.position.x - CameraHalfWidthInWorld;
+            = Camera.main.transform.position.x - cameraHalfWidthInWorld;
+        leftCameraEdgeX = -cameraHalfWidthInWorld;
     }
 
     void Update()
-    {
+    {   
+        // Ignore the initial groundChunk transition.
+        if (leftCameraEdgeX <= nextGroundChunkTransitionX)
+        {
+            initialChunk = false;
+        }
         leftCameraEdgeX
-            = Camera.main.transform.position.x - CameraHalfWidthInWorld;
+            = Camera.main.transform.position.x - cameraHalfWidthInWorld;
 
-        if (leftCameraEdgeX >= nextGroundChunkTransitionX)
+        if (!initialChunk && (leftCameraEdgeX >= nextGroundChunkTransitionX))
         {
             currentGroundChunkIndex = nextGroundChunkIndex;
             do
@@ -99,10 +101,10 @@ public class LevelGenerator : MonoBehaviour
                 if (i == nextGroundChunkIndex)
                 {
                     groundChunksPool[i].transform.position = new Vector2(
-                        nextGroundChunkTransitionX + (groundChunkWidth / 2.0f),
+                        nextGroundChunkTransitionX + (groundChunkWidth * 1.5f),
                         (groundChunksPool[i].transform.
-                        GetComponent<SpriteRenderer>().sprite.bounds.size.y
-                        / 2.0f) - 1.0f);
+                         GetComponent<SpriteRenderer>().sprite.bounds.size.y
+                         / 2.0f) - 1.0f);
                 }
                 else if (i != currentGroundChunkIndex)
                 {
