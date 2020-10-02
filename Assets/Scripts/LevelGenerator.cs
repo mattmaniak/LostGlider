@@ -11,12 +11,14 @@ public class LevelGenerator : MonoBehaviour
     [SerializeField]
     GameObject groundChunkPrefab;
 
+    bool initialGroundChunk;
     float cameraHalfWidthInWorld;
     float groundChunkWidth;
     float nextGroundChunkTransitionX;
     float leftCameraEdgeX;
     int currentGroundChunkIndex;
     int nextGroundChunkIndex;
+    int previousGroundChunkIndex;
     List<GameObject> groundChunksPool = new List<GameObject>();
 
     void Start()
@@ -25,6 +27,7 @@ public class LevelGenerator : MonoBehaviour
         string spriteBasename;
         
         currentGroundChunkIndex = Random.Range(0, spritesNumber);
+        previousGroundChunkIndex = -1;
 
         for (int i = 0; i < spritesNumber; i++)
         {
@@ -72,18 +75,26 @@ public class LevelGenerator : MonoBehaviour
 
         nextGroundChunkTransitionX
             = Camera.main.transform.position.x - cameraHalfWidthInWorld;
+
+        initialGroundChunk = true;
     }
 
     void Update()
     {   
-        int previousGroundChunkIndex;
         leftCameraEdgeX
             = Camera.main.transform.position.x - cameraHalfWidthInWorld;
 
         if (leftCameraEdgeX >= nextGroundChunkTransitionX)
         {
             previousGroundChunkIndex = currentGroundChunkIndex;
-            currentGroundChunkIndex = nextGroundChunkIndex;
+            if (!initialGroundChunk)
+            {
+                currentGroundChunkIndex = nextGroundChunkIndex;
+            }
+            else
+            {
+                initialGroundChunk = false;
+            }
             do
             {
                 nextGroundChunkIndex = Random.Range(0, spritesNumber);
