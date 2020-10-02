@@ -69,9 +69,8 @@ public class LevelGenerator : MonoBehaviour
 
         groundChunksPool[currentGroundChunkIndex].transform.position
             = new Vector2((groundChunkWidth / 2.0f) - cameraHalfWidthInWorld,
-                          groundChunksPool[currentGroundChunkIndex].
-                          transform.GetComponent<SpriteRenderer>().sprite.
-                          bounds.size.y / 2.0f);
+                          CenterObjectVertically(
+                              groundChunksPool[currentGroundChunkIndex]));
 
         nextGroundChunkTransitionX
             = Camera.main.transform.position.x - cameraHalfWidthInWorld;
@@ -83,6 +82,9 @@ public class LevelGenerator : MonoBehaviour
     {   
         GenerateInfiniteGround();
     }
+
+    float CenterObjectVertically(GameObject go) =>
+        go.GetComponent<SpriteRenderer>().sprite.bounds.size.y / 2.0f;
 
     void GenerateInfiniteGround()
     {
@@ -113,9 +115,7 @@ public class LevelGenerator : MonoBehaviour
                 {
                     groundChunksPool[i].transform.position = new Vector2(
                         nextGroundChunkTransitionX + (groundChunkWidth * 1.5f),
-                        groundChunksPool[i].transform.
-                        GetComponent<SpriteRenderer>().sprite.bounds.size.y
-                        / 2.0f);
+                        CenterObjectVertically(groundChunksPool[i]));
                 }
                 else if (i != currentGroundChunkIndex)
                 {
