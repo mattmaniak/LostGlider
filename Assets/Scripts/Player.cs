@@ -5,6 +5,7 @@
 [RequireComponent(typeof(SpriteRenderer))]
 public class Player : MonoBehaviour
 {
+    const float positionLimitX = 100.0f;
     static float maxSpeed = 5.0f;
 
     public static float MaxSpeed
@@ -23,5 +24,9 @@ public class Player : MonoBehaviour
     void Update()
     {
         transform.Translate(Vector3.right * maxSpeed * Time.deltaTime);
+        if (transform.position.x >= positionLimitX)
+        {
+            maxSpeed = 0.0f;
+        }
     }
 }
