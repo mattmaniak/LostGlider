@@ -42,7 +42,7 @@ public class LevelGenerator : MonoBehaviour
             Debug.Log(GetType().Name
                 +" initialization aborted. At least 3 ground sprites needed.");
 #endif
-            Application.Quit(1);
+            UnityQuit.Quit(1);
         }
         try
         {
@@ -53,7 +53,7 @@ public class LevelGenerator : MonoBehaviour
 #if DEBUG
             Debug.Log(ex);
 #endif
-            Application.Quit(1);
+            UnityQuit.Quit(1);
         }
     }
 

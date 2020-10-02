@@ -125,7 +125,7 @@ public class Controls : MonoBehaviour
             deltaDirection = Input.GetAxis("Vertical");
             if (Input.GetKey("escape"))
             {
-                Application.Quit();
+                UnityQuit.Quit();
             }
         }
     }
