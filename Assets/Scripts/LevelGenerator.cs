@@ -81,6 +81,11 @@ public class LevelGenerator : MonoBehaviour
 
     void Update()
     {   
+        GenerateInfiniteGround();
+    }
+
+    void GenerateInfiniteGround()
+    {
         leftCameraEdgeX
             = Camera.main.transform.position.x - cameraHalfWidthInWorld;
 
