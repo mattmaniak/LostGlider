@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class LevelGenerator : MonoBehaviour
 {
-    const int spritesNumber = 3;
+    const int spritesNumber = 4;
     readonly Vector2 invisiblePosition = new Vector2(-100.0f, 0.0f);
 
     [SerializeField]
