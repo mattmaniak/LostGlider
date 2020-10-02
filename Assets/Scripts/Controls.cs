@@ -65,9 +65,6 @@ public class Controls : MonoBehaviour
             joystickPressed = false;
         }
         CalculateJoystickPosition();
-#if DEBUG
-        Debug.Log("Player position: " + player.transform.position);
-#endif
     }
 
 
