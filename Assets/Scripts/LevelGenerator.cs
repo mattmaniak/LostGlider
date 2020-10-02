@@ -6,7 +6,8 @@ using UnityEngine;
 
 public class LevelGenerator : MonoBehaviour
 {
-    const int spritesNumber = 4;
+    const int spritesNumberMin = 3;
+    readonly int spritesNumber = 4;
     readonly Vector2 invisiblePosition = new Vector2(-100.0f, 0.0f);
 
     [SerializeField]
@@ -35,6 +36,14 @@ public class LevelGenerator : MonoBehaviour
         nextGroundChunkTransitionX
             = Camera.main.transform.position.x - cameraHalfWidthInWorld;
 
+        if (spritesNumber < spritesNumberMin)
+        {
+#if DEBUG
+            Debug.Log(GetType().Name
+                +" initialization aborted. At least 3 ground sprites needed.");
+#endif
+            Application.Quit(1);
+        }
         try
         {
             LoadGroundChunkSprites();
@@ -111,8 +120,8 @@ public class LevelGenerator : MonoBehaviour
 
             if (loadedSprite == null)
             {
-                string errMsg = GetType().Name +
-                                " initialization aborted. Unable to load: "
+                string errMsg = GetType().Name
+                                + " initialization aborted. Unable to load: "
                                 + spriteBasename;
 #if DEBUG
                 Debug.Log(errMsg);
