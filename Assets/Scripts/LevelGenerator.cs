@@ -17,11 +17,20 @@ public class LevelGenerator : MonoBehaviour
     float cameraHalfWidthInWorld;
     float groundChunkWidth;
     float nextGroundChunkTransitionX;
-    float leftCameraEdgeX;
     int currentGroundChunkIndex;
     int nextGroundChunkIndex;
     int previousGroundChunkIndex;
     List<GameObject> groundChunksPool = new List<GameObject>();
+
+    float CameraLeftEdgeInWorldX
+    {
+        get => Camera.main.transform.position.x - cameraHalfWidthInWorld;
+    }
+
+    float GroundChunkHalfWidth
+    {
+        get => groundChunkWidth / 2.0f;
+    }
 
     void Start()
     {
@@ -33,8 +42,7 @@ public class LevelGenerator : MonoBehaviour
         cameraHalfWidthInWorld = Camera.main.ScreenToWorldPoint(new Vector3(
             Screen.width, 0.0f, 0.0f)).x;
 
-        nextGroundChunkTransitionX
-            = Camera.main.transform.position.x - cameraHalfWidthInWorld;
+        nextGroundChunkTransitionX = CameraLeftEdgeInWorldX;
 
         if (spritesNumber < spritesNumberMin)
         {
@@ -67,10 +75,7 @@ public class LevelGenerator : MonoBehaviour
 
     void GenerateInfiniteGround()
     {
-        leftCameraEdgeX
-            = Camera.main.transform.position.x - cameraHalfWidthInWorld;
-
-        if (leftCameraEdgeX >= nextGroundChunkTransitionX)
+        if (CameraLeftEdgeInWorldX >= nextGroundChunkTransitionX)
         {
             previousGroundChunkIndex = currentGroundChunkIndex;
             if (!initialGroundChunk)
@@ -81,6 +86,7 @@ public class LevelGenerator : MonoBehaviour
             {
                 initialGroundChunk = false;
             }
+
             do
             {
                 nextGroundChunkIndex = Random.Range(0, spritesNumber);
@@ -93,7 +99,8 @@ public class LevelGenerator : MonoBehaviour
                 if (i == nextGroundChunkIndex)
                 {
                     groundChunksPool[i].transform.position = new Vector2(
-                        nextGroundChunkTransitionX + (groundChunkWidth * 1.5f),
+                        nextGroundChunkTransitionX + groundChunkWidth
+                        + GroundChunkHalfWidth,
                         CenterObjectVertically(groundChunksPool[i]));
                 }
                 else if (i != currentGroundChunkIndex)
@@ -144,7 +151,7 @@ public class LevelGenerator : MonoBehaviour
                 groundChunkWidth = groundChunkRenderer.sprite.bounds.size.x;
 
                 groundChunk.transform.position = new Vector2(
-                    (groundChunkWidth / 2.0f) - cameraHalfWidthInWorld,
+                    GroundChunkHalfWidth - cameraHalfWidthInWorld,
                     CenterObjectVertically(
                         groundChunksPool[currentGroundChunkIndex]));
             }
