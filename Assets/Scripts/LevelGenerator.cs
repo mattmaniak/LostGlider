@@ -70,8 +70,8 @@ public class LevelGenerator : MonoBehaviour
         GenerateInfiniteGround();
     }
 
-    float CenterObjectVertically(GameObject go) =>
-        go.GetComponent<SpriteRenderer>().sprite.bounds.size.y / 2.0f;
+    float CenterObjectVertically(in GameObject gameObject) =>
+        gameObject.GetComponent<SpriteRenderer>().sprite.bounds.size.y / 2.0f;
 
     void GenerateInfiniteGround()
     {
