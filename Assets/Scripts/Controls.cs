@@ -52,7 +52,7 @@ public class Controls : MonoBehaviour
     {
         bool leftMouseButtonHeld = Input.GetMouseButton(0);
         
-        if (!PauseMenuController.Paused && leftMouseButtonHeld)
+        if (controlsEnabled && leftMouseButtonHeld)
         {
             Vector3 mousePosition = Camera.main.
                                     ScreenToWorldPoint(Input.mousePosition);
@@ -124,7 +124,7 @@ public class Controls : MonoBehaviour
     [Obsolete("Use only for debugging/testing purposes.")]
     void ControlByKeyboard()
     {
-        if (!PauseMenuController.Paused && controlsEnabled && !joystickPressed)
+        if (controlsEnabled && !joystickPressed)
         {
             deltaDirection = -Input.GetAxis("Vertical");
             if (Input.GetKey("escape"))
@@ -152,10 +152,12 @@ public class Controls : MonoBehaviour
         if (PauseMenuController.Paused)
         {
             playerRigidbody.Sleep();
+            DisableControls();
         }
         else
         {
             playerRigidbody.WakeUp();
+            controlsEnabled = true;
         }
     }
 }
