@@ -119,7 +119,7 @@ public class Controls : MonoBehaviour
     {
         if (!MenuController.Paused && controlsEnabled && !joystickPressed)
         {
-            deltaDirection = Input.GetAxis("Vertical");
+            deltaDirection = -Input.GetAxis("Vertical");
             if (Input.GetKey("escape"))
             {
                 UnityQuit.Quit();
