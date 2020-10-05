@@ -164,7 +164,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d6079c4de9d84e42b1ff47ea2ee56c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  paused: 0
+  pauseButton: {fileID: 0}
+  pauseMenuButtons: []
 --- !u!1 &868953539
 GameObject:
   m_ObjectHideFlags: 0
@@ -574,6 +575,17 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 151703839}
+        m_MethodName: Unpause
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Level
+          m_BoolArgument: 0
+        m_CallState: 1
       - m_Target: {fileID: 151703839}
         m_MethodName: SwitchToScene
         m_Mode: 5
