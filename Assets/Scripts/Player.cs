@@ -5,12 +5,14 @@
 [RequireComponent(typeof(SpriteRenderer))]
 public class Player : MonoBehaviour
 {
+    const float maxSpeed = 5.0f;
     const float positionLimitX = 100.0f;
-    static float maxSpeed = 5.0f;
 
-    public static float MaxSpeed
+    static float speed = 0.0f;
+
+    public static float Speed
     {
-        get { return maxSpeed; }
+        get => speed;
     }
 
     void OnCollisionEnter2D(Collision2D collision)
@@ -23,10 +25,18 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        transform.Translate(Vector3.right * maxSpeed * Time.deltaTime);
+        CheckPause();
+        transform.Translate(Vector3.right * speed * Time.deltaTime);
+
         if (transform.position.x >= positionLimitX)
         {
-            maxSpeed = 0.0f;
+            speed = 0.0f;
         }
+    }
+
+    void CheckPause()
+    {
+        speed = MenuController.Paused ? 0.0f : maxSpeed;
+        Debug.Log(MenuController.Paused);
     }
 }

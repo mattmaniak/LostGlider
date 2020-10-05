@@ -129,7 +129,7 @@ public class Controls : MonoBehaviour
 
     void MovePlayerVertically()
     {
-        float deltaY = deltaDirection * Player.MaxSpeed * Time.deltaTime;
+        float deltaY = deltaDirection * Player.Speed * Time.deltaTime;
         player.transform.Translate(new Vector3(0.0f, deltaY, 0.0f));
 
         if ((playerRigidbody.velocity.y < 0.0f)
