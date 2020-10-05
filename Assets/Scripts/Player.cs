@@ -5,6 +5,7 @@
 [RequireComponent(typeof(SpriteRenderer))]
 public class Player : MonoBehaviour
 {
+    const float initialAltitude = 1.75f;
     const float maxSpeed = 5.0f;
     const float positionLimitX = 100.0f;
 
@@ -15,12 +16,9 @@ public class Player : MonoBehaviour
         get => speed;
     }
 
-    void OnCollisionEnter2D(Collision2D collision)
+    void Start()
     {
-        if (collision.gameObject.name == "Ground")
-        {
-            Controls.DisableControls();
-        }
+        transform.Translate(0.0f, initialAltitude, 0.0f);
     }
 
     void Update()
@@ -31,6 +29,14 @@ public class Player : MonoBehaviour
         if (transform.position.x >= positionLimitX)
         {
             speed = 0.0f;
+        }
+    }
+
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.name == "Ground")
+        {
+            Controls.DisableControls();
         }
     }
 
