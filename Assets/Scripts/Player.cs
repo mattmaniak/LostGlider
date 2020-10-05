@@ -37,6 +37,5 @@ public class Player : MonoBehaviour
     void CheckPause()
     {
         speed = MenuController.Paused ? 0.0f : maxSpeed;
-        Debug.Log(MenuController.Paused);
     }
 }

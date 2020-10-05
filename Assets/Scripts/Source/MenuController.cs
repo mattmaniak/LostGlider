@@ -11,6 +11,8 @@ public class MenuController : MonoBehaviour
 
     static bool paused = false;
 
+    static bool pausedBefore = paused;
+
     static public bool Paused
     {
         get => paused;
@@ -18,12 +20,15 @@ public class MenuController : MonoBehaviour
 
     void Update()
     {
-        // TODO: IF STATEMENT INSTEAD OF LOOP EVERY UPDATE.
-        foreach (var button in pauseMenuButtons)
+        if (paused != pausedBefore)
         {
-            button.SetActive(paused);
+            foreach (var button in pauseMenuButtons)
+            {
+                button.SetActive(paused);
+            }
+            pauseButton.SetActive(!paused);            
         }
-        pauseButton.SetActive(!paused);
+        pausedBefore = paused;
     }
 
     // Load, switch a next and unload a previous scene.
