@@ -23,7 +23,13 @@ public class Controls : MonoBehaviour
     bool joystickPressed;
     float deltaDirection;
     float innerJoysticSliderSize;
+    Vector2 defaultGravity;
     Vector2 dragPoint;
+
+    void Awake()
+    {
+        defaultGravity = Physics2D.gravity;
+    }
 
     void Start()
     {
@@ -34,6 +40,7 @@ public class Controls : MonoBehaviour
 
     void FixedUpdate()
     {
+        SwitchPlayerGravity();
         ControlByJoystick();
 #if DEBUG
         ControlByKeyboard();
@@ -137,6 +144,18 @@ public class Controls : MonoBehaviour
         {
             playerRigidbody.velocity = playerRigidbody.velocity.normalized
                                        * playerMaxFallingSpeed;
+        }
+    }
+
+    void SwitchPlayerGravity()
+    {
+        if (PauseMenuController.Paused)
+        {
+            playerRigidbody.Sleep();
+        }
+        else
+        {
+            playerRigidbody.WakeUp();
         }
     }
 }

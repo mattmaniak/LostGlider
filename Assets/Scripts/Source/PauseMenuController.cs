@@ -13,7 +13,6 @@ public class PauseMenuController : MonoBehaviour
     Transform playerTransform;
 
     static bool paused = false;
-
     static bool pausedBefore = paused;
 
     static public bool Paused
