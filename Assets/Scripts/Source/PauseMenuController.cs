@@ -1,13 +1,16 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class MenuController : MonoBehaviour
+public class PauseMenuController : MonoBehaviour
 {
     [SerializeField]
     GameObject pauseButton;
 
     [SerializeField]
     GameObject[] pauseMenuButtons;
+
+    [SerializeField]
+    Transform playerTransform;
 
     static bool paused = false;
 
@@ -16,6 +19,7 @@ public class MenuController : MonoBehaviour
     static public bool Paused
     {
         get => paused;
+        set => paused = value;
     }
 
     void Update()
@@ -31,10 +35,9 @@ public class MenuController : MonoBehaviour
         pausedBefore = paused;
     }
 
-    // Load, switch a next and unload a previous scene.
-    public void SwitchToScene(string sceneName)
+    public void SwitchSceneToMainMenu()
     {
-        SceneManager.LoadSceneAsync(sceneName);
+        SceneManager.LoadSceneAsync("MainMenu");
     }
 
     public void Pause()

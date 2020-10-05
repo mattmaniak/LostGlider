@@ -36,6 +36,6 @@ public class Player : MonoBehaviour
 
     void CheckPause()
     {
-        speed = MenuController.Paused ? 0.0f : maxSpeed;
+        speed = PauseMenuController.Paused ? 0.0f : maxSpeed;
     }
 }
