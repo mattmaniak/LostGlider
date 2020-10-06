@@ -12,6 +12,7 @@ public class LevelGenerator : MonoBehaviour
 
     [SerializeField]
     GameObject groundChunkPrefab;
+    GameObject groundChunksHolder;
 
     bool initialGroundChunk;
     float cameraHalfWidthInWorld;
@@ -63,6 +64,7 @@ public class LevelGenerator : MonoBehaviour
 #endif
             UnityQuit.Quit(1);
         }
+        groundChunksHolder = new GameObject("GroundChunks");
     }
 
     void Update()
@@ -96,6 +98,8 @@ public class LevelGenerator : MonoBehaviour
 
             for (int i = 0; i < spritesNumber; i++)
             {
+                groundChunksPool[i].transform.parent = groundChunksHolder.
+                                                       transform;
                 if (i == nextGroundChunkIndex)
                 {
                     groundChunksPool[i].transform.position = new Vector2(
