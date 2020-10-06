@@ -11,7 +11,7 @@ public class LevelGenerator : MonoBehaviour
     readonly int spritesNumber = 4;
     readonly string[] airStreamNames = { airStreamPrefix + "cold",
                                          airStreamPrefix + "hot" };
-    readonly Vector2 invisiblePosition = new Vector2(-100.0f, 0.0f);
+    readonly Vector2 graveyardPosition = new Vector2(-100.0f, 0.0f);
 
     [SerializeField]
     GameObject airStreamPrefab;
@@ -116,7 +116,7 @@ public class LevelGenerator : MonoBehaviour
                 }
                 else if (i != currentGroundChunkIndex)
                 {
-                    groundChunksPool[i].transform.position = invisiblePosition;
+                    groundChunksPool[i].transform.position = graveyardPosition;
                 }
             }
             nextGroundChunkTransitionX += groundChunkWidth;
@@ -149,7 +149,7 @@ public class LevelGenerator : MonoBehaviour
             }
             else
             {
-                groundChunk.transform.position = invisiblePosition;
+                groundChunk.transform.position = graveyardPosition;
             }
         }
     }
