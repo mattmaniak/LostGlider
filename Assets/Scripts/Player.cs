@@ -5,7 +5,7 @@
 [RequireComponent(typeof(SpriteRenderer))]
 public class Player : MonoBehaviour
 {
-    const float initialAltitude = 1.75f;
+    const float initialAltitude = 2.0f;
     const float maxSpeed = 1.0f;
     const float positionLimitX = 100.0f;
 
