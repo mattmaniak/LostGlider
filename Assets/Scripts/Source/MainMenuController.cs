@@ -8,4 +8,9 @@ public class MainMenuController : MonoBehaviour
         PauseMenuController.Paused = false;
         SceneManager.LoadSceneAsync("Level");
     }
+
+    public void QuitGame()
+    {
+        UnityQuit.Quit();
+    }
 }
