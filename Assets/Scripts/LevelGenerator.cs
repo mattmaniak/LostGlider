@@ -26,7 +26,7 @@ public class LevelGenerator : MonoBehaviour
     float nextGroundChunkTransitionX;
     int currentGroundChunkIndex;
     int nextGroundChunkIndex;
-    int previousGroundChunkIndex;
+    int? previousGroundChunkIndex = null;
     List<GameObject> airStreamsPool = new List<GameObject>();
     List<GameObject> groundChunksPool = new List<GameObject>();
 
@@ -160,10 +160,7 @@ public class LevelGenerator : MonoBehaviour
     void InitializeGroundChunksPool()
     {
         initialGroundChunk = true;
-
         currentGroundChunkIndex = Random.Range(0, spritesNumber);
-        previousGroundChunkIndex = -1;
-
         nextGroundChunkTransitionX = CameraLeftEdgeInWorldX;
 
         if (spritesNumber < spritesNumberMin)
