@@ -177,7 +177,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 313457129
-  m_SortingLayer: 3
+  m_SortingLayer: 4
   m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: be07503db2a922d47952cf25d12aece3, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -817,7 +817,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 313457129
-  m_SortingLayer: 3
+  m_SortingLayer: 4
   m_SortingOrder: 2
   m_Sprite: {fileID: 21300000, guid: 3af62913871841940baa3d1b05e9d912, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -1235,6 +1235,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e28f60ee238baa049820484e1412caf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  airStreamPrefab: {fileID: 2191476900758837571, guid: 4b0898058e9f9ca48b787573a17a4fa9,
+    type: 3}
   groundChunkPrefab: {fileID: 2153497403874687727, guid: 3af6f8153ba283744bc5cfaa67930b7d,
     type: 3}
 --- !u!4 &1697224650
