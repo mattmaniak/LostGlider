@@ -48,4 +48,9 @@ public class PauseMenuController : MonoBehaviour
     {
         paused = false;
     }
+
+    public void QuitGame()
+    {
+        UnityQuit.Quit();
+    }
 }
