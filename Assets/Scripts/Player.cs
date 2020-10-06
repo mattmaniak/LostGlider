@@ -11,9 +11,21 @@ public class Player : MonoBehaviour
 
     static float speed = 0.0f;
 
+    static bool alive = true;
+
+    public static bool Alive
+    {
+        get => alive;
+    }
+
     public static float Speed
     {
         get => speed;
+    }
+
+    static bool Movement
+    {
+        set => speed = value ? maxSpeed : 0.0f;
     }
 
     void Start()
@@ -28,20 +40,28 @@ public class Player : MonoBehaviour
 
         if (transform.position.x >= positionLimitX)
         {
-            speed = 0.0f;
+            Movement = false;
         }
     }
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.name == "Ground")
+        if (!collision.collider.isTrigger)
         {
-            Controls.DisableControls();
+            KillPlayer();
         }
     }
 
     void CheckPause()
     {
-        speed = PauseMenuController.Paused ? 0.0f : maxSpeed;
+        if (alive)
+        {
+            Movement = !PauseMenuController.Paused;
+        }
+    }
+
+    void KillPlayer()
+    {
+        Movement = alive = false;
     }
 }

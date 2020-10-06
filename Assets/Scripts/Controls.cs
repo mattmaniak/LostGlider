@@ -23,13 +23,7 @@ public class Controls : MonoBehaviour
     bool joystickPressed;
     float deltaDirection;
     float innerJoysticSliderSize;
-    Vector2 defaultGravity;
     Vector2 dragPoint;
-
-    void Awake()
-    {
-        defaultGravity = Physics2D.gravity;
-    }
 
     void Start()
     {
@@ -50,6 +44,10 @@ public class Controls : MonoBehaviour
 
     void Update()
     {
+        if (!Player.Alive)
+        {
+            controlsEnabled = false;
+        }
         bool leftMouseButtonHeld = Input.GetMouseButton(0);
         
         if (controlsEnabled && leftMouseButtonHeld)
@@ -152,9 +150,9 @@ public class Controls : MonoBehaviour
         if (PauseMenuController.Paused)
         {
             playerRigidbody.Sleep();
-            DisableControls();
+            controlsEnabled = false;
         }
-        else
+        else if (Player.Alive)
         {
             playerRigidbody.WakeUp();
             controlsEnabled = true;
