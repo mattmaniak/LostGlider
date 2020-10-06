@@ -140,9 +140,18 @@ public class LevelGenerator : MonoBehaviour
     {
         foreach (string suffix in airStreamSuffixes)
         {
-            airStreamsPool.Add(Instantiate(CreateEntityFromPrefab(
-                airStreamPrefab, "Sprites/Level/air_stream_" + suffix)));
-            
+            try
+            {
+                airStreamsPool.Add(Instantiate(CreateEntityFromPrefab(
+                    airStreamPrefab, "Sprites/Level/air_stream_" + suffix)));
+            }
+            catch (FileNotFoundException ex)
+            {
+#if DEBUG
+                Debug.Log(ex);
+#endif
+                UnityQuit.Quit(1);
+            }            
             airStreamsPool[airStreamsPool.Count - 1].transform.parent
                 = airStreamsParent.transform;
         }
@@ -161,15 +170,24 @@ public class LevelGenerator : MonoBehaviour
         {
 #if DEBUG
             Debug.Log(GetType().Name
-                +" initialization aborted. At least 3 ground sprites needed.");
+                + " initialization aborted. At least 3 ground sprites needed.");
 #endif
             UnityQuit.Quit(1);
         }
         for (int i = 0; i < spritesNumber; i++)
         {
-            groundChunksPool.Add(Instantiate(CreateEntityFromPrefab(
-                groundChunkPrefab, "Sprites/Level/ground_chunk_" + i)));
-
+            try
+            {
+                groundChunksPool.Add(Instantiate(CreateEntityFromPrefab(
+                    groundChunkPrefab, "Sprites/Level/ground_chunk_" + i)));
+            }
+            catch (FileNotFoundException ex)
+            {
+#if DEBUG
+                Debug.Log(ex);
+#endif
+                UnityQuit.Quit(1);
+            }
             groundChunksPool[i].transform.parent = groundChunksParent.transform;
 
             if (i == currentGroundChunkIndex)
