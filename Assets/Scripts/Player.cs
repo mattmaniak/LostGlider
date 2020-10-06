@@ -6,7 +6,7 @@
 public class Player : MonoBehaviour
 {
     const float initialAltitude = 1.75f;
-    const float maxSpeed = 5.0f;
+    const float maxSpeed = 1.0f;
     const float positionLimitX = 100.0f;
 
     static float speed = 0.0f;
