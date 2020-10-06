@@ -7,10 +7,8 @@ using UnityEngine;
 public class LevelGenerator : MonoBehaviour
 {
     const int spritesNumberMin = 3;
-    const string airStreamPrefix = "air_stream_";
     readonly int spritesNumber = 4;
-    readonly string[] airStreamNames = { airStreamPrefix + "cold",
-                                         airStreamPrefix + "hot" };
+    readonly string[] airStreamSuffixes = { "cold", "hot" };
     readonly Vector2 graveyardPosition = new Vector2(-100.0f, 0.0f);
 
     [SerializeField]
@@ -18,7 +16,9 @@ public class LevelGenerator : MonoBehaviour
 
     [SerializeField]
     GameObject groundChunkPrefab;
-    GameObject groundChunksHolder;
+
+    GameObject airStreamsParent;
+    GameObject groundChunksParent;
 
     bool initialGroundChunk;
     float cameraHalfWidthInWorld;
@@ -42,26 +42,14 @@ public class LevelGenerator : MonoBehaviour
 
     void Start()
     {
-        initialGroundChunk = true;
-
-        currentGroundChunkIndex = Random.Range(0, spritesNumber);
-        previousGroundChunkIndex = -1;
+        airStreamsParent = new GameObject("AirStreamsPool");
+        groundChunksParent = new GameObject("GroundChunksPool");
 
         cameraHalfWidthInWorld = Camera.main.ScreenToWorldPoint(new Vector3(
             Screen.width, 0.0f, 0.0f)).x;
-
-        nextGroundChunkTransitionX = CameraLeftEdgeInWorldX;
-
-        if (spritesNumber < spritesNumberMin)
-        {
-#if DEBUG
-            Debug.Log(GetType().Name
-                +" initialization aborted. At least 3 ground sprites needed.");
-#endif
-            UnityQuit.Quit(1);
-        }
         try
         {
+            InitializeAirStreamPool();
             InitializeGroundChunksPool();
         }
         catch (System.Exception ex)
@@ -71,7 +59,6 @@ public class LevelGenerator : MonoBehaviour
 #endif
             UnityQuit.Quit(1);
         }
-        groundChunksHolder = new GameObject("GroundChunks");
     }
 
     void Update()
@@ -133,8 +120,6 @@ public class LevelGenerator : MonoBehaviour
 
             for (int i = 0; i < spritesNumber; i++)
             {
-                groundChunksPool[i].transform.parent = groundChunksHolder.
-                                                       transform;
                 if (i == nextGroundChunkIndex)
                 {
                     groundChunksPool[i].transform.position = new Vector2(
@@ -151,12 +136,41 @@ public class LevelGenerator : MonoBehaviour
         }
     }
 
+    void InitializeAirStreamPool()
+    {
+        foreach (string suffix in airStreamSuffixes)
+        {
+            airStreamsPool.Add(Instantiate(CreateEntityFromPrefab(
+                airStreamPrefab, "Sprites/Level/air_stream_" + suffix)));
+            
+            airStreamsPool[airStreamsPool.Count - 1].transform.parent
+                = airStreamsParent.transform;
+        }
+    }
+
     void InitializeGroundChunksPool()
     {
+        initialGroundChunk = true;
+
+        currentGroundChunkIndex = Random.Range(0, spritesNumber);
+        previousGroundChunkIndex = -1;
+
+        nextGroundChunkTransitionX = CameraLeftEdgeInWorldX;
+
+        if (spritesNumber < spritesNumberMin)
+        {
+#if DEBUG
+            Debug.Log(GetType().Name
+                +" initialization aborted. At least 3 ground sprites needed.");
+#endif
+            UnityQuit.Quit(1);
+        }
         for (int i = 0; i < spritesNumber; i++)
         {
             groundChunksPool.Add(Instantiate(CreateEntityFromPrefab(
                 groundChunkPrefab, "Sprites/Level/ground_chunk_" + i)));
+
+            groundChunksPool[i].transform.parent = groundChunksParent.transform;
 
             if (i == currentGroundChunkIndex)
             {
