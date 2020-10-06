@@ -62,7 +62,7 @@ public class LevelGenerator : MonoBehaviour
         }
         try
         {
-            LoadGroundChunkSprites();
+            InitializeGroundChunksPool();
         }
         catch (System.Exception ex)
         {
@@ -81,6 +81,34 @@ public class LevelGenerator : MonoBehaviour
 
     float CenterObjectVertically(in GameObject gameObject) =>
         gameObject.GetComponent<SpriteRenderer>().sprite.bounds.size.y / 2.0f;
+
+    GameObject CreateEntityFromPrefab(GameObject prefab, string basename)
+    {
+        BoxCollider2D prefabCollider;
+        Sprite prefabSprite;
+        SpriteRenderer prefabRenderer;
+
+        if ((prefabSprite = Resources.Load<Sprite>(basename)) == null)
+        {
+            string errMsg = GetType().Name
+                            + " initialization aborted. Unable to load: "
+                            + basename;
+#if DEBUG
+            Debug.Log(errMsg);
+#endif
+            throw new FileNotFoundException(errMsg);
+        }
+        prefab.transform.position = graveyardPosition;
+    
+        prefabCollider = prefab.GetComponent<BoxCollider2D>();
+        prefabRenderer = prefab.GetComponent<SpriteRenderer>();
+
+        prefabRenderer.sprite = prefabSprite;
+        prefabCollider.size = prefabRenderer.sprite.bounds.size;
+        prefabCollider.offset = prefabRenderer.sprite.bounds.center;
+
+        return prefab;
+    }
 
     void GenerateInfiniteGround()
     {
@@ -123,60 +151,24 @@ public class LevelGenerator : MonoBehaviour
         }
     }
 
-    void LoadGroundChunkSprites()
+    void InitializeGroundChunksPool()
     {
-        BoxCollider2D groundChunkCollider;
-        GameObject groundChunk;
-        SpriteRenderer groundChunkRenderer;
-
         for (int i = 0; i < spritesNumber; i++)
         {
             groundChunksPool.Add(Instantiate(CreateEntityFromPrefab(
                 groundChunkPrefab, "Sprites/Level/ground_chunk_" + i)));
 
-            
-            groundChunk = groundChunksPool[i];
-            groundChunkCollider = groundChunk.GetComponent<BoxCollider2D>();
-            groundChunkRenderer = groundChunk.GetComponent<SpriteRenderer>();
-            
             if (i == currentGroundChunkIndex)
             {
-                groundChunkWidth = groundChunkRenderer.sprite.bounds.size.x;
+                var groundChunk = groundChunksPool[i];
+
+                groundChunkWidth = groundChunk.GetComponent<SpriteRenderer>().
+                                   sprite.bounds.size.x;
 
                 groundChunk.transform.position = new Vector2(
                     GroundChunkHalfWidth - cameraHalfWidthInWorld,
                     CenterObjectVertically(groundChunk));
             }
-            else
-            {
-                groundChunk.transform.position = graveyardPosition;
-            }
         }
-    }
-
-    GameObject CreateEntityFromPrefab(GameObject prefab, string basename)
-    {
-        BoxCollider2D prefabCollider;
-        Sprite prefabSprite;
-        SpriteRenderer prefabRenderer;
-
-        if ((prefabSprite = Resources.Load<Sprite>(basename)) == null)
-        {
-            string errMsg = GetType().Name
-                            + " initialization aborted. Unable to load: "
-                            + basename;
-#if DEBUG
-            Debug.Log(errMsg);
-#endif
-            throw new FileNotFoundException(errMsg);
-        }
-        prefabCollider = prefab.GetComponent<BoxCollider2D>();
-        prefabRenderer = prefab.GetComponent<SpriteRenderer>();
-
-        prefabRenderer.sprite = prefabSprite;
-        prefabCollider.size = prefabRenderer.sprite.bounds.size;
-        prefabCollider.offset = prefabRenderer.sprite.bounds.center;
-
-        return prefab;
     }
 }
