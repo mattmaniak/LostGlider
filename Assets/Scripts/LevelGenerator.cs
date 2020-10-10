@@ -52,7 +52,7 @@ public class LevelGenerator : MonoBehaviour
         }
         catch (System.Exception ex)
         {
-            if (GlobalDebug.enabled)
+            if (DebugUtils.GlobalEnabler.enabled)
             {
                 Debug.Log(ex);
             }
@@ -83,7 +83,7 @@ public class LevelGenerator : MonoBehaviour
                             + " initialization aborted. Unable to load: "
                             + basename;
 
-            if (GlobalDebug.enabled)
+            if (DebugUtils.GlobalEnabler.enabled)
             {
                 Debug.Log(errMsg);
             }
@@ -153,7 +153,7 @@ public class LevelGenerator : MonoBehaviour
             }
             catch (FileNotFoundException ex)
             {
-                if (GlobalDebug.enabled)
+                if (DebugUtils.GlobalEnabler.enabled)
                 {
                     Debug.Log(ex);
                 }
@@ -175,7 +175,7 @@ public class LevelGenerator : MonoBehaviour
 
         if (spritesNumber < spritesNumberMin)
         {
-            if (GlobalDebug.enabled)
+            if (DebugUtils.GlobalEnabler.enabled)
             {
                 Debug.Log(GetType().Name + " initialization aborted. "
                           + "At least 3 ground sprites needed.");
@@ -191,7 +191,7 @@ public class LevelGenerator : MonoBehaviour
             }
             catch (FileNotFoundException ex)
             {
-                if (GlobalDebug.enabled)
+                if (DebugUtils.GlobalEnabler.enabled)
                 {
                     Debug.Log(ex);
                 }
