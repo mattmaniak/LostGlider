@@ -1,6 +1,4 @@
-﻿#undef DEBUG
-
-using System.IO;
+﻿using System.IO;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -54,9 +52,10 @@ public class LevelGenerator : MonoBehaviour
         }
         catch (System.Exception ex)
         {
-#if DEBUG
-            Debug.Log(ex);
-#endif
+            if (GlobalDebug.enabled)
+            {
+                Debug.Log(ex);
+            }
             UnityQuit.Quit(1);
         }
     }
@@ -83,9 +82,11 @@ public class LevelGenerator : MonoBehaviour
             string errMsg = GetType().Name
                             + " initialization aborted. Unable to load: "
                             + basename;
-#if DEBUG
-            Debug.Log(errMsg);
-#endif
+
+            if (GlobalDebug.enabled)
+            {
+                Debug.Log(errMsg);
+            }
             throw new FileNotFoundException(errMsg);
         }
         obj.transform.position = graveyardPosition;
@@ -152,9 +153,10 @@ public class LevelGenerator : MonoBehaviour
             }
             catch (FileNotFoundException ex)
             {
-#if DEBUG
-                Debug.Log(ex);
-#endif
+                if (GlobalDebug.enabled)
+                {
+                    Debug.Log(ex);
+                }
                 UnityQuit.Quit(1);
             }            
             airStreamsPool[airStreamsPool.Count - 1].transform.parent
@@ -173,10 +175,11 @@ public class LevelGenerator : MonoBehaviour
 
         if (spritesNumber < spritesNumberMin)
         {
-#if DEBUG
-            Debug.Log(GetType().Name
-                + " initialization aborted. At least 3 ground sprites needed.");
-#endif
+            if (GlobalDebug.enabled)
+            {
+                Debug.Log(GetType().Name + " initialization aborted. "
+                          + "At least 3 ground sprites needed.");
+            }
             UnityQuit.Quit(1);
         }
         for (int i = 0; i < spritesNumber; i++)
@@ -188,9 +191,10 @@ public class LevelGenerator : MonoBehaviour
             }
             catch (FileNotFoundException ex)
             {
-#if DEBUG
-                Debug.Log(ex);
-#endif
+                if (GlobalDebug.enabled)
+                {
+                    Debug.Log(ex);
+                }
                 UnityQuit.Quit(1);
             }
             groundChunksPool[i].transform.parent = groundChunksParent.transform;

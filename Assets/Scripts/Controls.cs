@@ -1,6 +1,4 @@
-﻿#undef DEBUG
-
-using System;
+﻿using System;
 using UnityEngine;
 
 [RequireComponent(typeof(BoxCollider2D))]
@@ -36,9 +34,10 @@ public class Controls : MonoBehaviour
     {
         SwitchPlayerGravity();
         ControlByJoystick();
-#if DEBUG
-        ControlByKeyboard();
-#endif
+        if (GlobalDebug.enabled)
+        {
+            ControlByKeyboard();
+        }
         MovePlayerVertically();
     }
 

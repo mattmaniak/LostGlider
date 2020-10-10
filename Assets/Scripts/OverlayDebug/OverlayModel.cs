@@ -1,6 +1,4 @@
-﻿#define DEBUG
-
-using System;
+﻿using System;
 using System.IO;
 using System.Text;
 using UnityEngine;
@@ -32,7 +30,7 @@ namespace OverlayDebug
 
         internal static string UnityProjectInfo
         {
-            get { return unityProjectInfo; }
+            get => unityProjectInfo;
         }
 
         internal static void UpdateModel()
@@ -58,9 +56,10 @@ namespace OverlayDebug
             }
             catch (IndexOutOfRangeException ex)
             {
-#if DEBUG
-                Debug.Log(ex);
-#endif
+                if (GlobalDebug.enabled)
+                {
+                    Debug.Log(ex);
+                }
             }
 
             // Remove the relative directory that points to a branch file.
@@ -92,9 +91,10 @@ namespace OverlayDebug
             }
             catch (Exception ex)
             {
-#if DEBUG
-                Debug.Log(ex);
-#endif
+                if (GlobalDebug.enabled)
+                {
+                    Debug.Log(ex);
+                }
                 return null;
             }
         }

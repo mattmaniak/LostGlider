@@ -9,4 +9,3 @@ An Android game.
 - Git workflow is as basic as [Trunk-Based Development For Smaller Teams](https://trunkbaseddevelopment.com/#trunk-based-development-for-smaller-teams).
 - Also keep commits [atomic](https://dev.to/cbillowes/why-i-create-atomic-commits-in-git-kfi). Or try at least.
 - Keep versions [semantic](https://semver.org/).
-- **#undef all DEBUG** directives before each commit.

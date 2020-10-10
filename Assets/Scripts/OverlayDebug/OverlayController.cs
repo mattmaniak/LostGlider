@@ -5,18 +5,18 @@ namespace OverlayDebug
     public class OverlayController : MonoBehaviour
     {
         [SerializeField]
-        bool overlayDisplayed = true;
+        bool displayOverlay = true;
 
         static bool shouldUpdateView = false;
 
         internal static bool ShouldUpdateView
         {
-            get { return shouldUpdateView; }
+            get => shouldUpdateView;
         }
 
         void Start()
         {
-            if (overlayDisplayed)
+            if (displayOverlay)
             {
                 OverlayDebug.OverlayModel.UpdateModel();
             }
