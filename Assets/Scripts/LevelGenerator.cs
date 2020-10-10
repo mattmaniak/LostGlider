@@ -69,13 +69,16 @@ public class LevelGenerator : MonoBehaviour
     float CenterObjectVertically(in GameObject gameObject) =>
         gameObject.GetComponent<SpriteRenderer>().sprite.bounds.size.y / 2.0f;
 
-    GameObject CreateEntityFromPrefab(GameObject prefab, string basename)
+    GameObject CreateObjectFromPrefab(GameObject sourcePrefab, string basename)
     {
-        BoxCollider2D prefabCollider;
-        Sprite prefabSprite;
-        SpriteRenderer prefabRenderer;
+        BoxCollider2D objBoxCollider;
+        Sprite objSprite;
+        GameObject obj;
+        SpriteRenderer objSpriteRenderer;
 
-        if ((prefabSprite = Resources.Load<Sprite>(basename)) == null)
+        obj = Instantiate(sourcePrefab);
+
+        if ((objSprite = Resources.Load<Sprite>(basename)) == null)
         {
             string errMsg = GetType().Name
                             + " initialization aborted. Unable to load: "
@@ -85,16 +88,16 @@ public class LevelGenerator : MonoBehaviour
 #endif
             throw new FileNotFoundException(errMsg);
         }
-        prefab.transform.position = graveyardPosition;
+        obj.transform.position = graveyardPosition;
     
-        prefabCollider = prefab.GetComponent<BoxCollider2D>();
-        prefabRenderer = prefab.GetComponent<SpriteRenderer>();
+        objBoxCollider = obj.GetComponent<BoxCollider2D>();
+        objSpriteRenderer = obj.GetComponent<SpriteRenderer>();
 
-        prefabRenderer.sprite = prefabSprite;
-        prefabCollider.size = prefabRenderer.sprite.bounds.size;
-        prefabCollider.offset = prefabRenderer.sprite.bounds.center;
+        objSpriteRenderer.sprite = objSprite;
+        objBoxCollider.size = objSpriteRenderer.sprite.bounds.size;
+        objBoxCollider.offset = objSpriteRenderer.sprite.bounds.center;
 
-        return prefab;
+        return obj;
     }
 
     void GenerateInfiniteGround()
@@ -144,8 +147,8 @@ public class LevelGenerator : MonoBehaviour
         {
             try
             {
-                airStreamsPool.Add(Instantiate(CreateEntityFromPrefab(
-                    airStreamPrefab, "Sprites/Level/air_stream_" + suffix)));
+                airStreamsPool.Add(CreateObjectFromPrefab(
+                    airStreamPrefab, "Sprites/Level/air_stream_" + suffix));
             }
             catch (FileNotFoundException ex)
             {
@@ -180,8 +183,8 @@ public class LevelGenerator : MonoBehaviour
         {
             try
             {
-                groundChunksPool.Add(Instantiate(CreateEntityFromPrefab(
-                    groundChunkPrefab, "Sprites/Level/ground_chunk_" + i)));
+                groundChunksPool.Add(CreateObjectFromPrefab(
+                    groundChunkPrefab, "Sprites/Level/ground_chunk_" + i));
             }
             catch (FileNotFoundException ex)
             {
