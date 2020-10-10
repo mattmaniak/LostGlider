@@ -51,8 +51,17 @@ namespace OverlayDebug
                 gitBranch = gitShortRev = onErrorPlaceholder;
                 return;
             }
-            gitBranchBasename = ReadString(gitRepoPath + @"HEAD")?.
-                Split(' ')?[1]?.Trim();
+            try
+            {
+                gitBranchBasename = ReadString(gitRepoPath + @"HEAD")?.
+                    Split(' ')?[1]?.Trim();
+            }
+            catch (IndexOutOfRangeException ex)
+            {
+#if DEBUG
+                Debug.Log(ex);
+#endif
+            }
 
             // Remove the relative directory that points to a branch file.
             gitBranch = gitBranchBasename?.
