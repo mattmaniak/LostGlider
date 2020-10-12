@@ -107,9 +107,10 @@ public class LevelGenerator : MonoBehaviour
 
     void GenerateAirStreamInifinitely()
     {
-        const float minOffScreenOffset = 1.0f;
-        const float maxOffScreenOffset = 10.0f;
-        
+        const float maxOffCameraOffsetY = 1.0f;
+        const float minOffScreenOffsetX = 1.0f;
+        const float maxOffScreenOffsetX = 10.0f;
+
         GameObject airStream = airStreamsPool[nextAirStreamIndex];
         Vector2 newPosition;
 
@@ -126,13 +127,16 @@ public class LevelGenerator : MonoBehaviour
             while (nextAirStreamIndex == previousAirStreamIndex);
 
             newPosition.x = Random.Range(CameraLeftEdgeInWorldX
-                + (cameraHalfWidthInWorld * 2.0f) + minOffScreenOffset,
+                + (cameraHalfWidthInWorld * 2.0f) + minOffScreenOffsetX,
                 CameraLeftEdgeInWorldX + (cameraHalfWidthInWorld * 2.0f)
-                + maxOffScreenOffset);
-            
-            newPosition.y = 4.0f;
-            airStreamsPool[nextAirStreamIndex].transform.position = newPosition;
+                + maxOffScreenOffsetX);
 
+            newPosition.y = Random.Range(Camera.main.transform.position.y
+                                         - maxOffCameraOffsetY,
+                                         Camera.main.transform.position.y
+                                         + maxOffCameraOffsetY);
+
+            airStreamsPool[nextAirStreamIndex].transform.position = newPosition;
             initialAirStream = false;
         }
     }
