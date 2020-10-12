@@ -18,10 +18,13 @@ public class LevelGenerator : MonoBehaviour
     GameObject airStreamsParent;
     GameObject groundChunksParent;
 
+    bool initialAirStream; 
     bool initialGroundChunk;
     float cameraHalfWidthInWorld;
     float groundChunkWidth;
     float nextGroundChunkTransitionX;
+    int nextAirStreamIndex;
+    int? previousAirStreamIndex = null;
     int currentGroundChunkIndex;
     int nextGroundChunkIndex;
     int? previousGroundChunkIndex = null;
@@ -63,6 +66,7 @@ public class LevelGenerator : MonoBehaviour
     void Update()
     {   
         GenerateInfiniteGround();
+        GenerateAirStreamInifinitely();
     }
 
     float CenterObjectVertically(in GameObject gameObject) =>
@@ -99,6 +103,38 @@ public class LevelGenerator : MonoBehaviour
         objBoxCollider.offset = objSpriteRenderer.sprite.bounds.center;
 
         return obj;
+    }
+
+    void GenerateAirStreamInifinitely()
+    {
+        const float minOffScreenOffset = 1.0f;
+        const float maxOffScreenOffset = 10.0f;
+        
+        GameObject airStream = airStreamsPool[nextAirStreamIndex];
+        Vector2 newPosition;
+
+        if (initialAirStream || (CameraLeftEdgeInWorldX
+            >= (airStream.transform.position.x
+                + (airStream. GetComponent<SpriteRenderer>().bounds.size.x
+                   / 2.0f))))
+        {
+            previousAirStreamIndex = nextAirStreamIndex;
+            do
+            {
+                nextAirStreamIndex = Random.Range(0, 2);
+            }
+            while (nextAirStreamIndex == previousAirStreamIndex);
+
+            newPosition.x = Random.Range(CameraLeftEdgeInWorldX
+                + (cameraHalfWidthInWorld * 2.0f) + minOffScreenOffset,
+                CameraLeftEdgeInWorldX + (cameraHalfWidthInWorld * 2.0f)
+                + maxOffScreenOffset);
+            
+            newPosition.y = 4.0f;
+            airStreamsPool[nextAirStreamIndex].transform.position = newPosition;
+
+            initialAirStream = false;
+        }
     }
 
     void GenerateInfiniteGround()
@@ -143,6 +179,7 @@ public class LevelGenerator : MonoBehaviour
     void InitializeAirStreamPool()
     {
         int initialStreamIndex = Random.Range(0, airStreamSuffixes.Length);
+        initialAirStream = true;
 
         foreach (string suffix in airStreamSuffixes)
         {
@@ -162,9 +199,9 @@ public class LevelGenerator : MonoBehaviour
             airStreamsPool[airStreamsPool.Count - 1].transform.parent
                 = airStreamsParent.transform;
         }
-        // TODO: IT'S A TEMPONARY SOLUTION.
-        airStreamsPool[initialStreamIndex].transform.position
-            = new Vector2(6.0f, 4.0f);
+        // // TODO: IT'S A TEMPONARY SOLUTION.
+        // airStreamsPool[initialStreamIndex].transform.position
+        //     = new Vector2(6.0f, 4.0f);
     }
 
     void InitializeGroundChunksPool()

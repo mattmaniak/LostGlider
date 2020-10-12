@@ -1506,7 +1506,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebf0eecb653bac14ca6ad3ed2ad10215, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  overlayDisplayed: 1
+  enabled: 1
 --- !u!1 &1803198477
 GameObject:
   m_ObjectHideFlags: 0
