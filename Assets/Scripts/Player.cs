@@ -16,6 +16,7 @@ public class Player : MonoBehaviour
     public static bool Alive
     {
         get => alive;
+        set => alive = value;
     }
 
     public static float Speed
