@@ -7,7 +7,7 @@ namespace DebugUtils
         public class Controller : MonoBehaviour
         {
             [SerializeField]
-            bool enabled = true;
+            bool activated = true;
 
             static bool shouldUpdateView = false;
 
@@ -18,7 +18,7 @@ namespace DebugUtils
 
             void Start()
             {
-                if (enabled)
+                if (activated)
                 {
                     DebugUtils.Overlay.Model.UpdateModel();
                 }

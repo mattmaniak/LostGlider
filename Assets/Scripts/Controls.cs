@@ -34,7 +34,7 @@ public class Controls : MonoBehaviour
     {
         SwitchPlayerGravity();
         ControlByJoystick();
-        if (DebugUtils.GlobalEnabler.enabled)
+        if (DebugUtils.GlobalEnabler.activated)
         {
             ControlByKeyboard();
         }

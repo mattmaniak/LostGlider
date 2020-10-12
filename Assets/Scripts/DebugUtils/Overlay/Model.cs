@@ -58,7 +58,7 @@ namespace DebugUtils
                 }
                 catch (IndexOutOfRangeException ex)
                 {
-                    if (DebugUtils.GlobalEnabler.enabled)
+                    if (DebugUtils.GlobalEnabler.activated)
                     {
                         Debug.Log(ex);
                     }
@@ -93,7 +93,7 @@ namespace DebugUtils
                 }
                 catch (Exception ex)
                 {
-                    if (DebugUtils.GlobalEnabler.enabled)
+                    if (DebugUtils.GlobalEnabler.activated)
                     {
                         Debug.Log(ex);
                     }

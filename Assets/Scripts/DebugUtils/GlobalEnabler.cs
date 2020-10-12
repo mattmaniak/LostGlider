@@ -3,6 +3,6 @@
     public class GlobalEnabler
     {
         // Dev-only. Enable or disable on your preferences. Disable on release.
-        public const bool enabled = true;
+        public const bool activated = true;
     }
 }
