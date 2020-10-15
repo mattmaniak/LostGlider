@@ -18,6 +18,8 @@ public class Player : MonoBehaviour
         set => Speed = value ? maxSpeed : 0.0f;
     }
 
+    bool InAirStream { get => LiftRatio != 0.0f; }
+
     float LiftRatio { get; set; }
 
     void Start()
@@ -26,16 +28,23 @@ public class Player : MonoBehaviour
         transform.Translate(0.0f, initialAltitude, 0.0f);
     }
 
-    void Update()
+    void FixedUpdate()
     {
-        CheckPause();
         transform.Translate(Vector2.right * Speed * Time.deltaTime);
-        transform.Translate(Vector2.up * LiftRatio * Time.deltaTime);
 
+        if (InAirStream)
+        {
+            transform.Translate(Vector2.up * LiftRatio * Time.deltaTime);
+        }
         if (transform.position.x >= positionLimitX)
         {
             Movement = false;
         }
+    }
+
+    void Update()
+    {
+        CheckPause();
     }
 
     void OnCollisionEnter2D(Collision2D collision)
@@ -46,7 +55,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    void OnTriggerStay2D(Collider2D collider)
+    void OnTriggerEnter2D(Collider2D collider)
     {
         if (collider.name.Contains("AirStream"))
         {
