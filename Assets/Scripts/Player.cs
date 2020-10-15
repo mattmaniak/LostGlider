@@ -6,11 +6,11 @@
 public class Player : MonoBehaviour
 {
     const float initialAltitude = 2.0f;
+    const float maxFallingSpeed = 0.1f; // Per one second.
     const float maxSpeed = 2.0f;
     const float positionLimitX = 100.0f;
 
     public static bool Alive { get; set; }
-
     public static float Speed { get; private set; }
 
     static bool Movement
@@ -19,7 +19,6 @@ public class Player : MonoBehaviour
     }
 
     bool InAirStream { get => LiftRatio != 0.0f; }
-
     float LiftRatio { get; set; }
 
     void Start()
@@ -30,7 +29,7 @@ public class Player : MonoBehaviour
 
     void FixedUpdate()
     {
-        transform.Translate(Vector2.right * Speed * Time.deltaTime);
+        var rigidbody = GetComponent<Rigidbody2D>();
 
         if (InAirStream)
         {
@@ -40,6 +39,13 @@ public class Player : MonoBehaviour
         {
             Movement = false;
         }
+        if ((rigidbody.velocity.y < 0.0f)
+            && (rigidbody.velocity.magnitude > maxFallingSpeed))
+        {
+            rigidbody.velocity = rigidbody.velocity.normalized
+                                 * maxFallingSpeed;
+        }
+        transform.Translate(Vector2.right * Speed * Time.deltaTime);
     }
 
     void Update()

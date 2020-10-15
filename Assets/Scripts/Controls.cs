@@ -15,7 +15,6 @@ public class Controls : MonoBehaviour
     Transform player;
 
     const int paddingPx = 128;
-    const float playerMaxFallingSpeed = 0.1f; // Per one second.
 
     static bool controlsEnabled = true;
     bool joystickPressed;
@@ -135,13 +134,6 @@ public class Controls : MonoBehaviour
     {
         float deltaY = deltaDirection * Player.Speed * Time.deltaTime;
         player.transform.Translate(new Vector3(0.0f, deltaY, 0.0f));
-
-        if ((playerRigidbody.velocity.y < 0.0f)
-            && (playerRigidbody.velocity.magnitude > playerMaxFallingSpeed))
-        {
-            playerRigidbody.velocity = playerRigidbody.velocity.normalized
-                                       * playerMaxFallingSpeed;
-        }
     }
 
     void SwitchPlayerGravity()
