@@ -202,6 +202,18 @@ public class LevelGenerator : MonoBehaviour
             }            
             airStreamsPool[airStreamsPool.Count - 1].transform.parent
                 = airStreamsParent.transform;
+
+            // TODO: SAVE THOSE DATA IN JSON/XML?
+            if (suffix == airStreamSuffixes[0])
+            {
+                airStreamsPool[airStreamsPool.Count - 1].
+                    GetComponent<AirStream>().LiftRatio = -1.0f;
+            }
+            else if (suffix == airStreamSuffixes[1])
+            {
+                airStreamsPool[airStreamsPool.Count - 1].
+                    GetComponent<AirStream>().LiftRatio = 1.0f;
+            }
         }
     }
 

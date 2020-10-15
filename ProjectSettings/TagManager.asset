@@ -47,9 +47,6 @@ TagManager:
   - name: Player
     uniqueID: 894077
     locked: 0
-  - name: AirStream
-    uniqueID: 3400814407
-    locked: 0
   - name: GUI
     uniqueID: 313457129
     locked: 0

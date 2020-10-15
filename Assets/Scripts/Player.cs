@@ -6,7 +6,7 @@
 public class Player : MonoBehaviour
 {
     const float initialAltitude = 2.0f;
-    const float maxSpeed = 4.0f;
+    const float maxSpeed = 2.0f;
     const float positionLimitX = 100.0f;
 
     public static bool Alive { get; set; }
@@ -18,6 +18,8 @@ public class Player : MonoBehaviour
         set => Speed = value ? maxSpeed : 0.0f;
     }
 
+    float LiftRatio { get; set; }
+
     void Start()
     {
         Alive = true;
@@ -27,7 +29,8 @@ public class Player : MonoBehaviour
     void Update()
     {
         CheckPause();
-        transform.Translate(Vector3.right * Speed * Time.deltaTime);
+        transform.Translate(Vector2.right * Speed * Time.deltaTime);
+        transform.Translate(Vector2.up * LiftRatio * Time.deltaTime);
 
         if (transform.position.x >= positionLimitX)
         {
@@ -41,6 +44,20 @@ public class Player : MonoBehaviour
         {
             KillPlayer();
         }
+    }
+
+    void OnTriggerStay2D(Collider2D collider)
+    {
+        if (collider.name.Contains("AirStream"))
+        {
+            LiftRatio
+                = collider.gameObject.GetComponent<AirStream>().LiftRatio;
+        }
+    }
+
+    void OnTriggerExit2D()
+    {
+        LiftRatio = 0.0f;
     }
 
     void CheckPause()
