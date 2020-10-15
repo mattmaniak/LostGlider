@@ -9,35 +9,25 @@ public class Player : MonoBehaviour
     const float maxSpeed = 4.0f;
     const float positionLimitX = 100.0f;
 
-    static float speed = 0.0f;
+    public static bool Alive { get; set; }
 
-    static bool alive = true;
-
-    public static bool Alive
-    {
-        get => alive;
-        set => alive = value;
-    }
-
-    public static float Speed
-    {
-        get => speed;
-    }
+    public static float Speed { get; private set; }
 
     static bool Movement
     {
-        set => speed = value ? maxSpeed : 0.0f;
+        set => Speed = value ? maxSpeed : 0.0f;
     }
 
     void Start()
     {
+        Alive = true;
         transform.Translate(0.0f, initialAltitude, 0.0f);
     }
 
     void Update()
     {
         CheckPause();
-        transform.Translate(Vector3.right * speed * Time.deltaTime);
+        transform.Translate(Vector3.right * Speed * Time.deltaTime);
 
         if (transform.position.x >= positionLimitX)
         {
@@ -55,7 +45,7 @@ public class Player : MonoBehaviour
 
     void CheckPause()
     {
-        if (alive)
+        if (Alive)
         {
             Movement = !PauseMenuController.Paused;
         }
@@ -63,6 +53,6 @@ public class Player : MonoBehaviour
 
     void KillPlayer()
     {
-        Movement = alive = false;
+        Movement = Alive = false;
     }
 }
