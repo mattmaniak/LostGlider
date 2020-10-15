@@ -203,9 +203,6 @@ public class LevelGenerator : MonoBehaviour
             airStreamsPool[airStreamsPool.Count - 1].transform.parent
                 = airStreamsParent.transform;
         }
-        // // TODO: IT'S A TEMPONARY SOLUTION.
-        // airStreamsPool[initialStreamIndex].transform.position
-        //     = new Vector2(6.0f, 4.0f);
     }
 
     void InitializeGroundChunksPool()
