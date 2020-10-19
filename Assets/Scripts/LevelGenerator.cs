@@ -6,7 +6,8 @@ public class LevelGenerator : MonoBehaviour
 {
     const int spritesNumberMin = 3;
     readonly int spritesNumber = 4;
-    readonly string[] airStreamSuffixes = { "cold", "hot" };
+    readonly string[] airStreamSuffixes
+        = { "cold", "hot", "super_cold", "super_hot" };
     readonly Vector2 graveyardPosition = new Vector2(-100.0f, 0.0f);
 
     [SerializeField]
@@ -122,7 +123,7 @@ public class LevelGenerator : MonoBehaviour
             previousAirStreamIndex = nextAirStreamIndex;
             do
             {
-                nextAirStreamIndex = Random.Range(0, 2);
+                nextAirStreamIndex = Random.Range(0, airStreamSuffixes.Length);
             }
             while (nextAirStreamIndex == previousAirStreamIndex);
 
@@ -213,6 +214,16 @@ public class LevelGenerator : MonoBehaviour
             {
                 airStreamsPool[airStreamsPool.Count - 1].
                     GetComponent<AirStream>().LiftRatio = 1.0f;
+            }
+            else if (suffix == airStreamSuffixes[2])
+            {
+                airStreamsPool[airStreamsPool.Count - 1].
+                    GetComponent<AirStream>().LiftRatio = -2.0f;
+            }
+            else if (suffix == airStreamSuffixes[3])
+            {
+                airStreamsPool[airStreamsPool.Count - 1].
+                    GetComponent<AirStream>().LiftRatio = 2.0f;
             }
         }
     }

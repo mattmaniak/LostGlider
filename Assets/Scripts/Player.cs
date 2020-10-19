@@ -7,7 +7,7 @@ public class Player : MonoBehaviour
 {
     const float initialAltitude = 2.0f;
     const float maxFallingSpeed = 0.1f; // Per one second.
-    const float maxSpeed = 2.0f;
+    const float maxSpeed = 4.0f;
     const float positionLimitX = 100.0f;
 
     public static bool Alive { get; set; }
