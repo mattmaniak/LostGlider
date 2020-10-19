@@ -75,14 +75,14 @@ public class LevelGenerator : MonoBehaviour
 
     GameObject CreateObjectFromPrefab(GameObject sourcePrefab, string basename)
     {
-        BoxCollider2D objBoxCollider;
-        Sprite objSprite;
-        GameObject obj;
-        SpriteRenderer objSpriteRenderer;
+        BoxCollider2D goBoxCollider;
+        Sprite goSprite;
+        GameObject go;
+        SpriteRenderer goSpriteRenderer;
 
-        obj = Instantiate(sourcePrefab);
+        go = Instantiate(sourcePrefab);
 
-        if ((objSprite = Resources.Load<Sprite>(basename)) == null)
+        if ((goSprite = Resources.Load<Sprite>(basename)) == null)
         {
             string errMsg = GetType().Name
                             + " initialization aborted. Unable to load: "
@@ -94,16 +94,16 @@ public class LevelGenerator : MonoBehaviour
             }
             throw new FileNotFoundException(errMsg);
         }
-        obj.transform.position = graveyardPosition;
+        go.transform.position = graveyardPosition;
     
-        objBoxCollider = obj.GetComponent<BoxCollider2D>();
-        objSpriteRenderer = obj.GetComponent<SpriteRenderer>();
+        goBoxCollider = go.GetComponent<BoxCollider2D>();
+        goSpriteRenderer = go.GetComponent<SpriteRenderer>();
 
-        objSpriteRenderer.sprite = objSprite;
-        objBoxCollider.size = objSpriteRenderer.sprite.bounds.size;
-        objBoxCollider.offset = objSpriteRenderer.sprite.bounds.center;
+        goSpriteRenderer.sprite = goSprite;
+        goBoxCollider.size = goSpriteRenderer.sprite.bounds.size;
+        goBoxCollider.offset = goSpriteRenderer.sprite.bounds.center;
 
-        return obj;
+        return go;
     }
 
     void GenerateSoaringLiftsInfinitely()
@@ -123,7 +123,8 @@ public class LevelGenerator : MonoBehaviour
             previousAirStreamIndex = nextAirStreamIndex;
             do
             {
-                nextAirStreamIndex = Random.Range(0, soaringLiftSuffixes.Length);
+                nextAirStreamIndex = Random.Range(0,
+                                                  soaringLiftSuffixes.Length);
             }
             while (nextAirStreamIndex == previousAirStreamIndex);
 
@@ -137,7 +138,8 @@ public class LevelGenerator : MonoBehaviour
                                          Camera.main.transform.position.y
                                          + maxOffCameraOffsetY);
 
-            soaringLiftsPool[nextAirStreamIndex].transform.position = newPosition;
+            soaringLiftsPool[nextAirStreamIndex].transform.position
+                = newPosition;
             initialAirStream = false;
         }
     }
