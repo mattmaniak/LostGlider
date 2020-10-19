@@ -13,22 +13,19 @@ namespace DebugUtils
             const string onErrorPlaceholder = "[not found]";
 
 #region Directories
-            static string gitBranchBasename;
-            static string gitRepoPath = @Application.dataPath + @"/../.git/";
+            static readonly string gitRepoPath = @Application.dataPath + @"/../.git/";
+            static string GitBranchBasename { get; set; }
 #endregion
 
 #region Git data holders
-            static string gitBranch;
-            static string gitShortRev;
-            static string gitRepoSummary;
+            public static string GitBranch { get; set; }
+            public static string GitShortRev { get; set; }
 #endregion
-
-            static string unityProjectInfo;
 
             internal static string GitRepoSummary
             {
                 get => debugLabel + "Modifying last Git revision: "
-                       + gitShortRev + " on branch: " + gitBranch;
+                       + GitShortRev + " on branch: " + GitBranch;
             }
 
             internal static string UnityProjectInfo { get; private set; }
@@ -52,12 +49,12 @@ namespace DebugUtils
 
                 if (!Directory.Exists(gitRepoPath))
                 {
-                    gitBranch = gitShortRev = onErrorPlaceholder;
+                    GitBranch = GitShortRev = onErrorPlaceholder;
                     return;
                 }
                 try
                 {
-                    gitBranchBasename = ReadString(gitRepoPath + @"HEAD")?.
+                    GitBranchBasename = ReadString(gitRepoPath + @"HEAD")?.
                         Split(' ')?[1]?.Trim();
                 }
                 catch (IndexOutOfRangeException ex)
@@ -69,13 +66,12 @@ namespace DebugUtils
                 }
 
                 // Remove the relative directory that points to a branch file.
-                gitBranch = gitBranchBasename?.
+                GitBranch = GitBranchBasename?.
                     TrimStart(@"refs/heads/".ToCharArray())?.Trim()
                     ?? onErrorPlaceholder;
 
-                gitShortRev = ReadString(gitRepoPath + gitBranchBasename)?.
-                    Substring(0, shortGitRevLength)
-                    ?? onErrorPlaceholder;;
+                GitShortRev = ReadString(gitRepoPath + GitBranchBasename)?.
+                    Substring(0, shortGitRevLength) ?? onErrorPlaceholder;
             }
 
             static void UpdateUnityProjectInfo()
