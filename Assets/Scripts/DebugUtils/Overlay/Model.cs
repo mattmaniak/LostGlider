@@ -9,6 +9,7 @@ namespace DebugUtils
     {
         internal class Model
         {
+            const string debugLabel = "[DEBUG] ";
             const string onErrorPlaceholder = "[not found]";
 
 #region Directories
@@ -26,13 +27,16 @@ namespace DebugUtils
 
             internal static string GitRepoSummary
             {
-                get => "Modifying last Git revision: " + gitShortRev
-                        + " on branch: " + gitBranch;
+                get => debugLabel + "Modifying last Git revision: "
+                       + gitShortRev + " on branch: " + gitBranch;
             }
 
-            internal static string UnityProjectInfo
+            internal static string UnityProjectInfo { get; private set; }
+
+            internal static string WipLabel
             {
-                get => unityProjectInfo;
+                get => "WORK IN PROGRESS - "
+                       + "DOES NOT REPRESENT FINAL LOOK OF THE GAME";
             }
 
             internal static void UpdateModel()
@@ -76,7 +80,8 @@ namespace DebugUtils
 
             static void UpdateUnityProjectInfo()
             {
-                unityProjectInfo = Application.productName + " "
+                UnityProjectInfo = debugLabel
+                                   + Application.productName + " "
                                    + Application.version + " (dev) by "
                                    + Application.companyName + " using Unity "
                                    + Application.unityVersion;

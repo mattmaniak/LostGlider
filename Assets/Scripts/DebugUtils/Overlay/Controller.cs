@@ -4,35 +4,37 @@ namespace DebugUtils
 {
     namespace Overlay
     {    
+        enum Modes
+        {
+            Disabled, // Production.
+            PartiallyEnabled, // Public presentation.
+            FullyEnabled // Internal development.
+        }
+
         public class Controller : MonoBehaviour
         {
-            [SerializeField]
-            bool activated = true;
+            static Modes currentMode = Modes.FullyEnabled;
 
-            static bool shouldUpdateView = false;
-
-            internal static bool ShouldUpdateView
-            {
-                get => shouldUpdateView;
-            }
+            internal static bool ShouldUpdateView { get; private set; }
 
             void Start()
             {
-                if (activated)
+                if (currentMode == Modes.Disabled)
                 {
-                    DebugUtils.Overlay.Model.UpdateModel();
+                    return;
                 }
+                DebugUtils.Overlay.Model.UpdateModel();
             }
 
             internal static void NotifiyModelUpdated()
             {
-                shouldUpdateView = true;
-                DebugUtils.Overlay.View.UpdateView();
+                ShouldUpdateView = true;
+                DebugUtils.Overlay.View.UpdateView(currentMode);
             }
 
             internal static void DisableViewUpdateAction()
             {
-                shouldUpdateView = false;
+                ShouldUpdateView = false;
             }
         }
     }
