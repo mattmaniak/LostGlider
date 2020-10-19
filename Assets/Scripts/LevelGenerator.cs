@@ -6,17 +6,17 @@ public class LevelGenerator : MonoBehaviour
 {
     const int spritesNumberMin = 3;
     readonly int spritesNumber = 4;
-    readonly string[] airStreamSuffixes
+    readonly string[] soaringLiftSuffixes
         = { "cold", "hot", "super_cold", "super_hot" };
     readonly Vector2 graveyardPosition = new Vector2(-100.0f, 0.0f);
 
     [SerializeField]
-    GameObject airStreamPrefab;
+    GameObject soaringLiftPrefab;
 
     [SerializeField]
     GameObject groundChunkPrefab;
 
-    GameObject airStreamsParent;
+    GameObject soaringLiftsParent;
     GameObject groundChunksParent;
 
     bool initialAirStream; 
@@ -29,7 +29,7 @@ public class LevelGenerator : MonoBehaviour
     int currentGroundChunkIndex;
     int nextGroundChunkIndex;
     int? previousGroundChunkIndex = null;
-    List<GameObject> airStreamsPool = new List<GameObject>();
+    List<GameObject> soaringLiftsPool = new List<GameObject>();
     List<GameObject> groundChunksPool = new List<GameObject>();
 
     float CameraLeftEdgeInWorldX
@@ -44,14 +44,14 @@ public class LevelGenerator : MonoBehaviour
 
     void Start()
     {
-        airStreamsParent = new GameObject("AirStreamsPool");
+        soaringLiftsParent = new GameObject("SoaringLiftsPool");
         groundChunksParent = new GameObject("GroundChunksPool");
 
         cameraHalfWidthInWorld = Camera.main.ScreenToWorldPoint(new Vector3(
             Screen.width, 0.0f, 0.0f)).x;
         try
         {
-            InitializeAirStreamPool();
+            InitializeSoaringLiftsPool();
             InitializeGroundChunksPool();
         }
         catch (System.Exception ex)
@@ -67,7 +67,7 @@ public class LevelGenerator : MonoBehaviour
     void Update()
     {   
         GenerateInfiniteGround();
-        GenerateAirStreamInifinitely();
+        GenerateSoaringLiftsInfinitely();
     }
 
     float CenterObjectVertically(in GameObject gameObject) =>
@@ -106,24 +106,24 @@ public class LevelGenerator : MonoBehaviour
         return obj;
     }
 
-    void GenerateAirStreamInifinitely()
+    void GenerateSoaringLiftsInfinitely()
     {
         const float maxOffCameraOffsetY = 1.0f;
         const float minOffScreenOffsetX = 1.0f;
         const float maxOffScreenOffsetX = 10.0f;
 
-        GameObject airStream = airStreamsPool[nextAirStreamIndex];
+        GameObject soaringLift = soaringLiftsPool[nextAirStreamIndex];
         Vector2 newPosition;
 
         if (initialAirStream || (CameraLeftEdgeInWorldX
-            >= (airStream.transform.position.x
-                + (airStream. GetComponent<SpriteRenderer>().bounds.size.x
+            >= (soaringLift.transform.position.x
+                + (soaringLift. GetComponent<SpriteRenderer>().bounds.size.x
                    / 2.0f))))
         {
             previousAirStreamIndex = nextAirStreamIndex;
             do
             {
-                nextAirStreamIndex = Random.Range(0, airStreamSuffixes.Length);
+                nextAirStreamIndex = Random.Range(0, soaringLiftSuffixes.Length);
             }
             while (nextAirStreamIndex == previousAirStreamIndex);
 
@@ -137,7 +137,7 @@ public class LevelGenerator : MonoBehaviour
                                          Camera.main.transform.position.y
                                          + maxOffCameraOffsetY);
 
-            airStreamsPool[nextAirStreamIndex].transform.position = newPosition;
+            soaringLiftsPool[nextAirStreamIndex].transform.position = newPosition;
             initialAirStream = false;
         }
     }
@@ -181,17 +181,17 @@ public class LevelGenerator : MonoBehaviour
         }
     }
 
-    void InitializeAirStreamPool()
+    void InitializeSoaringLiftsPool()
     {
-        int initialStreamIndex = Random.Range(0, airStreamSuffixes.Length);
+        int initialStreamIndex = Random.Range(0, soaringLiftSuffixes.Length);
         initialAirStream = true;
 
-        foreach (string suffix in airStreamSuffixes)
+        foreach (string suffix in soaringLiftSuffixes)
         {
             try
             {
-                airStreamsPool.Add(CreateObjectFromPrefab(
-                    airStreamPrefab, "Sprites/Level/air_stream_" + suffix));
+                soaringLiftsPool.Add(CreateObjectFromPrefab(
+                    soaringLiftPrefab, "Sprites/Level/soaring_lift_" + suffix));
             }
             catch (FileNotFoundException ex)
             {
@@ -201,28 +201,28 @@ public class LevelGenerator : MonoBehaviour
                 }
                 UnityQuit.Quit(1);
             }            
-            airStreamsPool[airStreamsPool.Count - 1].transform.parent
-                = airStreamsParent.transform;
+            soaringLiftsPool[soaringLiftsPool.Count - 1].transform.parent
+                = soaringLiftsParent.transform;
 
             // TODO: SAVE THOSE DATA IN JSON/XML?
-            if (suffix == airStreamSuffixes[0])
+            if (suffix == soaringLiftSuffixes[0])
             {
-                airStreamsPool[airStreamsPool.Count - 1].
+                soaringLiftsPool[soaringLiftsPool.Count - 1].
                     GetComponent<AirStream>().LiftRatio = -1.0f;
             }
-            else if (suffix == airStreamSuffixes[1])
+            else if (suffix == soaringLiftSuffixes[1])
             {
-                airStreamsPool[airStreamsPool.Count - 1].
+                soaringLiftsPool[soaringLiftsPool.Count - 1].
                     GetComponent<AirStream>().LiftRatio = 1.0f;
             }
-            else if (suffix == airStreamSuffixes[2])
+            else if (suffix == soaringLiftSuffixes[2])
             {
-                airStreamsPool[airStreamsPool.Count - 1].
+                soaringLiftsPool[soaringLiftsPool.Count - 1].
                     GetComponent<AirStream>().LiftRatio = -2.0f;
             }
-            else if (suffix == airStreamSuffixes[3])
+            else if (suffix == soaringLiftSuffixes[3])
             {
-                airStreamsPool[airStreamsPool.Count - 1].
+                soaringLiftsPool[soaringLiftsPool.Count - 1].
                     GetComponent<AirStream>().LiftRatio = 2.0f;
             }
         }

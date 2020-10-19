@@ -2347,7 +2347,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e28f60ee238baa049820484e1412caf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  airStreamPrefab: {fileID: 2191476900758837571, guid: 4b0898058e9f9ca48b787573a17a4fa9,
+  soaringLiftPrefab: {fileID: 2191476900758837571, guid: 4b0898058e9f9ca48b787573a17a4fa9,
     type: 3}
   groundChunkPrefab: {fileID: 2153497403874687727, guid: 3af6f8153ba283744bc5cfaa67930b7d,
     type: 3}
