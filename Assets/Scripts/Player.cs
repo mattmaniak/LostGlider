@@ -37,7 +37,7 @@ public class Player : MonoBehaviour
         }
         if (transform.position.x >= positionLimitX)
         {
-            Movement = false;
+            KillPlayer();
         }
         if ((rigidbody.velocity.y < 0.0f)
             && (rigidbody.velocity.magnitude > maxFallingSpeed))
@@ -86,5 +86,6 @@ public class Player : MonoBehaviour
     void KillPlayer()
     {
         Movement = Alive = false;
+        LiftRatio = 0.0f;
     }
 }
