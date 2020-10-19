@@ -13,12 +13,9 @@ public class Player : MonoBehaviour
     public static bool Alive { get; set; }
     public static float Speed { get; private set; }
 
-    static bool Movement
-    {
-        set => Speed = value ? maxSpeed : 0.0f;
-    }
-
+    static bool Movement { set => Speed = value ? maxSpeed : 0.0f; }
     bool InAirStream { get => LiftRatio != 0.0f; }
+    float Altitude { get => transform.position.y; }
     float LiftRatio { get; set; }
 
     void Start()
