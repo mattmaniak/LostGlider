@@ -34,7 +34,8 @@ public class LevelGenerator : MonoBehaviour
 
     float CameraLeftEdgeInWorldX
     {
-        get => Camera.main.transform.position.x - cameraHalfWidthInWorld;
+        get => Camera.main.transform.position.x - cameraHalfWidthInWorld
+               + Camera.main.transform.localPosition.x;
     }
 
     float GroundChunkHalfWidth
@@ -131,7 +132,7 @@ public class LevelGenerator : MonoBehaviour
             newPosition.x = Random.Range(CameraLeftEdgeInWorldX
                 + (cameraHalfWidthInWorld * 2.0f) + minOffScreenOffsetX,
                 CameraLeftEdgeInWorldX + (cameraHalfWidthInWorld * 2.0f)
-                + maxOffScreenOffsetX);
+                + maxOffScreenOffsetX - Camera.main.transform.localPosition.x);
 
             newPosition.y = Random.Range(Camera.main.transform.position.y
                                          - maxOffCameraOffsetY,
@@ -171,7 +172,8 @@ public class LevelGenerator : MonoBehaviour
                 {
                     groundChunksPool[i].transform.position = new Vector2(
                         nextGroundChunkTransitionX + groundChunkWidth
-                        + GroundChunkHalfWidth,
+                        + GroundChunkHalfWidth
+                        - Camera.main.transform.localPosition.x,
                         CenterObjectVertically(groundChunksPool[i]));
                 }
                 else if (i != currentGroundChunkIndex)
@@ -270,7 +272,8 @@ public class LevelGenerator : MonoBehaviour
                                    sprite.bounds.size.x;
 
                 groundChunk.transform.position = new Vector2(
-                    GroundChunkHalfWidth - cameraHalfWidthInWorld,
+                    GroundChunkHalfWidth - cameraHalfWidthInWorld
+                    + Camera.main.transform.localPosition.x,
                     CenterObjectVertically(groundChunk));
             }
         }
