@@ -187,16 +187,22 @@ public class LevelGenerator : MonoBehaviour
 
     void InitializeSoaringLiftsPool()
     {
+        const string spritesPath = @"Sprites/Level/SoaringLifts/";
+
         int initialStreamIndex = Random.Range(0, soaringLiftSuffixes.Length);
+        var spritesNames = Directory.GetFiles(
+            Path.Combine(@"Assets/Resources", spritesPath), "*.psd");
+
         initialAirStream = true;
 
-        foreach (string suffix in soaringLiftSuffixes)
+        foreach (string name in spritesNames)
         {
+            var spriteName = Path.GetFileNameWithoutExtension(name);
+
             try
             {
                 soaringLiftsPool.Add(CreateObjectFromPrefab(
-                    soaringLiftPrefab,
-                    "Sprites/Level/SoaringLifts/soaring_lift_" + suffix));
+                    soaringLiftPrefab, Path.Combine(spritesPath, spriteName)));
             }
             catch (FileNotFoundException ex)
             {
@@ -210,22 +216,22 @@ public class LevelGenerator : MonoBehaviour
                 = soaringLiftsParent.transform;
 
             // TODO: SAVE THOSE DATA IN JSON/XML?
-            if (suffix == soaringLiftSuffixes[0])
+            if (spriteName == ("soaring_lift_" + soaringLiftSuffixes[0]))
             {
                 soaringLiftsPool[soaringLiftsPool.Count - 1].
                     GetComponent<AirStream>().LiftRatio = -1.0f;
             }
-            else if (suffix == soaringLiftSuffixes[1])
+            else if (spriteName == ("soaring_lift_" + soaringLiftSuffixes[1]))
             {
                 soaringLiftsPool[soaringLiftsPool.Count - 1].
                     GetComponent<AirStream>().LiftRatio = 1.0f;
             }
-            else if (suffix == soaringLiftSuffixes[2])
+            else if (spriteName == ("soaring_lift_" + soaringLiftSuffixes[2]))
             {
                 soaringLiftsPool[soaringLiftsPool.Count - 1].
                     GetComponent<AirStream>().LiftRatio = -2.0f;
             }
-            else if (suffix == soaringLiftSuffixes[3])
+            else if (spriteName == ("soaring_lift_" + soaringLiftSuffixes[3]))
             {
                 soaringLiftsPool[soaringLiftsPool.Count - 1].
                     GetComponent<AirStream>().LiftRatio = 2.0f;
@@ -235,6 +241,7 @@ public class LevelGenerator : MonoBehaviour
 
     void InitializeGroundChunksPool()
     {
+        const string spritesPath =  @"Sprites/Level/GroundChunks/ground_chunk_";
         initialGroundChunk = true;
         currentGroundChunkIndex = Random.Range(0, spritesNumber);
         nextGroundChunkTransitionX = CameraLeftEdgeInWorldX;
@@ -253,8 +260,7 @@ public class LevelGenerator : MonoBehaviour
             try
             {
                 groundChunksPool.Add(CreateObjectFromPrefab(
-                    groundChunkPrefab,
-                    "Sprites/Level/GroundChunks/ground_chunk_" + i));
+                    groundChunkPrefab, spritesPath + i));
             }
             catch (FileNotFoundException ex)
             {
