@@ -37,23 +37,27 @@ clouds in clouds to fly as long as possible and to avoid storms.
 ## 4. Overview
 
 ### 4.1 Setting
-Skies.
+Beautiful Sky.
 
 ### 4.2 Plot
-Glider finds that is lost somewhere above the ground. Then, it tries to fly as
-far as possible.
+Random glider finds that is lost somewhere above the ground. Then, it tries to
+fly as far as possible.
 
 ### 4.3 Characters
-- Lost Glider - a sailplane based on SZD-48 Jantar Standard 2/3.
+- Glider - a sailplane based on SZD-48 Jantar Standard 2/3.
 
 ### 4.4 Levels
 #### Clouds
-- Cumulonimbus.
-- Towering cumulus.
+Nicely visible entities those change the Glider behaviour.
+- Cumulonimbus - destroys the Glider.
+- Towering cumulus - increases altitude very quickly via cloud suck.
+- Nimbostratus - hides the Glider completely.
 
 #### Soaring Lifts
-- Thermal.
-- Wave lift.
+A little less visible phenomenons than clouds.
+- Cold air - decreases altitude.
+- Thermal - increases altitude.
+- Wave lift - increases altitude slightly and speed.
 
 ### 5. Gameplay
 Player attempts to fly as far as possible with the Glider using proper
