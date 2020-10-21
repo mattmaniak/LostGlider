@@ -50,7 +50,7 @@ fly as far as possible.
 #### Clouds
 Nicely visible entities those change the Glider behaviour.
 - Cumulonimbus - destroys the Glider.
-- Towering cumulus - increases altitude very quickly via cloud suck.
+- Cumulus congestus - increases altitude very quickly via cloud suck.
 - Nimbostratus - hides the Glider completely.
 
 #### Soaring Lifts
