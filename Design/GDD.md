@@ -55,8 +55,8 @@ Nicely visible entities those change the Glider behaviour.
 
 #### Soaring Lifts
 A little less visible phenomenons than clouds.
+- Hot air - increases altitude.
 - Cold air - decreases altitude.
-- Thermal - increases altitude.
 - Wave lift - increases altitude slightly and speed.
 
 ### 5. Gameplay
