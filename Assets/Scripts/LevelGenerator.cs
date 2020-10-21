@@ -195,7 +195,8 @@ public class LevelGenerator : MonoBehaviour
             try
             {
                 soaringLiftsPool.Add(CreateObjectFromPrefab(
-                    soaringLiftPrefab, "Sprites/Level/soaring_lift_" + suffix));
+                    soaringLiftPrefab,
+                    "Sprites/Level/SoaringLifts/soaring_lift_" + suffix));
             }
             catch (FileNotFoundException ex)
             {
@@ -252,7 +253,8 @@ public class LevelGenerator : MonoBehaviour
             try
             {
                 groundChunksPool.Add(CreateObjectFromPrefab(
-                    groundChunkPrefab, "Sprites/Level/ground_chunk_" + i));
+                    groundChunkPrefab,
+                    "Sprites/Level/GroundChunks/ground_chunk_" + i));
             }
             catch (FileNotFoundException ex)
             {
