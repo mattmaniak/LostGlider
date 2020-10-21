@@ -6,8 +6,6 @@ public class LevelGenerator : MonoBehaviour
 {
     const int spritesNumberMin = 3;
     readonly int spritesNumber = 4;
-    readonly string[] soaringLiftSuffixes
-        = { "cold", "hot", "super_cold", "super_hot" };
     readonly Vector2 graveyardPosition = new Vector2(-100.0f, 0.0f);
 
     [SerializeField]
@@ -124,8 +122,7 @@ public class LevelGenerator : MonoBehaviour
             previousAirStreamIndex = nextAirStreamIndex;
             do
             {
-                nextAirStreamIndex = Random.Range(0,
-                                                  soaringLiftSuffixes.Length);
+                nextAirStreamIndex = Random.Range(0, soaringLiftsPool.Count);
             }
             while (nextAirStreamIndex == previousAirStreamIndex);
 
@@ -189,9 +186,9 @@ public class LevelGenerator : MonoBehaviour
     {
         const string spritesPath = @"Sprites/Level/SoaringLifts/";
 
-        int initialStreamIndex = Random.Range(0, soaringLiftSuffixes.Length);
-        var spritesNames = Directory.GetFiles(
+        string[] spritesNames = Directory.GetFiles(
             Path.Combine(@"Assets/Resources", spritesPath), "*.psd");
+        int initialStreamIndex = Random.Range(0, spritesNames.Length);
 
         initialAirStream = true;
 
@@ -216,25 +213,20 @@ public class LevelGenerator : MonoBehaviour
                 = soaringLiftsParent.transform;
 
             // TODO: SAVE THOSE DATA IN JSON/XML?
-            if (spriteName == ("soaring_lift_" + soaringLiftSuffixes[0]))
+            if (spriteName == "hot_air")
             {
                 soaringLiftsPool[soaringLiftsPool.Count - 1].
-                    GetComponent<AirStream>().LiftRatio = -1.0f;
+                    GetComponent<AirStream>().LiftRatio = 3.0f;
             }
-            else if (spriteName == ("soaring_lift_" + soaringLiftSuffixes[1]))
+            else if (spriteName == "wave_lift")
             {
                 soaringLiftsPool[soaringLiftsPool.Count - 1].
                     GetComponent<AirStream>().LiftRatio = 1.0f;
             }
-            else if (spriteName == ("soaring_lift_" + soaringLiftSuffixes[2]))
+            else if (spriteName == "cold_air")
             {
                 soaringLiftsPool[soaringLiftsPool.Count - 1].
                     GetComponent<AirStream>().LiftRatio = -2.0f;
-            }
-            else if (spriteName == ("soaring_lift_" + soaringLiftSuffixes[3]))
-            {
-                soaringLiftsPool[soaringLiftsPool.Count - 1].
-                    GetComponent<AirStream>().LiftRatio = 2.0f;
             }
         }
     }
@@ -242,9 +234,10 @@ public class LevelGenerator : MonoBehaviour
     void InitializeGroundChunksPool()
     {
         const string spritesPath =  @"Sprites/Level/GroundChunks/ground_chunk_";
-        initialGroundChunk = true;
+
         currentGroundChunkIndex = Random.Range(0, spritesNumber);
         nextGroundChunkTransitionX = CameraLeftEdgeInWorldX;
+        initialGroundChunk = true;
 
         if (spritesNumber < spritesNumberMin)
         {
