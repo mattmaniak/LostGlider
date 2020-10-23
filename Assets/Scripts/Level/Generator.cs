@@ -25,10 +25,10 @@ namespace Level
         float groundChunkWidth;
         float nextGroundChunkTransitionX;
         int nextAirStreamIndex;
-        int? previousAirStreamIndex = null;
+        int? previousAirStreamIndex;
         int currentGroundChunkIndex;
         int nextGroundChunkIndex;
-        int? previousGroundChunkIndex = null;
+        int? previousGroundChunkIndex;
         List<GameObject> soaringLiftsPool = new List<GameObject>();
         List<GameObject> groundChunksPool = new List<GameObject>();
 
