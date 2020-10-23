@@ -34,7 +34,7 @@ namespace Level
         float CameraLeftEdgeInWorldX
         {
             get => Camera.main.transform.position.x - cameraHalfWidthInWorld
-                + Camera.main.transform.localPosition.x;
+                   + Camera.main.transform.localPosition.x;
         }
 
         float GroundChunkHalfWidth
@@ -70,11 +70,10 @@ namespace Level
             GenerateSoaringLiftsInfinitely();
         }
 
-        float CenterObjectVertically(in GameObject gameObject) =>
-            gameObject.GetComponent<SpriteRenderer>().sprite.bounds.size.y
-            / 2.0f;
+        float CenterObjectVertically(in GameObject go) =>
+            go.GetComponent<SpriteRenderer>().sprite.bounds.size.y / 2.0f;
 
-        GameObject CreateObjectFromPrefab(GameObject sourcePrefab,
+        GameObject CreateObjectFromPrefab(in GameObject sourcePrefab,
                                           string basename)
         {
             BoxCollider2D goBoxCollider;
@@ -120,7 +119,7 @@ namespace Level
             if (initialAirStream || (CameraLeftEdgeInWorldX
                 >= (soaringLift.transform.position.x
                     + (soaringLift. GetComponent<SpriteRenderer>().bounds.size.x
-                    / 2.0f))))
+                       / 2.0f))))
             {
                 previousAirStreamIndex = nextAirStreamIndex;
                 do
