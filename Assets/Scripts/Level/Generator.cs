@@ -6,8 +6,7 @@ namespace Level
 {
     class Generator : MonoBehaviour
     {
-        const int spritesNumberMin = 3;
-        readonly int spritesNumber = 4;
+        const int groundChunksMin = 3;
         readonly Vector2 graveyardPosition = new Vector2(-100.0f, 0.0f);
 
         [SerializeField]
@@ -75,7 +74,8 @@ namespace Level
             gameObject.GetComponent<SpriteRenderer>().sprite.bounds.size.y
             / 2.0f;
 
-        GameObject CreateObjectFromPrefab(GameObject sourcePrefab, string basename)
+        GameObject CreateObjectFromPrefab(GameObject sourcePrefab,
+                                          string basename)
         {
             BoxCollider2D goBoxCollider;
             Sprite goSprite;
@@ -163,12 +163,13 @@ namespace Level
 
                 do
                 {
-                    nextGroundChunkIndex = Random.Range(0, spritesNumber);
+                    nextGroundChunkIndex
+                        = Random.Range(0, groundChunksPool.Count);
                 }
                 while ((nextGroundChunkIndex == previousGroundChunkIndex)
                     || (nextGroundChunkIndex == currentGroundChunkIndex));
 
-                for (int i = 0; i < spritesNumber; i++)
+                for (int i = 0; i < groundChunksPool.Count; i++)
                 {
                     if (i == nextGroundChunkIndex)
                     {
@@ -194,7 +195,7 @@ namespace Level
                 = @"Sprites/Level/Atmosphere/SoaringLifts/";
 
             string[] spritesNames = Directory.GetFiles(
-                Path.Combine(@"Assets/Resources", spritesPath), "*.psd");
+                Path.Combine(@"Assets/Resources/", spritesPath), "*.psd");
             int initialStreamIndex = Random.Range(0, spritesNames.Length);
 
             initialAirStream = true;
@@ -241,28 +242,32 @@ namespace Level
 
         void InitializeGroundChunksPool()
         {
-            const string spritesPath
-                = @"Sprites/Level/GroundChunks/ground_chunk_";
+            const string spriteNamePrefix = @"ground_chunk_";
+            const string spritesPath = @"Sprites/Level/GroundChunks/";
 
-            currentGroundChunkIndex = Random.Range(0, spritesNumber);
+            string[] spritesNames = Directory.GetFiles(
+                Path.Combine(@"Assets/Resources/", spritesPath), "*.psd");
+
+            currentGroundChunkIndex = Random.Range(0, spritesNames.Length);
             nextGroundChunkTransitionX = CameraLeftEdgeInWorldX;
             initialGroundChunk = true;
 
-            if (spritesNumber < spritesNumberMin)
+            if (spritesNames.Length < groundChunksMin)
             {
                 if (DebugUtils.GlobalEnabler.activated)
                 {
                     Debug.Log(GetType().Name + " initialization aborted. "
-                              + "At least 3 ground sprites needed.");
+                              + $"At least {groundChunksMin} ground needed.");
                 }
                 UnityQuit.Quit(1);
             }
-            for (int i = 0; i < spritesNumber; i++)
+            for (int i = 0; i < spritesNames.Length; i++)
             {
                 try
                 {
                     groundChunksPool.Add(CreateObjectFromPrefab(
-                        groundChunkPrefab, spritesPath + i));
+                        groundChunkPrefab,
+                        Path.Combine(spritesPath, spriteNamePrefix) + i));
                 }
                 catch (FileNotFoundException ex)
                 {
