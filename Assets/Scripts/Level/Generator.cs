@@ -77,8 +77,8 @@ namespace Level
                                           string basename)
         {
             BoxCollider2D goBoxCollider;
-            Sprite goSprite;
             GameObject go;
+            Sprite goSprite;
             SpriteRenderer goSpriteRenderer;
 
             go = Instantiate(sourcePrefab);
@@ -166,7 +166,7 @@ namespace Level
                         = Random.Range(0, groundChunksPool.Count);
                 }
                 while ((nextGroundChunkIndex == previousGroundChunkIndex)
-                    || (nextGroundChunkIndex == currentGroundChunkIndex));
+                       || (nextGroundChunkIndex == currentGroundChunkIndex));
 
                 for (int i = 0; i < groundChunksPool.Count; i++)
                 {
