@@ -199,7 +199,7 @@ namespace Level
 
             initialAirStream = true;
 
-            foreach (string name in spritesNames)
+            foreach (var name in spritesNames)
             {
                 var spriteName = Path.GetFileNameWithoutExtension(name);
 
@@ -220,21 +220,21 @@ namespace Level
                 soaringLiftsPool[soaringLiftsPool.Count - 1].transform.parent
                     = soaringLiftsParent.transform;
 
+                var soaringLift = soaringLiftsPool[soaringLiftsPool.Count - 1].
+                    GetComponent<SoaringLift>();
+
                 // TODO: SAVE THOSE DATA IN JSON/XML?
                 if (spriteName == "hot_air")
                 {
-                    soaringLiftsPool[soaringLiftsPool.Count - 1].
-                        GetComponent<AirStream>().LiftRatio = 3.0f;
+                    soaringLift.LiftRatio = 3.0f;
                 }
                 else if (spriteName == "wave_lift")
                 {
-                    soaringLiftsPool[soaringLiftsPool.Count - 1].
-                        GetComponent<AirStream>().LiftRatio = 1.0f;
+                    soaringLift.LiftRatio = 1.0f;
                 }
                 else if (spriteName == "cold_air")
                 {
-                    soaringLiftsPool[soaringLiftsPool.Count - 1].
-                        GetComponent<AirStream>().LiftRatio = -2.0f;
+                    soaringLift.LiftRatio = -2.0f;
                 }
             }
         }
@@ -256,7 +256,7 @@ namespace Level
                 if (DebugUtils.GlobalEnabler.activated)
                 {
                     Debug.Log(GetType().Name + " initialization aborted. "
-                              + $"At least {groundChunksMin} ground needed.");
+                              + $"At least {groundChunksMin} grounds needed.");
                 }
                 UnityQuit.Quit(1);
             }

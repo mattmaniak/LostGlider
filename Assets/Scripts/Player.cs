@@ -64,7 +64,7 @@ public class Player : MonoBehaviour
         if (collider.name.Contains("SoaringLift"))
         {
             LiftRatio
-                = collider.gameObject.GetComponent<AirStream>().LiftRatio;
+                = collider.gameObject.GetComponent<SoaringLift>().LiftRatio;
         }
     }
 

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class AirStream : MonoBehaviour
+public class SoaringLift : MonoBehaviour
 {
     public float LiftRatio { get; set; }
 }
