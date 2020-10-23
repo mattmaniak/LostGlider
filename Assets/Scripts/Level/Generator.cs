@@ -190,7 +190,8 @@ namespace Level
 
         void InitializeSoaringLiftsPool()
         {
-            const string spritesPath = @"Sprites/Level/SoaringLifts/";
+            const string spritesPath 
+                = @"Sprites/Level/Atmosphere/SoaringLifts/";
 
             string[] spritesNames = Directory.GetFiles(
                 Path.Combine(@"Assets/Resources", spritesPath), "*.psd");
@@ -252,7 +253,7 @@ namespace Level
                 if (DebugUtils.GlobalEnabler.activated)
                 {
                     Debug.Log(GetType().Name + " initialization aborted. "
-                            + "At least 3 ground sprites needed.");
+                              + "At least 3 ground sprites needed.");
                 }
                 UnityQuit.Quit(1);
             }
