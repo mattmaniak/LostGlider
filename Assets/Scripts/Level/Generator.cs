@@ -17,37 +17,33 @@ namespace Level
 
         GameObject soaringLiftsParent;
         GameObject groundChunksParent;
-
-        bool initialAirStream; 
-        bool initialGroundChunk;
-        float cameraHalfWidthInWorld;
-        float groundChunkWidth;
-        float nextGroundChunkTransitionX;
-        int nextAirStreamIndex;
         int? previousAirStreamIndex;
-        int currentGroundChunkIndex;
-        int nextGroundChunkIndex;
         int? previousGroundChunkIndex;
         List<GameObject> soaringLiftsPool = new List<GameObject>();
         List<GameObject> groundChunksPool = new List<GameObject>();
 
+        bool InitialAirStream { get; set; } 
+        bool InitialGroundChunk { get; set; }
+        float CameraHalfWidthInWorld { get; set; }
         float CameraLeftEdgeInWorldX
         {
-            get => Camera.main.transform.position.x - cameraHalfWidthInWorld
+            get => Camera.main.transform.position.x - CameraHalfWidthInWorld
                    + Camera.main.transform.localPosition.x;
         }
 
-        float GroundChunkHalfWidth
-        {
-            get => groundChunkWidth / 2.0f;
-        }
+        float GroundChunkHalfWidth { get => GroundChunkWidth / 2.0f; }
+        float GroundChunkWidth { get; set; }
+        float NextGroundChunkTransitionX { get; set; }
+        int CurrentGroundChunkIndex { get; set; }
+        int NextAirStreamIndex { get; set; }
+        int NextGroundChunkIndex { get; set; }
 
         void Start()
         {
             soaringLiftsParent = new GameObject("SoaringLiftsPool");
             groundChunksParent = new GameObject("GroundChunksPool");
 
-            cameraHalfWidthInWorld = Camera.main.ScreenToWorldPoint(new Vector3(
+            CameraHalfWidthInWorld = Camera.main.ScreenToWorldPoint(new Vector3(
                 Screen.width, 0.0f, 0.0f)).x;
             try
             {
@@ -113,25 +109,25 @@ namespace Level
             const float minOffScreenOffsetX = 1.0f;
             const float maxOffScreenOffsetX = 10.0f;
 
-            GameObject soaringLift = soaringLiftsPool[nextAirStreamIndex];
+            GameObject soaringLift = soaringLiftsPool[NextAirStreamIndex];
             Vector2 newPosition;
 
-            if (initialAirStream || (CameraLeftEdgeInWorldX
+            if (InitialAirStream || (CameraLeftEdgeInWorldX
                 >= (soaringLift.transform.position.x
                     + (soaringLift. GetComponent<SpriteRenderer>().bounds.size.x
                        / 2.0f))))
             {
-                previousAirStreamIndex = nextAirStreamIndex;
+                previousAirStreamIndex = NextAirStreamIndex;
                 do
                 {
-                    nextAirStreamIndex = Random.Range(0, 
+                    NextAirStreamIndex = Random.Range(0, 
                                                       soaringLiftsPool.Count);
                 }
-                while (nextAirStreamIndex == previousAirStreamIndex);
+                while (NextAirStreamIndex == previousAirStreamIndex);
 
                 newPosition.x = Random.Range(CameraLeftEdgeInWorldX
-                    + (cameraHalfWidthInWorld * 2.0f) + minOffScreenOffsetX,
-                    CameraLeftEdgeInWorldX + (cameraHalfWidthInWorld * 2.0f)
+                    + (CameraHalfWidthInWorld * 2.0f) + minOffScreenOffsetX,
+                    CameraLeftEdgeInWorldX + (CameraHalfWidthInWorld * 2.0f)
                     + maxOffScreenOffsetX
                     - Camera.main.transform.localPosition.x);
 
@@ -140,51 +136,51 @@ namespace Level
                                             Camera.main.transform.position.y
                                             + maxOffCameraOffsetY);
 
-                soaringLiftsPool[nextAirStreamIndex].transform.position
+                soaringLiftsPool[NextAirStreamIndex].transform.position
                     = newPosition;
-                initialAirStream = false;
+                InitialAirStream = false;
             }
         }
 
         void GenerateInfiniteGround()
         {
-            if (CameraLeftEdgeInWorldX >= nextGroundChunkTransitionX)
+            if (CameraLeftEdgeInWorldX >= NextGroundChunkTransitionX)
             {
-                previousGroundChunkIndex = currentGroundChunkIndex;
-                if (!initialGroundChunk)
+                previousGroundChunkIndex = CurrentGroundChunkIndex;
+                if (!InitialGroundChunk)
                 {
-                    currentGroundChunkIndex = nextGroundChunkIndex;
+                    CurrentGroundChunkIndex = NextGroundChunkIndex;
                 }
                 else
                 {
-                    initialGroundChunk = false;
+                    InitialGroundChunk = false;
                 }
 
                 do
                 {
-                    nextGroundChunkIndex
+                    NextGroundChunkIndex
                         = Random.Range(0, groundChunksPool.Count);
                 }
-                while ((nextGroundChunkIndex == previousGroundChunkIndex)
-                       || (nextGroundChunkIndex == currentGroundChunkIndex));
+                while ((NextGroundChunkIndex == previousGroundChunkIndex)
+                       || (NextGroundChunkIndex == CurrentGroundChunkIndex));
 
                 for (int i = 0; i < groundChunksPool.Count; i++)
                 {
-                    if (i == nextGroundChunkIndex)
+                    if (i == NextGroundChunkIndex)
                     {
                         groundChunksPool[i].transform.position = new Vector2(
-                            nextGroundChunkTransitionX + groundChunkWidth
+                            NextGroundChunkTransitionX + GroundChunkWidth
                             + GroundChunkHalfWidth
                             - Camera.main.transform.localPosition.x,
                             CenterObjectVertically(groundChunksPool[i]));
                     }
-                    else if (i != currentGroundChunkIndex)
+                    else if (i != CurrentGroundChunkIndex)
                     {
                         groundChunksPool[i].transform.position
                             = graveyardPosition;
                     }
                 }
-                nextGroundChunkTransitionX += groundChunkWidth;
+                NextGroundChunkTransitionX += GroundChunkWidth;
             }
         }
 
@@ -197,7 +193,7 @@ namespace Level
                 Path.Combine(@"Assets/Resources/", spritesPath), "*.psd");
             int initialStreamIndex = Random.Range(0, spritesNames.Length);
 
-            initialAirStream = true;
+            InitialAirStream = true;
 
             foreach (var name in spritesNames)
             {
@@ -247,9 +243,9 @@ namespace Level
             string[] spritesNames = Directory.GetFiles(
                 Path.Combine(@"Assets/Resources/", spritesPath), "*.psd");
 
-            currentGroundChunkIndex = Random.Range(0, spritesNames.Length);
-            nextGroundChunkTransitionX = CameraLeftEdgeInWorldX;
-            initialGroundChunk = true;
+            CurrentGroundChunkIndex = Random.Range(0, spritesNames.Length);
+            NextGroundChunkTransitionX = CameraLeftEdgeInWorldX;
+            InitialGroundChunk = true;
 
             if (spritesNames.Length < groundChunksMin)
             {
@@ -279,15 +275,15 @@ namespace Level
                 groundChunksPool[i].transform.parent
                     = groundChunksParent.transform;
 
-                if (i == currentGroundChunkIndex)
+                if (i == CurrentGroundChunkIndex)
                 {
                     var groundChunk = groundChunksPool[i];
 
-                    groundChunkWidth = groundChunk.
+                    GroundChunkWidth = groundChunk.
                         GetComponent<SpriteRenderer>().sprite.bounds.size.x;
 
                     groundChunk.transform.position = new Vector2(
-                        GroundChunkHalfWidth - cameraHalfWidthInWorld
+                        GroundChunkHalfWidth - CameraHalfWidthInWorld
                         + Camera.main.transform.localPosition.x,
                         CenterObjectVertically(groundChunk));
                 }
