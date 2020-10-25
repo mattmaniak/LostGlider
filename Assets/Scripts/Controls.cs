@@ -16,15 +16,16 @@ public class Controls : MonoBehaviour
 
     const int paddingPx = 128;
 
-    static bool controlsEnabled = true;
-    bool joystickPressed;
-    float deltaDirection;
-    float innerJoysticSliderSize;
-    Vector2 dragPoint;
+    static bool ControlsEnabled { get; set; }
+    bool JoystickPressed { get; set; }
+    float DeltaDirection { get; set; }
+    float InnerJoysticSliderSize { get; set; }
+    Vector2 DragPoint { get; set; }
 
     void Start()
     {
-        innerJoysticSliderSize = GetComponent<SpriteRenderer>().bounds.size.y
+        ControlsEnabled = true;
+        InnerJoysticSliderSize = GetComponent<SpriteRenderer>().bounds.size.y
                                  - innerJoystick.GetComponent<SpriteRenderer>().
                                    bounds.size.y;
     }
@@ -44,11 +45,11 @@ public class Controls : MonoBehaviour
     {
         if (!Player.Alive)
         {
-            controlsEnabled = false;
+            ControlsEnabled = false;
         }
         bool leftMouseButtonHeld = Input.GetMouseButton(0);
         
-        if (controlsEnabled && leftMouseButtonHeld)
+        if (ControlsEnabled && leftMouseButtonHeld)
         {
             Vector3 mousePosition = Camera.main.ScreenToWorldPoint(
                 Input.mousePosition);
@@ -60,12 +61,12 @@ public class Controls : MonoBehaviour
             if ((hit.collider != null)
                 && (hit.collider.gameObject.name == "OuterJoystick"))
             {
-                joystickPressed = true;
+                JoystickPressed = true;
             }
         }
         else
         {
-            joystickPressed = false;
+            JoystickPressed = false;
         }
         CalculateJoystickPosition();
     }
@@ -73,7 +74,7 @@ public class Controls : MonoBehaviour
 
     public static void DisableControls()
     {
-        controlsEnabled = false;
+        ControlsEnabled = false;
     }
 
     void CalculateJoystickPosition()
@@ -84,45 +85,45 @@ public class Controls : MonoBehaviour
         var joystickPosition = new Vector2(transform.position.x,
                                            touchPosition.y);
 
-        if (controlsEnabled && joystickPressed)
+        if (ControlsEnabled && JoystickPressed)
         {
             // TODO MATHF.CLAMP DOESN"T WORK.
             if (joystickPosition.y
-                > (transform.position.y + (innerJoysticSliderSize / 2.0f)))
+                > (transform.position.y + (InnerJoysticSliderSize / 2.0f)))
             {
                 joystickPosition.y
-                    = transform.position.y + (innerJoysticSliderSize / 2.0f);
+                    = transform.position.y + (InnerJoysticSliderSize / 2.0f);
             }
             if (joystickPosition.y
-                < (transform.position.y - (innerJoysticSliderSize / 2.0f)))
+                < (transform.position.y - (InnerJoysticSliderSize / 2.0f)))
             {
                 joystickPosition.y
-                    = transform.position.y - (innerJoysticSliderSize / 2.0f);
+                    = transform.position.y - (InnerJoysticSliderSize / 2.0f);
             }
-            innerJoystick.transform.position = dragPoint = joystickPosition;
+            innerJoystick.transform.position = DragPoint = joystickPosition;
         }
         else
         {
-            innerJoystick.transform.position = dragPoint = transform.position;
-            deltaDirection = 0.0f;
+            innerJoystick.transform.position = DragPoint = transform.position;
+            DeltaDirection = 0.0f;
         }
     }
 
     void ControlByJoystick()
     {
-        if (joystickPressed)
+        if (JoystickPressed)
         {
-            deltaDirection = (transform.position.y - dragPoint.y)
-                             / (innerJoysticSliderSize / 2.0f);
+            DeltaDirection = (transform.position.y - DragPoint.y)
+                             / (InnerJoysticSliderSize / 2.0f);
         }
     }
 
     [Obsolete("Use only for debugging/testing purposes.")]
     void ControlByKeyboard()
     {
-        if (controlsEnabled && !joystickPressed)
+        if (ControlsEnabled && !JoystickPressed)
         {
-            deltaDirection = -Input.GetAxis("Vertical");
+            DeltaDirection = -Input.GetAxis("Vertical");
             if (Input.GetKey("escape"))
             {
                 Utils.UnityQuit.Quit();
@@ -132,7 +133,7 @@ public class Controls : MonoBehaviour
 
     void MovePlayerVertically()
     {
-        float deltaY = deltaDirection * Player.Speed * Time.deltaTime;
+        float deltaY = DeltaDirection * Player.Speed * Time.deltaTime;
         player.transform.Translate(new Vector3(0.0f, deltaY, 0.0f));
     }
 
@@ -141,12 +142,12 @@ public class Controls : MonoBehaviour
         if (Menus.PauseMenuController.Paused)
         {
             playerRigidbody.Sleep();
-            controlsEnabled = false;
+            ControlsEnabled = false;
         }
         else if (Player.Alive)
         {
             playerRigidbody.WakeUp();
-            controlsEnabled = true;
+            ControlsEnabled = true;
         }
     }
 }

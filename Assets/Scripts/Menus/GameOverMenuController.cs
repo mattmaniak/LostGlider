@@ -8,14 +8,19 @@ namespace Menus
         [SerializeField]
         GameObject[] gameOverMenuButtons;
 
-        bool playerAliveBefore = Player.Alive;
+        bool PlayerAliveBefore { get; set; }
+
+        void Start()
+        {
+            PlayerAliveBefore = Player.Alive;
+        }
 
         void Update()
         {
-            if (Player.Alive != playerAliveBefore)
+            if (Player.Alive != PlayerAliveBefore)
             {
                 ToggleVisibilityOfGUI(!Player.Alive);
-                playerAliveBefore = Player.Alive;
+                PlayerAliveBefore = Player.Alive;
             }
         }
 

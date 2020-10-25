@@ -16,9 +16,9 @@ namespace DebugUtils
             [SerializeField]
             Text wipLabelText;
 
-            static string gitRepoSummary;
-            static string unityProjectInfo;
-            static string wipLabel;
+            static string GitRepoSummary { get; set; }
+            static string UnityProjectInfo { get; set; }
+            static string WipLabel { get; set; }
 
             void Update()
             {
@@ -36,25 +36,25 @@ namespace DebugUtils
                         break;
 
                     case Modes.PartiallyEnabled:
-                        wipLabel = DebugUtils.Overlay.Model.WipLabel;
+                        WipLabel = DebugUtils.Overlay.Model.WipLabel;
                         break;
 
                     case Modes.FullyEnabled:
-                        gitRepoSummary
+                        GitRepoSummary
                             = DebugUtils.Overlay.Model.GitRepoSummary;
-                        unityProjectInfo
+                        UnityProjectInfo
                             = DebugUtils.Overlay.Model.UnityProjectInfo;
                         
-                        wipLabel = DebugUtils.Overlay.Model.WipLabel;
+                        WipLabel = DebugUtils.Overlay.Model.WipLabel;
                         break;
                 }
             }
 
             void Display()
             {
-                gitRepoSummaryText.text = gitRepoSummary;
-                unityProjectInfoText.text = unityProjectInfo;
-                wipLabelText.text = wipLabel;
+                gitRepoSummaryText.text = GitRepoSummary;
+                unityProjectInfoText.text = UnityProjectInfo;
+                wipLabelText.text = WipLabel;
             }
         }
     }

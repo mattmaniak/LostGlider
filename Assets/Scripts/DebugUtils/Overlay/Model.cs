@@ -13,7 +13,9 @@ namespace DebugUtils
             const string onErrorPlaceholder = "[not found]";
 
 #region Directories
-            static readonly string gitRepoPath = @Application.dataPath + @"/../.git/";
+            static readonly string gitRepoPath = Path.Combine(
+                Application.dataPath, @"/../.git/");
+
             static string GitBranchBasename { get; set; }
 #endregion
 
