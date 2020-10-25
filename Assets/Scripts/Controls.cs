@@ -50,8 +50,8 @@ public class Controls : MonoBehaviour
         
         if (controlsEnabled && leftMouseButtonHeld)
         {
-            Vector3 mousePosition = Camera.main.
-                                    ScreenToWorldPoint(Input.mousePosition);
+            Vector3 mousePosition = Camera.main.ScreenToWorldPoint(
+                Input.mousePosition);
 
             Vector2 mousePosition2D = new Vector2(mousePosition.x,
                                                   mousePosition.y);
@@ -125,7 +125,7 @@ public class Controls : MonoBehaviour
             deltaDirection = -Input.GetAxis("Vertical");
             if (Input.GetKey("escape"))
             {
-                UnityQuit.Quit();
+                Utils.UnityQuit.Quit();
             }
         }
     }
@@ -138,7 +138,7 @@ public class Controls : MonoBehaviour
 
     void SwitchPlayerGravity()
     {
-        if (PauseMenuController.Paused)
+        if (Menus.PauseMenuController.Paused)
         {
             playerRigidbody.Sleep();
             controlsEnabled = false;

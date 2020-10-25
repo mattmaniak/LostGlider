@@ -60,7 +60,7 @@ namespace Level
                 {
                     Debug.Log(ex);
                 }
-                UnityQuit.Quit(1);
+                Utils.UnityQuit.Quit(1);
             }
         }
 
@@ -215,7 +215,7 @@ namespace Level
                     {
                         Debug.Log(ex);
                     }
-                    UnityQuit.Quit(1);
+                    Utils.UnityQuit.Quit(1);
                 }            
                 soaringLiftsPool[soaringLiftsPool.Count - 1].transform.parent
                     = soaringLiftsParent.transform;
@@ -258,7 +258,7 @@ namespace Level
                     Debug.Log(GetType().Name + " initialization aborted. "
                               + $"At least {groundChunksMin} grounds needed.");
                 }
-                UnityQuit.Quit(1);
+                Utils.UnityQuit.Quit(1);
             }
             for (int i = 0; i < spritesNames.Length; i++)
             {
@@ -274,7 +274,7 @@ namespace Level
                     {
                         Debug.Log(ex);
                     }
-                    UnityQuit.Quit(1);
+                    Utils.UnityQuit.Quit(1);
                 }
                 groundChunksPool[i].transform.parent
                     = groundChunksParent.transform;
