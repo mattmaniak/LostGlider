@@ -1,15 +1,18 @@
 ﻿using UnityEngine;
 
-public class AtmosphericPhenomenon : MonoBehaviour
+namespace Level
 {
-    public float LiftRatio { get; set; }
-    public Vector2 DirectionalSpeed { get; set; }
-
-    void FixedUpdate()
+    public class AtmosphericPhenomenon : MonoBehaviour
     {
-        if (DirectionalSpeed != Vector2.zero)
+        public float LiftRatio { get; set; }
+        public Vector2 DirectionalSpeed { get; set; }
+
+        void FixedUpdate()
         {
-            transform.Translate(DirectionalSpeed * Time.deltaTime);
+            if (DirectionalSpeed != Vector2.zero)
+            {
+                transform.Translate(DirectionalSpeed * Time.deltaTime);
+            }
         }
-    }
+    }    
 }
