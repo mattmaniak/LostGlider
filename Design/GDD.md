@@ -47,17 +47,17 @@ fly as far as possible.
 - Glider - a sailplane based on SZD-48 Jantar Standard 2/3.
 
 ### 4.4 Levels
-#### Clouds
+#### Atmospheric Phenomena
 Nicely visible entities those change the Glider behaviour.
+- Cold air - decreases altitude.
 - Cumulonimbus - destroys the Glider.
 - Cumulus congestus - increases altitude very quickly via cloud suck.
-- Nimbostratus - hides the Glider completely.
-
-#### Soaring Lifts
-A little less visible phenomenons than clouds.
 - Hot air - increases altitude.
-- Cold air - decreases altitude.
+- Nimbostratus - hides the Glider completely.
 - Wave lift - increases altitude slightly and speed.
+
+#### Ground Chunks
+Various enumerated bioms.
 
 ### 5. Gameplay
 Player attempts to fly as far as possible with the Glider using proper
