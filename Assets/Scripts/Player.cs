@@ -61,10 +61,10 @@ public class Player : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collider)
     {
-        if (collider.name.Contains("SoaringLift"))
+        if (collider.name.Contains("AtmosphericPhenomenon"))
         {
-            LiftRatio
-                = collider.gameObject.GetComponent<SoaringLift>().LiftRatio;
+            LiftRatio = collider.gameObject.
+                GetComponent<AtmosphericPhenomenon>().LiftRatio;
         }
     }
 

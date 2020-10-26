@@ -1510,13 +1510,13 @@ Canvas:
   m_RenderMode: 1
   m_Camera: {fileID: 519420031}
   m_PlaneDistance: 100
-  m_PixelPerfect: 0
+  m_PixelPerfect: 1
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 0
-  m_SortingLayerID: 0
+  m_SortingLayerID: 313457129
   m_SortingOrder: 0
   m_TargetDisplay: 0
 --- !u!224 &918040490
@@ -1847,7 +1847,7 @@ Canvas:
   m_RenderMode: 1
   m_Camera: {fileID: 519420031}
   m_PlaneDistance: 100
-  m_PixelPerfect: 0
+  m_PixelPerfect: 1
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
@@ -2429,7 +2429,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e28f60ee238baa049820484e1412caf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  soaringLiftPrefab: {fileID: 2191476900758837571, guid: 4b0898058e9f9ca48b787573a17a4fa9,
+  atmosphericPhenomenaPrefab: {fileID: 2191476900758837571, guid: 4b0898058e9f9ca48b787573a17a4fa9,
     type: 3}
   groundChunkPrefab: {fileID: 2153497403874687727, guid: 3af6f8153ba283744bc5cfaa67930b7d,
     type: 3}

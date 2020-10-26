@@ -10,27 +10,29 @@ namespace Level
         readonly Vector2 graveyardPosition = new Vector2(-100.0f, 0.0f);
 
         [SerializeField]
-        GameObject soaringLiftPrefab;
+        GameObject atmosphericPhenomenaPrefab;
 
         [SerializeField]
         GameObject groundChunkPrefab;
 
-        GameObject soaringLiftsParent;
+        GameObject atmosphericPhenomenaParent;
         GameObject groundChunksParent;
         int? previousAirStreamIndex;
         int? previousGroundChunkIndex;
-        List<GameObject> soaringLiftsPool = new List<GameObject>();
+        List<GameObject> atmosphericPhenomenaPool = new List<GameObject>();
         List<GameObject> groundChunksPool = new List<GameObject>();
 
-        bool InitialAirStream { get; set; } 
+        bool InitialAtmosphericPhenomenon { get; set; } 
         bool InitialGroundChunk { get; set; }
         float CameraHalfWidthInWorld { get; set; }
+
         float CameraLeftEdgeInWorldX
         {
             get => Camera.main.transform.position.x - CameraHalfWidthInWorld
                    + Camera.main.transform.localPosition.x;
         }
 
+        float CameraWidthInWorld { get => CameraHalfWidthInWorld * 2.0f; }
         float GroundChunkHalfWidth { get => GroundChunkWidth / 2.0f; }
         float GroundChunkWidth { get; set; }
         float NextGroundChunkTransitionX { get; set; }
@@ -40,14 +42,15 @@ namespace Level
 
         void Start()
         {
-            soaringLiftsParent = new GameObject("SoaringLiftsPool");
+            atmosphericPhenomenaParent
+                = new GameObject("AtmosphericPhenomenaPool");
             groundChunksParent = new GameObject("GroundChunksPool");
 
             CameraHalfWidthInWorld = Camera.main.ScreenToWorldPoint(new Vector3(
                 Screen.width, 0.0f, 0.0f)).x;
             try
             {
-                InitializeSoaringLiftsPool();
+                InitializeAtmosphericPhenomenaPool();
                 InitializeGroundChunksPool();
             }
             catch (System.Exception ex)
@@ -109,36 +112,37 @@ namespace Level
             const float minOffScreenOffsetX = 1.0f;
             const float maxOffScreenOffsetX = 10.0f;
 
-            GameObject soaringLift = soaringLiftsPool[NextAirStreamIndex];
+            GameObject atmosphericPhenomenon 
+                = atmosphericPhenomenaPool[NextAirStreamIndex];
             Vector2 newPosition;
 
-            if (InitialAirStream || (CameraLeftEdgeInWorldX
-                >= (soaringLift.transform.position.x
-                    + (soaringLift. GetComponent<SpriteRenderer>().bounds.size.x
-                       / 2.0f))))
+            if (InitialAtmosphericPhenomenon || (CameraLeftEdgeInWorldX
+                >= (atmosphericPhenomenon.transform.position.x
+                    + (atmosphericPhenomenon.GetComponent<SpriteRenderer>().
+                       bounds.size.x / 2.0f))))
             {
                 previousAirStreamIndex = NextAirStreamIndex;
                 do
                 {
-                    NextAirStreamIndex = Random.Range(0, 
-                                                      soaringLiftsPool.Count);
+                    NextAirStreamIndex
+                        = Random.Range(0, atmosphericPhenomenaPool.Count);
                 }
                 while (NextAirStreamIndex == previousAirStreamIndex);
 
                 newPosition.x = Random.Range(CameraLeftEdgeInWorldX
-                    + (CameraHalfWidthInWorld * 2.0f) + minOffScreenOffsetX,
-                    CameraLeftEdgeInWorldX + (CameraHalfWidthInWorld * 2.0f)
+                    + CameraWidthInWorld + minOffScreenOffsetX,
+                    CameraLeftEdgeInWorldX + CameraWidthInWorld
                     + maxOffScreenOffsetX
                     - Camera.main.transform.localPosition.x);
 
                 newPosition.y = Random.Range(Camera.main.transform.position.y
-                                            - maxOffCameraOffsetY,
-                                            Camera.main.transform.position.y
-                                            + maxOffCameraOffsetY);
+                                             - maxOffCameraOffsetY,
+                                             Camera.main.transform.position.y
+                                             + maxOffCameraOffsetY);
 
-                soaringLiftsPool[NextAirStreamIndex].transform.position
+                atmosphericPhenomenaPool[NextAirStreamIndex].transform.position
                     = newPosition;
-                InitialAirStream = false;
+                InitialAtmosphericPhenomenon = false;
             }
         }
 
@@ -184,16 +188,15 @@ namespace Level
             }
         }
 
-        void InitializeSoaringLiftsPool()
+        void InitializeAtmosphericPhenomenaPool()
         {
-            const string spritesPath 
-                = @"Sprites/Level/Atmosphere/SoaringLifts/";
+            const string spritesPath = @"Sprites/Level/AtmosphericPhenomena/";
 
             string[] spritesNames = Directory.GetFiles(
                 Path.Combine(@"Assets/Resources/", spritesPath), "*.psd");
             int initialStreamIndex = Random.Range(0, spritesNames.Length);
 
-            InitialAirStream = true;
+            InitialAtmosphericPhenomenon = true;
 
             foreach (var name in spritesNames)
             {
@@ -201,8 +204,8 @@ namespace Level
 
                 try
                 {
-                    soaringLiftsPool.Add(CreateObjectFromPrefab(
-                        soaringLiftPrefab,
+                    atmosphericPhenomenaPool.Add(CreateObjectFromPrefab(
+                        atmosphericPhenomenaPrefab,
                         Path.Combine(spritesPath, spriteName)));
                 }
                 catch (FileNotFoundException ex)
@@ -213,25 +216,12 @@ namespace Level
                     }
                     Utils.UnityQuit.Quit(1);
                 }            
-                soaringLiftsPool[soaringLiftsPool.Count - 1].transform.parent
-                    = soaringLiftsParent.transform;
+                atmosphericPhenomenaPool[atmosphericPhenomenaPool.Count - 1].
+                    transform.parent = atmosphericPhenomenaParent.transform;
 
-                var soaringLift = soaringLiftsPool[soaringLiftsPool.Count - 1].
-                    GetComponent<SoaringLift>();
-
-                // TODO: SAVE THOSE DATA IN JSON/XML?
-                if (spriteName == "hot_air")
-                {
-                    soaringLift.LiftRatio = 3.0f;
-                }
-                else if (spriteName == "wave_lift")
-                {
-                    soaringLift.LiftRatio = 1.0f;
-                }
-                else if (spriteName == "cold_air")
-                {
-                    soaringLift.LiftRatio = -2.0f;
-                }
+                var atmosphericPhenomenon = atmosphericPhenomenaPool
+                    [atmosphericPhenomenaPool.Count - 1].
+                    GetComponent<AtmosphericPhenomenon>();
             }
         }
 
