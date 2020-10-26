@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 548406211318161556}
   - component: {fileID: 1055420586044001280}
   m_Layer: 0
-  m_Name: AirStream
+  m_Name: AtmosphericPhenomena
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -118,6 +118,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 2191476900758837571}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f2e913e0e7d65904287d141e5a39f009, type: 3}
+  m_Script: {fileID: 11500000, guid: 9a840658296945b40b3ff3ef22502038, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

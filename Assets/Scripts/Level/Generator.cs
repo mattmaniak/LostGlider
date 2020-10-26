@@ -15,8 +15,6 @@ namespace Level
         [SerializeField]
         GameObject groundChunkPrefab;
 
-        GameObject atmosphericPhenomenaParent;
-        GameObject groundChunksParent;
         int? previousAirStreamIndex;
         int? previousGroundChunkIndex;
         List<GameObject> atmosphericPhenomenaPool = new List<GameObject>();
@@ -24,8 +22,9 @@ namespace Level
 
         bool InitialAtmosphericPhenomenon { get; set; } 
         bool InitialGroundChunk { get; set; }
+        GameObject AtmosphericPhenomenaParent { get; set; }
+        GameObject GroundChunksParent { get; set; }
         float CameraHalfWidthInWorld { get; set; }
-
         float CameraLeftEdgeInWorldX
         {
             get => Camera.main.transform.position.x - CameraHalfWidthInWorld
@@ -42,9 +41,9 @@ namespace Level
 
         void Start()
         {
-            atmosphericPhenomenaParent
+            AtmosphericPhenomenaParent
                 = new GameObject("AtmosphericPhenomenaPool");
-            groundChunksParent = new GameObject("GroundChunksPool");
+            GroundChunksParent = new GameObject("GroundChunksPool");
 
             CameraHalfWidthInWorld = Camera.main.ScreenToWorldPoint(new Vector3(
                 Screen.width, 0.0f, 0.0f)).x;
@@ -217,7 +216,7 @@ namespace Level
                     Utils.UnityQuit.Quit(1);
                 }            
                 atmosphericPhenomenaPool[atmosphericPhenomenaPool.Count - 1].
-                    transform.parent = atmosphericPhenomenaParent.transform;
+                    transform.parent = AtmosphericPhenomenaParent.transform;
 
                 var atmosphericPhenomenon = atmosphericPhenomenaPool
                     [atmosphericPhenomenaPool.Count - 1].
@@ -263,7 +262,7 @@ namespace Level
                     Utils.UnityQuit.Quit(1);
                 }
                 groundChunksPool[i].transform.parent
-                    = groundChunksParent.transform;
+                    = GroundChunksParent.transform;
 
                 if (i == CurrentGroundChunkIndex)
                 {
