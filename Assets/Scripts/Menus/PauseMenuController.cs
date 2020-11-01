@@ -14,13 +14,8 @@ namespace Menus
         [SerializeField]
         Transform playerTransform;
 
-        internal bool Paused { get; set; }
-        bool PausedBefore { get; set; }
-
-        void Awake()
-        {
-            PausedBefore = Paused = false;
-        }
+        internal bool Paused { get; set; } = false;
+        bool PausedBefore { get; set; } = false;
 
         void Update()
         {

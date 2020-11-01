@@ -2,6 +2,6 @@
 {
     static class GlobalEnabler
     {
-        internal static bool activated = true;
+        internal static const bool activated = true;
     }
 }

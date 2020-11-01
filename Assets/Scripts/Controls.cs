@@ -51,13 +51,16 @@ public class Controls : MonoBehaviour
         
         if (ControlsEnabled && leftMouseButtonHeld)
         {
+            RaycastHit2D hit;
+
             Vector3 mousePosition = Camera.main.ScreenToWorldPoint(
                 Input.mousePosition);
 
             Vector2 mousePosition2D = new Vector2(mousePosition.x,
-                                                  mousePosition.y);
+                mousePosition.y);
 
-            RaycastHit2D hit = Physics2D.Raycast(mousePosition2D, Vector2.zero);
+            hit = Physics2D.Raycast(mousePosition2D, Vector2.zero);
+
             if ((hit.collider != null)
                 && (hit.collider.gameObject.name == "OuterJoystick"))
             {
@@ -91,14 +94,14 @@ public class Controls : MonoBehaviour
             if (joystickPosition.y
                 > (transform.position.y + (InnerJoysticSliderSize / 2.0f)))
             {
-                joystickPosition.y
-                    = transform.position.y + (InnerJoysticSliderSize / 2.0f);
+                joystickPosition.y = transform.position.y
+                    + (InnerJoysticSliderSize / 2.0f);
             }
             if (joystickPosition.y
                 < (transform.position.y - (InnerJoysticSliderSize / 2.0f)))
             {
-                joystickPosition.y
-                    = transform.position.y - (InnerJoysticSliderSize / 2.0f);
+                joystickPosition.y = transform.position.y
+                    - (InnerJoysticSliderSize / 2.0f);
             }
             innerJoystick.transform.position = DragPoint = joystickPosition;
         }
@@ -114,7 +117,7 @@ public class Controls : MonoBehaviour
         if (JoystickPressed)
         {
             DeltaDirection = (transform.position.y - DragPoint.y)
-                             / (InnerJoysticSliderSize / 2.0f);
+                / (InnerJoysticSliderSize / 2.0f);
         }
     }
 
@@ -134,7 +137,7 @@ public class Controls : MonoBehaviour
     void MovePlayerVertically()
     {
         float deltaY = FindObjectOfType<Player>().Speed * DeltaDirection
-                       * Time.deltaTime;
+            * Time.deltaTime;
         player.transform.Translate(new Vector3(0.0f, deltaY, 0.0f));
     }
 

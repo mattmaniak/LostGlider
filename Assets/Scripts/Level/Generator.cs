@@ -6,26 +6,36 @@ namespace Level
 {
     class Generator : MonoBehaviour
     {
+#region Constants
         const int groundChunksMin = 3;
         const string AtmosphericPhenomenaPoolName = "AtmosphericPhenomenaPool";
         const string GroundChunksPoolName = "GroundChunksPool";
         readonly Vector2 graveyardPosition = new Vector2(-100.0f, 0.0f);
+#endregion
 
+#region Prefabs
         [SerializeField]
         GameObject atmosphericPhenomenaPrefab;
 
         [SerializeField]
         GameObject groundChunkPrefab;
+#endregion
 
         int? previousAirStreamIndex;
         int? previousGroundChunkIndex;
-        List<GameObject> AtmosphericPhenomenaPool { get; set; }
-        List<GameObject> GroundChunksPool { get; set; }
+        List<GameObject> AtmosphericPhenomenaPool { get; set; } =
+            new List<GameObject>();
+        List<GameObject> GroundChunksPool { get; set; } =
+            new List<GameObject>();
 
         bool InitialAtmosphericPhenomenon { get; set; } 
         bool InitialGroundChunk { get; set; }
-        GameObject AtmosphericPhenomenaParent { get; set; }
-        GameObject GroundChunksParent { get; set; }
+        GameObject AtmosphericPhenomenaParent { get; set; } = new GameObject(
+            AtmosphericPhenomenaPoolName);
+
+        GameObject GroundChunksParent { get; set; } = new GameObject(
+            GroundChunksPoolName);
+
         float CameraHalfWidthInWorld { get; set; }
         float CameraLeftEdgeInWorldX
         {
@@ -33,7 +43,10 @@ namespace Level
                    + Camera.main.transform.localPosition.x;
         }
 
-        float CameraWidthInWorld { get => CameraHalfWidthInWorld * 2.0f; }
+        float CameraWidthInWorld { get => CameraHalfWidthInWorld * 2.0f; } =
+            Camera.main.ScreenToWorldPoint(new Vector3(
+            Screen.width, 0.0f, 0.0f)).x;
+
         float GroundChunkHalfWidth { get => GroundChunkWidth / 2.0f; }
         float GroundChunkWidth { get; set; }
         float NextGroundChunkTransitionX { get; set; }
@@ -43,15 +56,6 @@ namespace Level
 
         void Awake()
         {
-            AtmosphericPhenomenaPool = new List<GameObject>();
-            GroundChunksPool = new List<GameObject>();
-
-            AtmosphericPhenomenaParent = new GameObject(
-                AtmosphericPhenomenaPoolName);
-            GroundChunksParent = new GameObject(GroundChunksPoolName);
-
-            CameraHalfWidthInWorld = Camera.main.ScreenToWorldPoint(new Vector3(
-                Screen.width, 0.0f, 0.0f)).x;
             try
             {
                 InitializeAtmosphericPhenomenaPool();
@@ -98,7 +102,7 @@ namespace Level
                 }
                 throw new FileNotFoundException(errMsg);
             }
-            go.transform.position = graveyardPosition;
+            SentToGraveyard(go);
         
             goBoxCollider = go.GetComponent<BoxCollider2D>();
             goSpriteRenderer = go.GetComponent<SpriteRenderer>();
@@ -116,8 +120,8 @@ namespace Level
             const float minOffScreenOffsetX = 1.0f;
             const float maxOffScreenOffsetX = 10.0f;
 
-            GameObject atmosphericPhenomenon 
-                = AtmosphericPhenomenaPool[NextAirStreamIndex];
+            GameObject atmosphericPhenomenon =
+                AtmosphericPhenomenaPool[NextAirStreamIndex];
             Vector2 newPosition;
 
             if (InitialAtmosphericPhenomenon || (CameraLeftEdgeInWorldX
@@ -144,8 +148,9 @@ namespace Level
                     Camera.main.transform.position.y - maxOffCameraOffsetY,
                     Camera.main.transform.position.y + maxOffCameraOffsetY);
 
-                AtmosphericPhenomenaPool[NextAirStreamIndex].transform.position
-                    = newPosition;
+                AtmosphericPhenomenaPool[NextAirStreamIndex].
+                    transform.position = newPosition;
+
                 InitialAtmosphericPhenomenon = false;
             }
         }
@@ -184,8 +189,7 @@ namespace Level
                     }
                     else if (i != CurrentGroundChunkIndex)
                     {
-                        GroundChunksPool[i].transform.position
-                            = graveyardPosition;
+                        SentToGraveyard(GroundChunksPool[i]);
                     }
                 }
                 NextGroundChunkTransitionX += GroundChunkWidth;
@@ -283,5 +287,8 @@ namespace Level
                 }
             }
         }
+
+        void SentToGraveyard(out GameObject go) =>
+            go.transform.position = graveyardPosition;
     }
 }
