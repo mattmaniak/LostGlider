@@ -14,26 +14,25 @@ namespace Menus
         [SerializeField]
         Transform playerTransform;
 
-        static bool paused = false;
-        static bool pausedBefore = paused;
+        internal bool Paused { get; set; }
+        bool PausedBefore { get; set; }
 
-        static public bool Paused
+        void Start()
         {
-            get => paused;
-            set => paused = value;
+            PausedBefore = Paused = false;
         }
 
         void Update()
         {
-            if (paused != pausedBefore)
+            if (Paused != PausedBefore)
             {
                 foreach (var button in pauseMenuButtons)
                 {
-                    button.SetActive(paused);
+                    button.SetActive(Paused);
                 }
-                pauseButton.SetActive(!paused);            
+                pauseButton.SetActive(!Paused);            
             }
-            pausedBefore = paused;
+            PausedBefore = Paused;
         }
 
         public void SwitchSceneToMainMenu()
@@ -43,12 +42,12 @@ namespace Menus
 
         public void Pause()
         {
-            paused = true;
+            Paused = true;
         }
 
         public void Unpause()
         {
-            paused = false;
+            Paused = false;
         }
 
         public void QuitGame()

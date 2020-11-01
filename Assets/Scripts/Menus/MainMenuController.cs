@@ -7,7 +7,7 @@ namespace Menus
     {
         public void SwitchSceneToLevel()
         {
-            PauseMenuController.Paused = false;
+            FindObjectOfType<PauseMenuController>().Paused = false;
             SceneManager.LoadSceneAsync("Level");
         }
 

@@ -140,7 +140,7 @@ public class Controls : MonoBehaviour
 
     void SwitchPlayerGravity()
     {
-        if (Menus.PauseMenuController.Paused)
+        if (FindObjectOfType<Menus.PauseMenuController>().Paused)
         {
             playerRigidbody.Sleep();
             ControlsEnabled = false;

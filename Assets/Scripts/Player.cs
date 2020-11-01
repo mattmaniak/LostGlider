@@ -77,7 +77,7 @@ public class Player : MonoBehaviour
     {
         if (Alive)
         {
-            Movement = !Menus.PauseMenuController.Paused;
+            Movement = !FindObjectOfType<Menus.PauseMenuController>().Paused;
         }
     }
 
