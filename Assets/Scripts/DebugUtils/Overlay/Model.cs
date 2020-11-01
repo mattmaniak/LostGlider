@@ -7,46 +7,52 @@ namespace DebugUtils
 {
     namespace Overlay
     {
-        class Model
+        sealed class Model
         {
+            static readonly Model instance = new Model();
+
             const string debugLabel = "[DEBUG] ";
             const string onErrorPlaceholder = "[not found]";
 
 #region Directories
-            static string GitBranchBasename { get; set; }
-            static string GitRepoPath
-            {
-                get => Application.dataPath + @"/../.git/";
-            }
+            string GitBranchBasename { get; set; }
+            string GitRepoPath { get => Application.dataPath + @"/../.git/"; }
 #endregion
 
 #region Git data holders
-            public static string GitBranch { get; set; }
-            public static string GitShortRev { get; set; }
+            public string GitBranch { get; set; }
+            public string GitShortRev { get; set; }
 #endregion
 
-            internal static string GitRepoSummary
+            internal string GitRepoSummary
             {
                 get => debugLabel + "Modifying last Git revision: "
                        + GitShortRev + " on branch: " + GitBranch;
             }
 
-            internal static string UnityProjectInfo { get; private set; }
+            internal string UnityProjectInfo { get; private set; }
 
-            internal static string WipLabel
+            internal string WipLabel
             {
                 get => "WORK IN PROGRESS - "
                        + "DOES NOT REPRESENT FINAL LOOK OF THE GAME";
             }
 
-            internal static void UpdateModel()
+#region Singleton handling
+            static Model() { }
+            Model() { }
+
+            public static Model Instance { get => instance; }
+#endregion
+
+            internal void UpdateModel()
             {
                 UpdateGitRepoSummary();
                 UpdateUnityProjectInfo();
                 DebugUtils.Overlay.Controller.NotifiyModelUpdated();
             }
 
-            static void UpdateGitRepoSummary()
+            void UpdateGitRepoSummary()
             {
                 const int shortGitRevLength = 7;
 
@@ -69,24 +75,23 @@ namespace DebugUtils
                 }
 
                 // Remove the relative directory that points to a branch file.
-                GitBranch = GitBranchBasename?.
-                    TrimStart(@"refs/heads/".ToCharArray())?.Trim()
+                GitBranch = GitBranchBasename?.TrimStart(
+                    @"refs/heads/".ToCharArray())?.Trim()
                     ?? onErrorPlaceholder;
 
                 GitShortRev = ReadString(GitRepoPath + GitBranchBasename)?.
                     Substring(0, shortGitRevLength) ?? onErrorPlaceholder;
             }
 
-            static void UpdateUnityProjectInfo()
+            void UpdateUnityProjectInfo()
             {
-                UnityProjectInfo = debugLabel
-                                   + Application.productName + " "
-                                   + Application.version + " (dev) by "
-                                   + Application.companyName + " using Unity "
-                                   + Application.unityVersion;
+                UnityProjectInfo = debugLabel + Application.productName + " "
+                    + Application.version + " (dev) by "
+                    + Application.companyName + " using Unity "
+                    + Application.unityVersion;
             }
 
-            static string ReadString(string path)
+            string ReadString(string path)
             {
                 try
                 {

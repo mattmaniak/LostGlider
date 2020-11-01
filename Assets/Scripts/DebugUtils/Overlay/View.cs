@@ -16,9 +16,9 @@ namespace DebugUtils
             [SerializeField]
             Text wipLabelText;
 
-            static string GitRepoSummary { get; set; }
-            static string UnityProjectInfo { get; set; }
-            static string WipLabel { get; set; }
+            string GitRepoSummary { get; set; }
+            string UnityProjectInfo { get; set; }
+            string WipLabel { get; set; }
 
             void Update()
             {
@@ -28,7 +28,8 @@ namespace DebugUtils
                     DebugUtils.Overlay.Controller.DisableViewUpdateAction();
                 }
             }
-            internal static void UpdateView(Modes currentMode)
+
+            internal void UpdateView(Modes currentMode)
             {
                 switch (currentMode)
                 {
@@ -36,16 +37,17 @@ namespace DebugUtils
                         break;
 
                     case Modes.PartiallyEnabled:
-                        WipLabel = DebugUtils.Overlay.Model.WipLabel;
+                        WipLabel = DebugUtils.Overlay.Model.Instance.WipLabel;
                         break;
 
                     case Modes.FullyEnabled:
-                        GitRepoSummary
-                            = DebugUtils.Overlay.Model.GitRepoSummary;
-                        UnityProjectInfo
-                            = DebugUtils.Overlay.Model.UnityProjectInfo;
+                        GitRepoSummary = DebugUtils.Overlay.Model.Instance.
+                            GitRepoSummary;
                         
-                        WipLabel = DebugUtils.Overlay.Model.WipLabel;
+                        UnityProjectInfo = DebugUtils.Overlay.Model.Instance.
+                            UnityProjectInfo;
+                        
+                        WipLabel = DebugUtils.Overlay.Model.Instance.WipLabel;
                         break;
                 }
             }
