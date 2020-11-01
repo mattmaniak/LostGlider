@@ -17,7 +17,7 @@ namespace DebugUtils
             internal static bool ShouldUpdateView { get; private set; }
             
 
-            void Start()
+            void Awake()
             {
                 if (currentMode == Modes.Disabled)
                 {

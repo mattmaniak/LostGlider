@@ -17,7 +17,7 @@ namespace Menus
         internal bool Paused { get; set; }
         bool PausedBefore { get; set; }
 
-        void Start()
+        void Awake()
         {
             PausedBefore = Paused = false;
         }

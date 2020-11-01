@@ -18,7 +18,7 @@ public class Player : MonoBehaviour
     float Altitude { get => transform.position.y; }
     float LiftRatio { get; set; }
 
-    void Start()
+    void Awake()
     {
         Alive = true;
         transform.Translate(-Camera.main.transform.localPosition.x,

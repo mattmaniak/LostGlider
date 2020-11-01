@@ -41,7 +41,7 @@ namespace Level
         int NextAirStreamIndex { get; set; }
         int NextGroundChunkIndex { get; set; }
 
-        void Start()
+        void Awake()
         {
             AtmosphericPhenomenaPool = new List<GameObject>();
             GroundChunksPool = new List<GameObject>();
