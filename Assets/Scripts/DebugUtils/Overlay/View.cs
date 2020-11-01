@@ -5,7 +5,7 @@ namespace DebugUtils
 {
     namespace Overlay
     {
-        public class View : MonoBehaviour
+        class View : MonoBehaviour
         {
             [SerializeField]
             Text gitRepoSummaryText;

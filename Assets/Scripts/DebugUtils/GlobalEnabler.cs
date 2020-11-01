@@ -1,8 +1,8 @@
 ﻿namespace DebugUtils
 {
-    public class GlobalEnabler
+    class GlobalEnabler
     {
         // Dev-only. Enable or disable on your preferences. Disable on release.
-        public const bool activated = true;
+        internal const bool activated = true;
     }
 }

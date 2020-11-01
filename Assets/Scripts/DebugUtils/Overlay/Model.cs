@@ -7,7 +7,7 @@ namespace DebugUtils
 {
     namespace Overlay
     {
-        internal class Model
+        class Model
         {
             const string debugLabel = "[DEBUG] ";
             const string onErrorPlaceholder = "[not found]";

@@ -11,7 +11,7 @@ namespace DebugUtils
             FullyEnabled // Internal development.
         }
 
-        public class Controller : MonoBehaviour
+        class Controller : MonoBehaviour
         {
             static Modes currentMode = Modes.FullyEnabled;
 
