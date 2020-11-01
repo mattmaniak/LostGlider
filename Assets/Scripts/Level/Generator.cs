@@ -1,5 +1,5 @@
-﻿using System.IO;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 namespace Level
@@ -7,6 +7,8 @@ namespace Level
     class Generator : MonoBehaviour
     {
         const int groundChunksMin = 3;
+        const string AtmosphericPhenomenaPoolName = "AtmosphericPhenomenaPool";
+        const string GroundChunksPoolName = "GroundChunksPool";
         readonly Vector2 graveyardPosition = new Vector2(-100.0f, 0.0f);
 
         [SerializeField]
@@ -17,8 +19,8 @@ namespace Level
 
         int? previousAirStreamIndex;
         int? previousGroundChunkIndex;
-        List<GameObject> atmosphericPhenomenaPool = new List<GameObject>();
-        List<GameObject> groundChunksPool = new List<GameObject>();
+        List<GameObject> AtmosphericPhenomenaPool { get; set; }
+        List<GameObject> GroundChunksPool { get; set; }
 
         bool InitialAtmosphericPhenomenon { get; set; } 
         bool InitialGroundChunk { get; set; }
@@ -41,9 +43,12 @@ namespace Level
 
         void Start()
         {
-            AtmosphericPhenomenaParent
-                = new GameObject("AtmosphericPhenomenaPool");
-            GroundChunksParent = new GameObject("GroundChunksPool");
+            AtmosphericPhenomenaPool = new List<GameObject>();
+            GroundChunksPool = new List<GameObject>();
+
+            AtmosphericPhenomenaParent = new GameObject(
+                AtmosphericPhenomenaPoolName);
+            GroundChunksParent = new GameObject(GroundChunksPoolName);
 
             CameraHalfWidthInWorld = Camera.main.ScreenToWorldPoint(new Vector3(
                 Screen.width, 0.0f, 0.0f)).x;
@@ -112,7 +117,7 @@ namespace Level
             const float maxOffScreenOffsetX = 10.0f;
 
             GameObject atmosphericPhenomenon 
-                = atmosphericPhenomenaPool[NextAirStreamIndex];
+                = AtmosphericPhenomenaPool[NextAirStreamIndex];
             Vector2 newPosition;
 
             if (InitialAtmosphericPhenomenon || (CameraLeftEdgeInWorldX
@@ -123,23 +128,23 @@ namespace Level
                 previousAirStreamIndex = NextAirStreamIndex;
                 do
                 {
-                    NextAirStreamIndex
-                        = Random.Range(0, atmosphericPhenomenaPool.Count);
+                    NextAirStreamIndex = Random.Range(
+                        0, AtmosphericPhenomenaPool.Count);
                 }
                 while (NextAirStreamIndex == previousAirStreamIndex);
 
-                newPosition.x = Random.Range(CameraLeftEdgeInWorldX
-                    + CameraWidthInWorld + minOffScreenOffsetX,
+                newPosition.x = Random.Range(
+                    CameraLeftEdgeInWorldX + CameraWidthInWorld
+                    + minOffScreenOffsetX,
                     CameraLeftEdgeInWorldX + CameraWidthInWorld
                     + maxOffScreenOffsetX
                     - Camera.main.transform.localPosition.x);
 
-                newPosition.y = Random.Range(Camera.main.transform.position.y
-                                             - maxOffCameraOffsetY,
-                                             Camera.main.transform.position.y
-                                             + maxOffCameraOffsetY);
+                newPosition.y = Random.Range(
+                    Camera.main.transform.position.y - maxOffCameraOffsetY,
+                    Camera.main.transform.position.y + maxOffCameraOffsetY);
 
-                atmosphericPhenomenaPool[NextAirStreamIndex].transform.position
+                AtmosphericPhenomenaPool[NextAirStreamIndex].transform.position
                     = newPosition;
                 InitialAtmosphericPhenomenon = false;
             }
@@ -161,25 +166,25 @@ namespace Level
 
                 do
                 {
-                    NextGroundChunkIndex
-                        = Random.Range(0, groundChunksPool.Count);
+                    NextGroundChunkIndex = Random.Range(
+                        0, GroundChunksPool.Count);
                 }
                 while ((NextGroundChunkIndex == previousGroundChunkIndex)
                        || (NextGroundChunkIndex == CurrentGroundChunkIndex));
 
-                for (int i = 0; i < groundChunksPool.Count; i++)
+                for (int i = 0; i < GroundChunksPool.Count; i++)
                 {
                     if (i == NextGroundChunkIndex)
                     {
-                        groundChunksPool[i].transform.position = new Vector2(
+                        GroundChunksPool[i].transform.position = new Vector2(
                             NextGroundChunkTransitionX + GroundChunkWidth
                             + GroundChunkHalfWidth
                             - Camera.main.transform.localPosition.x,
-                            CenterObjectVertically(groundChunksPool[i]));
+                            CenterObjectVertically(GroundChunksPool[i]));
                     }
                     else if (i != CurrentGroundChunkIndex)
                     {
-                        groundChunksPool[i].transform.position
+                        GroundChunksPool[i].transform.position
                             = graveyardPosition;
                     }
                 }
@@ -203,7 +208,7 @@ namespace Level
 
                 try
                 {
-                    atmosphericPhenomenaPool.Add(CreateObjectFromPrefab(
+                    AtmosphericPhenomenaPool.Add(CreateObjectFromPrefab(
                         atmosphericPhenomenaPrefab,
                         Path.Combine(spritesPath, spriteName)));
                 }
@@ -215,11 +220,11 @@ namespace Level
                     }
                     Utils.UnityQuit.Quit(1);
                 }            
-                atmosphericPhenomenaPool[atmosphericPhenomenaPool.Count - 1].
+                AtmosphericPhenomenaPool[AtmosphericPhenomenaPool.Count - 1].
                     transform.parent = AtmosphericPhenomenaParent.transform;
 
-                var atmosphericPhenomenon = atmosphericPhenomenaPool
-                    [atmosphericPhenomenaPool.Count - 1].
+                var atmosphericPhenomenon = AtmosphericPhenomenaPool
+                    [AtmosphericPhenomenaPool.Count - 1].
                     GetComponent<AtmosphericPhenomenon>();
             }
         }
@@ -249,7 +254,7 @@ namespace Level
             {
                 try
                 {
-                    groundChunksPool.Add(CreateObjectFromPrefab(
+                    GroundChunksPool.Add(CreateObjectFromPrefab(
                         groundChunkPrefab,
                         Path.Combine(spritesPath, spriteNamePrefix) + i));
                 }
@@ -261,12 +266,12 @@ namespace Level
                     }
                     Utils.UnityQuit.Quit(1);
                 }
-                groundChunksPool[i].transform.parent
+                GroundChunksPool[i].transform.parent
                     = GroundChunksParent.transform;
 
                 if (i == CurrentGroundChunkIndex)
                 {
-                    var groundChunk = groundChunksPool[i];
+                    var groundChunk = GroundChunksPool[i];
 
                     GroundChunkWidth = groundChunk.
                         GetComponent<SpriteRenderer>().sprite.bounds.size.x;

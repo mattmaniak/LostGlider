@@ -10,10 +10,10 @@ public class Player : MonoBehaviour
     const float maxSpeed = 4.0f;
     const float maxPositionX = 100.0f;
 
-    public static bool Alive { get; set; }
-    public static float Speed { get; private set; }
+    public bool Alive { get; set; }
+    public float Speed { get; private set; }
 
-    static bool Movement { set => Speed = value ? maxSpeed : 0.0f; }
+    bool Movement { set => Speed = value ? maxSpeed : 0.0f; }
     bool InSoaringLift { get => LiftRatio != 0.0f; }
     float Altitude { get => transform.position.y; }
     float LiftRatio { get; set; }

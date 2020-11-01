@@ -12,22 +12,24 @@ namespace Menus
 
         void Start()
         {
-            PlayerAliveBefore = Player.Alive;
+            PlayerAliveBefore = FindObjectOfType<Player>().Alive;
         }
 
         void Update()
         {
-            if (Player.Alive != PlayerAliveBefore)
+            var player = FindObjectOfType<Player>();
+
+            if (player.Alive != PlayerAliveBefore)
             {
-                ToggleVisibilityOfGUI(!Player.Alive);
-                PlayerAliveBefore = Player.Alive;
+                ToggleVisibilityOfGUI(!player.Alive);
+                PlayerAliveBefore = player.Alive;
             }
         }
 
         public void RestartCurrentLevel()
         {
             SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().name);
-            Player.Alive = true;
+            FindObjectOfType<Player>().Alive = true;
         }
 
         void ToggleVisibilityOfGUI(bool toggled)

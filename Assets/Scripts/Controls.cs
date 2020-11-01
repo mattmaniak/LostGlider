@@ -43,7 +43,7 @@ public class Controls : MonoBehaviour
 
     void Update()
     {
-        if (!Player.Alive)
+        if (!FindObjectOfType<Player>().Alive)
         {
             ControlsEnabled = false;
         }
@@ -133,7 +133,8 @@ public class Controls : MonoBehaviour
 
     void MovePlayerVertically()
     {
-        float deltaY = DeltaDirection * Player.Speed * Time.deltaTime;
+        float deltaY = FindObjectOfType<Player>().Speed * DeltaDirection
+                       * Time.deltaTime;
         player.transform.Translate(new Vector3(0.0f, deltaY, 0.0f));
     }
 
@@ -144,7 +145,7 @@ public class Controls : MonoBehaviour
             playerRigidbody.Sleep();
             ControlsEnabled = false;
         }
-        else if (Player.Alive)
+        else if (FindObjectOfType<Player>().Alive)
         {
             playerRigidbody.WakeUp();
             ControlsEnabled = true;
