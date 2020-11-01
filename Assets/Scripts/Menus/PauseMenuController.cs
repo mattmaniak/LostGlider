@@ -11,9 +11,6 @@ namespace Menus
         [SerializeField]
         GameObject[] pauseMenuButtons;
 
-        [SerializeField]
-        Transform playerTransform;
-
         internal bool Paused { get; set; } = false;
         bool PausedBefore { get; set; } = false;
 

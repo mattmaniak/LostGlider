@@ -25,17 +25,14 @@ namespace Level
         int? previousGroundChunkIndex;
         List<GameObject> AtmosphericPhenomenaPool { get; set; } =
             new List<GameObject>();
+
         List<GameObject> GroundChunksPool { get; set; } =
             new List<GameObject>();
 
         bool InitialAtmosphericPhenomenon { get; set; } 
         bool InitialGroundChunk { get; set; }
-        GameObject AtmosphericPhenomenaParent { get; set; } = new GameObject(
-            AtmosphericPhenomenaPoolName);
-
-        GameObject GroundChunksParent { get; set; } = new GameObject(
-            GroundChunksPoolName);
-
+        GameObject AtmosphericPhenomenaParent { get; set; }
+        GameObject GroundChunksParent { get; set; }
         float CameraHalfWidthInWorld { get; set; }
         float CameraLeftEdgeInWorldX
         {
@@ -43,10 +40,7 @@ namespace Level
                    + Camera.main.transform.localPosition.x;
         }
 
-        float CameraWidthInWorld { get => CameraHalfWidthInWorld * 2.0f; } =
-            Camera.main.ScreenToWorldPoint(new Vector3(
-            Screen.width, 0.0f, 0.0f)).x;
-
+        float CameraWidthInWorld { get => CameraHalfWidthInWorld * 2.0f; }
         float GroundChunkHalfWidth { get => GroundChunkWidth / 2.0f; }
         float GroundChunkWidth { get; set; }
         float NextGroundChunkTransitionX { get; set; }
@@ -56,6 +50,13 @@ namespace Level
 
         void Awake()
         {
+            AtmosphericPhenomenaParent = new GameObject(
+                AtmosphericPhenomenaPoolName);
+            GroundChunksParent = new GameObject(GroundChunksPoolName);
+
+            CameraHalfWidthInWorld = Camera.main.ScreenToWorldPoint(new Vector3(
+                Screen.width, 0.0f, 0.0f)).x;
+
             try
             {
                 InitializeAtmosphericPhenomenaPool();
@@ -93,8 +94,7 @@ namespace Level
             if ((goSprite = Resources.Load<Sprite>(basename)) == null)
             {
                 string errMsg = GetType().Name
-                                + " initialization aborted. Unable to load: "
-                                + basename;
+                    + " initialization aborted. Unable to load: " + basename;
 
                 if (DebugUtils.GlobalEnabler.activated)
                 {
@@ -102,8 +102,7 @@ namespace Level
                 }
                 throw new FileNotFoundException(errMsg);
             }
-            SentToGraveyard(go);
-        
+            go.transform.position = graveyardPosition;        
             goBoxCollider = go.GetComponent<BoxCollider2D>();
             goSpriteRenderer = go.GetComponent<SpriteRenderer>();
 
@@ -189,7 +188,8 @@ namespace Level
                     }
                     else if (i != CurrentGroundChunkIndex)
                     {
-                        SentToGraveyard(GroundChunksPool[i]);
+                        GroundChunksPool[i].transform.position =
+                            graveyardPosition;
                     }
                 }
                 NextGroundChunkTransitionX += GroundChunkWidth;
@@ -287,8 +287,5 @@ namespace Level
                 }
             }
         }
-
-        void SentToGraveyard(out GameObject go) =>
-            go.transform.position = graveyardPosition;
     }
 }

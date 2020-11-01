@@ -6,14 +6,8 @@ using UnityEngine;
 public class Controls : MonoBehaviour
 {
     [SerializeField]
-    Rigidbody2D playerRigidbody;
-
-    [SerializeField]
     Transform innerJoystick;
     
-    [SerializeField]
-    Transform player;
-
     const int paddingPx = 128;
 
     static bool ControlsEnabled { get; set; }
@@ -136,13 +130,17 @@ public class Controls : MonoBehaviour
 
     void MovePlayerVertically()
     {
-        float deltaY = FindObjectOfType<Player>().Speed * DeltaDirection
-            * Time.deltaTime;
+        var player = FindObjectOfType<Player>();
+        float deltaY = player.Speed * DeltaDirection * Time.deltaTime;
+
         player.transform.Translate(new Vector3(0.0f, deltaY, 0.0f));
     }
 
     void SwitchPlayerGravity()
     {
+        var playerRigidbody = FindObjectOfType<Player>().
+            GetComponent<Rigidbody2D>();
+
         if (FindObjectOfType<Menus.PauseMenuController>().Paused)
         {
             playerRigidbody.Sleep();
