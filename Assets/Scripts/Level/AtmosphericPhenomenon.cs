@@ -5,16 +5,27 @@ namespace Level
 {
     public class AtmosphericPhenomenon : MonoBehaviour
     {
-        public float LiftRatio { get; set; }
-        public sbyte RelativeProbabilityPercentage { get; set; }
-        public Vector2 DirectionalSpeed { get; set; }
+        public float LiftRatio { get; private set; }
+        public sbyte RelativeProbabilityPercentage { get; private set; }
+        public Vector2 DirectionalSpeed { get; private set; }
+
+        bool Initialized { get; set; } = false;
 
         void FixedUpdate()
         {
-            if (DirectionalSpeed != Vector2.zero)
+            if (Initialized)
             {
                 transform.Translate(DirectionalSpeed * Time.deltaTime);
             }
+        }
+
+        public void Initialize(float liftRatio, sbyte relativeProbabilityPercentage,
+                        Vector2 directionalSpeed)
+        {
+            LiftRatio = liftRatio;
+            RelativeProbabilityPercentage = relativeProbabilityPercentage;
+            DirectionalSpeed = directionalSpeed;
+            Initialized = true;
         }
     }
 

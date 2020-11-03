@@ -31,13 +31,10 @@ namespace Level
                     AtmosphericPhenomenaPool[i].
                     GetComponent<AtmosphericPhenomenon>();
                 
-                phenomenon.DirectionalSpeed = new Vector2(
-                    deserializedData[i].DirectionalSpeed[0],
-                    deserializedData[i].DirectionalSpeed[1]);
-
-                phenomenon.LiftRatio = deserializedData[i].LiftRatio;
-                phenomenon.RelativeProbabilityPercentage = deserializedData[i].
-                    RelativeProbabilityPercentage;
+                phenomenon.Initialize(deserializedData[i].LiftRatio,
+                    deserializedData[i].RelativeProbabilityPercentage,
+                    new Vector2(deserializedData[i].DirectionalSpeed[0],
+                                deserializedData[i].DirectionalSpeed[1]));
             }
         }
     }
