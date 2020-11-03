@@ -8,7 +8,7 @@ public class Player : MonoBehaviour
     const float initialAltitude = 2.0f;
     const float maxFallingSpeed = 0.1f; // Per one second.
     const float maxSpeed = 4.0f;
-    const float maxPositionX = 100.0f;
+    const float maxPositionX = 1000.0f;
 
     public bool Alive { get; set; } = true;
     public float Speed { get; private set; }
@@ -40,7 +40,7 @@ public class Player : MonoBehaviour
             && (rigidbody.velocity.magnitude > maxFallingSpeed))
         {
             rigidbody.velocity = rigidbody.velocity.normalized
-                                 * maxFallingSpeed;
+                * maxFallingSpeed;
         }
         transform.Translate(Vector2.right * Speed * Time.deltaTime);
     }
@@ -62,15 +62,20 @@ public class Player : MonoBehaviour
     {
         if (collider.name.Contains("AtmosphericPhenomenon"))
         {
-            print(collider.name);
-            LiftRatio = collider.gameObject.
-                GetComponent<Level.AtmosphericPhenomenon>().LiftRatio;
+            var phenomenon = collider.gameObject.
+                GetComponent<Level.AtmosphericPhenomenon>();
+
+            LiftRatio = phenomenon.LiftRatio;
+
+            // TODO: DOESN'T WORK.
+            Speed += phenomenon.DirectionalSpeed.x;
         }
     }
 
     void OnTriggerExit2D()
     {
         LiftRatio = 0.0f;
+        Speed = maxSpeed;
     }
 
     void CheckPause()

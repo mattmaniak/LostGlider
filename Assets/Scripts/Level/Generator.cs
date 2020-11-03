@@ -121,7 +121,7 @@ namespace Level
         {
             const float maxOffCameraOffsetY = 1.0f;
             const float minOffScreenOffsetX = 1.0f;
-            const float maxOffScreenOffsetX = 10.0f;
+            const float maxOffScreenOffsetX = 2.0f;
 
             GameObject atmosphericPhenomenon =
                 AtmosphericPhenomenaPool[NextAirStreamIndex];

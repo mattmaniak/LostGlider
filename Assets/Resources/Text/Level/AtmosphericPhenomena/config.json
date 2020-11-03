@@ -34,7 +34,7 @@
         {
             "Name": "wave_lift",
             "DirectionalSpeed": [2.0, 0.0],
-            "LiftRatio": 2.0,
+            "LiftRatio": 0.0,
             "RelativeProbabilityPercentage": 0
         }
     ]
