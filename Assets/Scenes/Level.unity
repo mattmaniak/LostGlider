@@ -242,9 +242,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98d09ae02fe018d4ba46235a33d91a2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerRigidbody: {fileID: 2029498116}
   innerJoystick: {fileID: 1154896341}
-  player: {fileID: 2029498115}
 --- !u!1 &60693361
 GameObject:
   m_ObjectHideFlags: 0
@@ -2429,7 +2427,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e28f60ee238baa049820484e1412caf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  atmosphericPhenomenaPrefab: {fileID: 2191476900758837571, guid: 4b0898058e9f9ca48b787573a17a4fa9,
+  atmosphericPhenomenonPrefab: {fileID: 2191476900758837571, guid: 4b0898058e9f9ca48b787573a17a4fa9,
     type: 3}
   groundChunkPrefab: {fileID: 2153497403874687727, guid: 3af6f8153ba283744bc5cfaa67930b7d,
     type: 3}
@@ -2539,7 +2537,6 @@ MonoBehaviour:
   - {fileID: 429254876}
   - {fileID: 1280992060}
   - {fileID: 60693361}
-  playerTransform: {fileID: 2029498115}
 --- !u!1 &1978227354
 GameObject:
   m_ObjectHideFlags: 0

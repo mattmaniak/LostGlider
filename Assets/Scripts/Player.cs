@@ -10,7 +10,7 @@ public class Player : MonoBehaviour
     const float maxSpeed = 4.0f;
     const float maxPositionX = 100.0f;
 
-    public bool Alive { get; set; }
+    public bool Alive { get; set; } = true;
     public float Speed { get; private set; }
 
     bool Movement { set => Speed = value ? maxSpeed : 0.0f; }
@@ -20,9 +20,8 @@ public class Player : MonoBehaviour
 
     void Awake()
     {
-        Alive = true;
         transform.Translate(-Camera.main.transform.localPosition.x,
-                            initialAltitude, 0.0f);
+            initialAltitude, 0.0f);
     }
 
     void FixedUpdate()
@@ -63,6 +62,7 @@ public class Player : MonoBehaviour
     {
         if (collider.name.Contains("AtmosphericPhenomenon"))
         {
+            print(collider.name);
             LiftRatio = collider.gameObject.
                 GetComponent<Level.AtmosphericPhenomenon>().LiftRatio;
         }

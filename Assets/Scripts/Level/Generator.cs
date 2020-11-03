@@ -15,7 +15,7 @@ namespace Level
 
 #region Prefabs
         [SerializeField]
-        GameObject atmosphericPhenomenaPrefab;
+        GameObject atmosphericPhenomenonPrefab;
 
         [SerializeField]
         GameObject groundChunkPrefab;
@@ -23,8 +23,11 @@ namespace Level
 
         int? previousAirStreamIndex;
         int? previousGroundChunkIndex;
-        List<GameObject> AtmosphericPhenomenaPool { get; set; } =
-            new List<GameObject>();
+        internal List<GameObject> AtmosphericPhenomenaPool
+        { 
+            get;
+            private set;
+        } = new List<GameObject>();
 
         List<GameObject> GroundChunksPool { get; set; } =
             new List<GameObject>();
@@ -37,7 +40,7 @@ namespace Level
         float CameraLeftEdgeInWorldX
         {
             get => Camera.main.transform.position.x - CameraHalfWidthInWorld
-                   + Camera.main.transform.localPosition.x;
+                + Camera.main.transform.localPosition.x;
         }
 
         float CameraWidthInWorld { get => CameraHalfWidthInWorld * 2.0f; }
@@ -60,6 +63,7 @@ namespace Level
             try
             {
                 InitializeAtmosphericPhenomenaPool();
+                Loader.Instance.ConfigureAtmosphericPhenomena();
                 InitializeGroundChunksPool();
             }
             catch (System.Exception ex)
@@ -213,7 +217,7 @@ namespace Level
                 try
                 {
                     AtmosphericPhenomenaPool.Add(CreateObjectFromPrefab(
-                        atmosphericPhenomenaPrefab,
+                        atmosphericPhenomenonPrefab,
                         Path.Combine(spritesPath, spriteName)));
                 }
                 catch (FileNotFoundException ex)

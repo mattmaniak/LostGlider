@@ -20,8 +20,7 @@ public class Controls : MonoBehaviour
     {
         ControlsEnabled = true;
         InnerJoysticSliderSize = GetComponent<SpriteRenderer>().bounds.size.y
-                                 - innerJoystick.GetComponent<SpriteRenderer>().
-                                   bounds.size.y;
+            - innerJoystick.GetComponent<SpriteRenderer>().bounds.size.y;
     }
 
     void FixedUpdate()

@@ -1,0 +1,41 @@
+{
+    "AtmosphericPhenomena":
+    [
+        {
+            "Name": "cold_air",
+            "DirectionalSpeed": [0.0, -1.0],
+            "LiftRatio": -1.0,
+            "RelativeProbabilityPercentage": 0                
+        },
+        {
+            "Name": "cumulonimbus",
+            "DirectionalSpeed": [1.0, 0.0],
+            "LiftRatio": 0.0,
+            "RelativeProbabilityPercentage": 0
+        },
+        {
+            "Name": "cumulus_congestus",
+            "DirectionalSpeed": [-1.0, 0.0],
+            "LiftRatio": 5.0,
+            "RelativeProbabilityPercentage": 0                
+        },
+        {
+            "Name": "hot_air",
+            "DirectionalSpeed": [1.0, 0.0],
+            "LiftRatio": 2.0,
+            "RelativeProbabilityPercentage": 0
+        },
+        {
+            "Name": "nimbostratus",
+            "DirectionalSpeed": [2.0, 0.0],
+            "LiftRatio": 0.0,
+            "RelativeProbabilityPercentage": 0
+        },
+        {
+            "Name": "wave_lift",
+            "DirectionalSpeed": [2.0, 0.0],
+            "LiftRatio": 2.0,
+            "RelativeProbabilityPercentage": 0
+        }
+    ]
+}
