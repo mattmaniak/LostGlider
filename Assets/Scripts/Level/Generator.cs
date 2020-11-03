@@ -219,6 +219,15 @@ namespace Level
                     AtmosphericPhenomenaPool.Add(CreateObjectFromPrefab(
                         atmosphericPhenomenonPrefab,
                         Path.Combine(spritesPath, spriteName)));
+
+                    if (AtmosphericPhenomenaPool
+                            [AtmosphericPhenomenaPool.Count - 1].GetComponent<SpriteRenderer>().sprite.name.
+                        Contains("cumulonimbus"))
+                    {
+                        AtmosphericPhenomenaPool
+                            [AtmosphericPhenomenaPool.Count - 1].
+                            GetComponent<BoxCollider2D>().isTrigger = false;
+                    }
                 }
                 catch (FileNotFoundException ex)
                 {
