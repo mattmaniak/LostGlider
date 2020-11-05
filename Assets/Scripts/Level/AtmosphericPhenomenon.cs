@@ -19,8 +19,9 @@ namespace Level
             }
         }
 
-        public void Initialize(float liftRatio, sbyte relativeProbabilityPercentage,
-                        Vector2 directionalSpeed)
+        public void Initialize(float liftRatio,
+                               sbyte relativeProbabilityPercentage,
+                               Vector2 directionalSpeed)
         {
             LiftRatio = liftRatio;
             RelativeProbabilityPercentage = relativeProbabilityPercentage;
