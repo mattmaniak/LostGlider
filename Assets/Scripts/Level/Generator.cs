@@ -4,19 +4,13 @@ using UnityEngine;
 
 namespace Level
 {
-    public sealed class Generator : ScriptableObject
+    [RequireComponent(typeof(Loader))]
+    public sealed class Generator : MonoBehaviour
     {
-#region Singleton
-        static readonly Generator instance = new Generator();
-        public static Generator Instance { get => instance; }
-
-        static Generator() { }
-        Generator() { }
-#endregion
-
 #region Constants
         internal readonly Vector2 graveyardPosition = new Vector2(-100.0f, 0.0f);
 #endregion
+        Loader loader;
 
         int? previousAirStreamIndex;
         int? previousGroundChunkIndex;
@@ -34,7 +28,8 @@ namespace Level
         internal bool InitialGroundChunk { get; set; }
         internal float CameraLeftEdgeInWorldX
         {
-            get => Camera.main.transform.position.x - Loader.Instance.CameraHalfWidthInWorld
+            get => Camera.main.transform.position.x
+                - loader.CameraHalfWidthInWorld
                 + Camera.main.transform.localPosition.x;
         }
 
@@ -46,13 +41,14 @@ namespace Level
 
         public void Start()
         {
-            Loader.Instance.CameraHalfWidthInWorld = Camera.main.
+            loader = GetComponent<Loader>();
+            loader.CameraHalfWidthInWorld = Camera.main.
                 ScreenToWorldPoint(new Vector3(Screen.width, 0.0f, 0.0f)).x;
             try
             {
-                Loader.Instance.InitializeAtmosphericPhenomenaPool();
-                Loader.Instance.InitializeGroundChunksPool();
-                Loader.Instance.ConfigureAtmosphericPhenomena();
+                loader.InitializeAtmosphericPhenomenaPool();
+                loader.InitializeGroundChunksPool();
+                loader.ConfigureAtmosphericPhenomena();
             }
             catch (System.Exception ex)
             {
@@ -91,15 +87,15 @@ namespace Level
                 previousAirStreamIndex = NextAirStreamIndex;
                 do
                 {
-                    NextAirStreamIndex = Random.Range(
-                        0, AtmosphericPhenomenaPool.Count);
+                    NextAirStreamIndex = Random.Range(0,
+                        AtmosphericPhenomenaPool.Count);
                 }
                 while (NextAirStreamIndex == previousAirStreamIndex);
 
                 newPosition.x = Random.Range(
-                    CameraLeftEdgeInWorldX + Loader.Instance.CameraWidthInWorld
+                    CameraLeftEdgeInWorldX + loader.CameraWidthInWorld
                     + minOffScreenOffsetX,
-                    CameraLeftEdgeInWorldX + Loader.Instance.CameraWidthInWorld
+                    CameraLeftEdgeInWorldX + loader.CameraWidthInWorld
                     + maxOffScreenOffsetX
                     - Camera.main.transform.localPosition.x);
 
@@ -142,8 +138,8 @@ namespace Level
                     {
                         GroundChunksPool[i].transform.position = new Vector2(
                             NextGroundChunkTransitionX
-                            + Loader.Instance.GroundChunkWidth
-                            + Loader.Instance.GroundChunkHalfWidth
+                            + loader.GroundChunkWidth
+                            + loader.GroundChunkHalfWidth
                             - Camera.main.transform.localPosition.x,
                             CenterObjectVertically(GroundChunksPool[i]));
                     }
@@ -153,7 +149,7 @@ namespace Level
                             graveyardPosition;
                     }
                 }
-                NextGroundChunkTransitionX += Loader.Instance.GroundChunkWidth;
+                NextGroundChunkTransitionX += loader.GroundChunkWidth;
             }
         }
     }

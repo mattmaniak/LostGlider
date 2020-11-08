@@ -5,15 +5,18 @@ using UnityEngine;
 
 namespace Level
 {
-    internal sealed class Loader : ScriptableObject
+    [RequireComponent(typeof(Generator))]
+    internal sealed class Loader : MonoBehaviour
     {
-#region Singleton
-        static readonly Loader instance = new Loader();
-        internal static Loader Instance { get => instance; }
-        
-        static Loader() { }
-        Loader() { }
+#region Prefabs
+        [SerializeField]
+        GameObject atmosphericPhenomenonPrefab;
+
+        [SerializeField]
+        GameObject groundChunkPrefab;
 #endregion
+
+        Generator generator;
 
 #region Constants
         const int groundChunksMin = 3;
@@ -37,10 +40,10 @@ namespace Level
         GameObject GroundChunksParent { get; set; }
 #endregion
 
-#region Prefabs
-        GameObject AtmosphericPhenomenonPrefab { get; set; }
-        GameObject GroundChunkPrefab { get; set; }
-#endregion
+        void Start()
+        {
+            generator = GetComponent<Generator>();
+        }
 
         public void ConfigureAtmosphericPhenomena()
         {
@@ -53,7 +56,7 @@ namespace Level
             for (int i = 0; i < deserializedData.Length; i++)
             {
                 var phenomenon =
-                    Generator.Instance.AtmosphericPhenomenaPool[i].
+                    generator.AtmosphericPhenomenaPool[i].
                     GetComponent<AtmosphericPhenomenon>();
                 
                 phenomenon.Initialize(deserializedData[i].LiftRatio,
@@ -71,10 +74,8 @@ namespace Level
                 Path.Combine(@"Assets/Resources/", spritesPath), "*.psd");
             int initialStreamIndex = Random.Range(0, spritesNames.Length);
 
-            Generator.Instance.InitialAtmosphericPhenomenon = true;
+            generator.InitialAtmosphericPhenomenon = true;
 
-            AtmosphericPhenomenonPrefab = Resources.
-                Load<GameObject>(@"Prefabs/Level/AtmosphericPhenomenon");
             AtmosphericPhenomenaParent = new GameObject(
                 AtmosphericPhenomenaPoolName);
 
@@ -84,17 +85,17 @@ namespace Level
 
                 try
                 {
-                    Generator.Instance.AtmosphericPhenomenaPool.Add(
-                        CreateObjectFromPrefab(AtmosphericPhenomenonPrefab,
+                    generator.AtmosphericPhenomenaPool.Add(
+                        CreateObjectFromPrefab(atmosphericPhenomenonPrefab,
                         Path.Combine(spritesPath, spriteName)));
 
-                    if (Generator.Instance.AtmosphericPhenomenaPool[Generator.
-                        Instance.AtmosphericPhenomenaPool.Count - 1].
+                    if (generator.AtmosphericPhenomenaPool[generator.
+                        AtmosphericPhenomenaPool.Count - 1].
                         GetComponent<SpriteRenderer>().sprite.name.
                         Contains("cumulonimbus"))
                     {
-                        Generator.Instance.AtmosphericPhenomenaPool[Generator.
-                            Instance.AtmosphericPhenomenaPool.Count - 1].
+                        generator.AtmosphericPhenomenaPool[generator.
+                            AtmosphericPhenomenaPool.Count - 1].
                             GetComponent<BoxCollider2D>().isTrigger = false;
                     }
                 }
@@ -106,12 +107,12 @@ namespace Level
                     }
                     Utils.UnityQuit.Quit(1);
                 }            
-                Generator.Instance.AtmosphericPhenomenaPool[Generator.Instance.AtmosphericPhenomenaPool.Count - 1].
+                generator.AtmosphericPhenomenaPool[generator.AtmosphericPhenomenaPool.Count - 1].
                     transform.parent = AtmosphericPhenomenaParent.transform;
 
-                var atmosphericPhenomenon = Generator.Instance.
+                var atmosphericPhenomenon = generator.
                     AtmosphericPhenomenaPool
-                    [Generator.Instance.AtmosphericPhenomenaPool.Count - 1].
+                    [generator.AtmosphericPhenomenaPool.Count - 1].
                     GetComponent<AtmosphericPhenomenon>();
             }
         }
@@ -124,17 +125,15 @@ namespace Level
             string[] spritesNames = Directory.GetFiles(
                 Path.Combine(@"Assets/Resources/", spritesPath), "*.psd");
 
-            GroundChunkPrefab = Resources.
-                Load<GameObject>(@"Prefabs/Level/GroundChunk");
             GroundChunksParent = new GameObject(GroundChunksPoolName);
 
-            Generator.Instance.CurrentGroundChunkIndex = Random.Range(
+            generator.CurrentGroundChunkIndex = Random.Range(
                 0, spritesNames.Length);
             
-            Generator.Instance.NextGroundChunkTransitionX = Generator.Instance.
+            generator.NextGroundChunkTransitionX = generator.
                 CameraLeftEdgeInWorldX;
             
-            Generator.Instance.InitialGroundChunk = true;
+            generator.InitialGroundChunk = true;
 
             if (spritesNames.Length < groundChunksMin)
             {
@@ -149,8 +148,8 @@ namespace Level
             {
                 try
                 {
-                    Generator.Instance.GroundChunksPool.Add(
-                        CreateObjectFromPrefab(GroundChunkPrefab,
+                    generator.GroundChunksPool.Add(
+                        CreateObjectFromPrefab(groundChunkPrefab,
                         Path.Combine(spritesPath, spriteNamePrefix) + i));
                 }
                 catch (FileNotFoundException ex)
@@ -161,12 +160,12 @@ namespace Level
                     }
                     Utils.UnityQuit.Quit(1);
                 }
-                Generator.Instance.GroundChunksPool[i].transform.parent =
+                generator.GroundChunksPool[i].transform.parent =
                     GroundChunksParent.transform;
 
-                if (i == Generator.Instance.CurrentGroundChunkIndex)
+                if (i == generator.CurrentGroundChunkIndex)
                 {
-                    var groundChunk = Generator.Instance.GroundChunksPool[i];
+                    var groundChunk = generator.GroundChunksPool[i];
 
                     GroundChunkWidth = groundChunk.
                         GetComponent<SpriteRenderer>().sprite.bounds.size.x;
@@ -175,7 +174,7 @@ namespace Level
                         GroundChunkHalfWidth - CameraHalfWidthInWorld
                         + Camera.main.transform.localPosition.x
                         + FindObjectOfType<Player>().transform.position.x,
-                        Generator.Instance.CenterObjectVertically(groundChunk));
+                        generator.CenterObjectVertically(groundChunk));
                 }
             }
         }
@@ -201,7 +200,7 @@ namespace Level
                 }
                 throw new FileNotFoundException(errMsg);
             }
-            go.transform.position = Generator.Instance.graveyardPosition;        
+            go.transform.position = generator.graveyardPosition;        
             goBoxCollider = go.GetComponent<BoxCollider2D>();
             goSpriteRenderer = go.GetComponent<SpriteRenderer>();
 
