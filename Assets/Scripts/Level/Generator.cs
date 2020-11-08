@@ -5,24 +5,23 @@ using UnityEngine;
 namespace Level
 {
     [RequireComponent(typeof(Loader))]
-    public sealed class Generator : MonoBehaviour
+    internal sealed class Generator : MonoBehaviour
     {
         int? previousAirStreamIndex;
         int? previousGroundChunkIndex;
-
         Loader loader;
 
-        internal bool InitialAtmosphericPhenomenon { get; set; }
-        internal bool InitialGroundChunk { get; set; }
-        internal float CameraLeftEdgeInWorldX
+        public bool InitialAtmosphericPhenomenon { get; set; }
+        public bool InitialGroundChunk { get; set; }
+        public float CameraLeftEdgeInWorldX
         {
             get => Camera.main.transform.position.x
                 - loader.CameraHalfWidthInWorld
                 + Camera.main.transform.localPosition.x;
         }
 
-        internal float NextGroundChunkTransitionX { get; set; }
-        internal int CurrentGroundChunkIndex { get; set; }
+        public float NextGroundChunkTransitionX { get; set; }
+        public int CurrentGroundChunkIndex { get; set; }
 
         int NextAirStreamIndex { get; set; }
         int NextGroundChunkIndex { get; set; }

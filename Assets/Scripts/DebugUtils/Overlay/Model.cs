@@ -14,6 +14,13 @@ namespace DebugUtils
             const string debugLabel = "[DEBUG] ";
             const string onErrorPlaceholder = "[not found]";
 
+#region Singleton handling
+            static Model() { }
+            Model() { }
+
+            public static Model Instance { get => instance; }
+#endregion
+
 #region Directories
             string GitBranchBasename { get; set; }
             string GitRepoPath { get => Application.dataPath + @"/../.git/"; }
@@ -37,13 +44,6 @@ namespace DebugUtils
                 get => "WORK IN PROGRESS - "
                        + "DOES NOT REPRESENT FINAL LOOK OF THE GAME";
             }
-
-#region Singleton handling
-            static Model() { }
-            Model() { }
-
-            public static Model Instance { get => instance; }
-#endregion
 
             internal void UpdateModel()
             {

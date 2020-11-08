@@ -5,10 +5,10 @@ using UnityEngine;
 
 namespace Level
 {
-    internal sealed class Loader : MonoBehaviour
+    sealed class Loader : MonoBehaviour
     {
 #region Constants
-        internal readonly Vector2 graveyardPosition = new Vector2(-100.0f, 0.0f);
+        public readonly Vector2 graveyardPosition = new Vector2(-100.0f, 0.0f);
         const int groundChunksMin = 3;
         const string AtmoshericPhenomenaConfigName =
             @"Text/Level/AtmosphericPhenomena/config";
@@ -27,21 +27,18 @@ namespace Level
 
         Generator generator;
 
-        internal float CameraHalfWidthInWorld { get; set; }
-        internal float CameraWidthInWorld
+        public float CameraHalfWidthInWorld { get; set; }
+        public float CameraWidthInWorld
         {
             get => CameraHalfWidthInWorld * 2.0f;
         }
-        internal float GroundChunkHalfWidth { get => GroundChunkWidth / 2.0f; }
-        internal float GroundChunkWidth { get; set; }
+        public float GroundChunkHalfWidth { get => GroundChunkWidth / 2.0f; }
+        public float GroundChunkWidth { get; set; }
 
-        internal List<GameObject> AtmosphericPhenomenaPool
-        {
-            get;
-            set;
-        } = new List<GameObject>();
+        public List<GameObject> AtmosphericPhenomenaPool { get; set; } =
+            new List<GameObject>();
 
-        internal List<GameObject> GroundChunksPool { get; set; } =
+        public List<GameObject> GroundChunksPool { get; set; } =
             new List<GameObject>();
 
 #region Parents
@@ -74,10 +71,41 @@ namespace Level
             generator = gameObject.AddComponent<Generator>();
         }
 
-        internal float CenterObjectVertically(in GameObject go) =>
+        public float CenterObjectVertically(in GameObject go) =>
             go.GetComponent<SpriteRenderer>().sprite.bounds.size.y / 2.0f;
 
-        public void ConfigureAtmosphericPhenomena()
+        GameObject CreateObjectFromPrefab(in GameObject prefab, string basename)
+        {
+            BoxCollider2D goBoxCollider;
+            GameObject go;
+            Sprite goSprite;
+            SpriteRenderer goSpriteRenderer;
+
+            go = Instantiate(prefab);
+
+            if ((goSprite = Resources.Load<Sprite>(basename)) == null)
+            {
+                string errMsg = GetType().Name
+                    + " initialization aborted. Unable to load: " + basename;
+
+                if (DebugUtils.GlobalEnabler.activated)
+                {
+                    Debug.Log(errMsg);
+                }
+                throw new FileNotFoundException(errMsg);
+            }
+            go.transform.position = graveyardPosition;        
+            goBoxCollider = go.GetComponent<BoxCollider2D>();
+            goSpriteRenderer = go.GetComponent<SpriteRenderer>();
+
+            goSpriteRenderer.sprite = goSprite;
+            goBoxCollider.size = goSpriteRenderer.sprite.bounds.size;
+            goBoxCollider.offset = goSpriteRenderer.sprite.bounds.center;
+
+            return go;
+        }
+
+        void ConfigureAtmosphericPhenomena()
         {
             var serializedData = Resources.Load<TextAsset>(
                 AtmoshericPhenomenaConfigName);
@@ -97,7 +125,7 @@ namespace Level
             }
         }
 
-        public void InitializeAtmosphericPhenomenaPool()
+        void InitializeAtmosphericPhenomenaPool()
         {
             const string spritesPath = @"Sprites/Level/AtmosphericPhenomena/";
 
@@ -145,7 +173,7 @@ namespace Level
             }
         }
 
-        public void InitializeGroundChunksPool()
+        void InitializeGroundChunksPool()
         {
             const string spriteNamePrefix = @"ground_chunk_";
             const string spritesPath = @"Sprites/Level/GroundChunks/";
@@ -182,53 +210,7 @@ namespace Level
                 }
                 GroundChunksPool[i].transform.parent =
                     GroundChunksParent.transform;
-
-                // if (i == generator.CurrentGroundChunkIndex)
-                // {
-                //     var groundChunk = GroundChunksPool[i];
-
-                //     GroundChunkWidth = groundChunk.
-                //         GetComponent<SpriteRenderer>().sprite.bounds.size.x;
-
-                //     groundChunk.transform.position = new Vector2(
-                //         GroundChunkHalfWidth - CameraHalfWidthInWorld
-                //         + Camera.main.transform.localPosition.x
-                //         + FindObjectOfType<Player>().transform.position.x,
-                //         CenterObjectVertically(groundChunk));
-                // }
             }
-        }
-
-        GameObject CreateObjectFromPrefab(in GameObject sourcePrefab,
-                                          string basename)
-        {
-            BoxCollider2D goBoxCollider;
-            GameObject go;
-            Sprite goSprite;
-            SpriteRenderer goSpriteRenderer;
-
-            go = Instantiate(sourcePrefab);
-
-            if ((goSprite = Resources.Load<Sprite>(basename)) == null)
-            {
-                string errMsg = GetType().Name
-                    + " initialization aborted. Unable to load: " + basename;
-
-                if (DebugUtils.GlobalEnabler.activated)
-                {
-                    Debug.Log(errMsg);
-                }
-                throw new FileNotFoundException(errMsg);
-            }
-            go.transform.position = graveyardPosition;        
-            goBoxCollider = go.GetComponent<BoxCollider2D>();
-            goSpriteRenderer = go.GetComponent<SpriteRenderer>();
-
-            goSpriteRenderer.sprite = goSprite;
-            goBoxCollider.size = goSpriteRenderer.sprite.bounds.size;
-            goBoxCollider.offset = goSpriteRenderer.sprite.bounds.center;
-
-            return go;
         }
     }
 

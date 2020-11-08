@@ -16,7 +16,6 @@ namespace DebugUtils
             static Modes currentMode = Modes.FullyEnabled;
             internal static bool ShouldUpdateView { get; private set; }
             
-
             void Awake()
             {
                 if (currentMode == Modes.Disabled)
@@ -29,7 +28,8 @@ namespace DebugUtils
             internal static void NotifiyModelUpdated()
             {
                 ShouldUpdateView = true;
-                FindObjectOfType<DebugUtils.Overlay.View>().UpdateView(currentMode);
+                FindObjectOfType<DebugUtils.Overlay.View>().UpdateView(
+                    currentMode);
             }
 
             internal static void DisableViewUpdateAction()

@@ -45,11 +45,6 @@ public class Player : MonoBehaviour
         transform.Translate(Vector2.right * Speed * Time.deltaTime);
     }
 
-    void Update()
-    {
-        CheckPause();
-    }
-
     void OnCollisionEnter2D(Collision2D collision)
     {
         if (!collision.collider.isTrigger)
@@ -76,6 +71,11 @@ public class Player : MonoBehaviour
     {
         LiftRatio = 0.0f;
         Speed = maxSpeed;
+    }
+
+    void Update()
+    {
+        CheckPause();
     }
 
     void CheckPause()

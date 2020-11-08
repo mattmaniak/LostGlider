@@ -16,13 +16,6 @@ public class Controls : MonoBehaviour
     float InnerJoysticSliderSize { get; set; }
     Vector2 DragPoint { get; set; }
 
-    void Start()
-    {
-        ControlsEnabled = true;
-        InnerJoysticSliderSize = GetComponent<SpriteRenderer>().bounds.size.y
-            - innerJoystick.GetComponent<SpriteRenderer>().bounds.size.y;
-    }
-
     void FixedUpdate()
     {
         SwitchPlayerGravity();
@@ -32,6 +25,13 @@ public class Controls : MonoBehaviour
             ControlByKeyboard();
         }
         MovePlayerVertically();
+    }
+
+    void Start()
+    {
+        ControlsEnabled = true;
+        InnerJoysticSliderSize = GetComponent<SpriteRenderer>().bounds.size.y
+            - innerJoystick.GetComponent<SpriteRenderer>().bounds.size.y;
     }
 
     void Update()
