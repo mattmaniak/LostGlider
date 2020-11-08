@@ -7,6 +7,7 @@ namespace Menus
     {
         public void SwitchSceneToLevel()
         {
+            // TODO: FIX
             FindObjectOfType<PauseMenuController>().Paused = false;
             SceneManager.LoadSceneAsync("Level");
         }

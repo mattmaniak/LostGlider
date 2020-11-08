@@ -7,13 +7,10 @@ namespace Level
     [RequireComponent(typeof(Loader))]
     public sealed class Generator : MonoBehaviour
     {
-#region Constants
-        internal readonly Vector2 graveyardPosition = new Vector2(-100.0f, 0.0f);
-#endregion
-        Loader loader;
-
         int? previousAirStreamIndex;
         int? previousGroundChunkIndex;
+
+        Loader loader;
 
         internal bool InitialAtmosphericPhenomenon { get; set; }
         internal bool InitialGroundChunk { get; set; }
@@ -30,37 +27,46 @@ namespace Level
         int NextAirStreamIndex { get; set; }
         int NextGroundChunkIndex { get; set; }
 
-        public void Start()
+        void Awake()
         {
             loader = GetComponent<Loader>();
-            loader.CameraHalfWidthInWorld = Camera.main.
-                ScreenToWorldPoint(new Vector3(Screen.width, 0.0f, 0.0f)).x;
-            try
-            {
-                loader.InitializeAtmosphericPhenomenaPool();
-                loader.InitializeGroundChunksPool();
-                loader.ConfigureAtmosphericPhenomena();
-            }
-            catch (System.Exception ex)
-            {
-                if (DebugUtils.GlobalEnabler.activated)
-                {
-                    Debug.Log(ex);
-                }
-                Utils.UnityQuit.Quit(1);
-            }
+
+            CurrentGroundChunkIndex = Random.Range(0,
+                loader.GroundChunksPool.Count);
+            NextGroundChunkTransitionX = CameraLeftEdgeInWorldX;
+            InitialAtmosphericPhenomenon = InitialGroundChunk = true;
+
+            DisplayInitialGroundChunk();
         }
 
-        public void Update()
+        void Update()
         {   
             GenerateInfiniteGround();
-            GenerateSoaringLiftsInfinitely();
+            GenerateAtmosphericPhenomenaInfinitely();
         }
 
-        internal float CenterObjectVertically(in GameObject go) =>
-            go.GetComponent<SpriteRenderer>().sprite.bounds.size.y / 2.0f;
+        void DisplayInitialGroundChunk()
+        {
+            for (int i = 0; i < loader.GroundChunksPool.Count; i++)
+            {
+                if (i == CurrentGroundChunkIndex)
+                {
+                    var groundChunk = loader.GroundChunksPool[i];
 
-        void GenerateSoaringLiftsInfinitely()
+                    loader.GroundChunkWidth = groundChunk.
+                        GetComponent<SpriteRenderer>().sprite.bounds.size.x;
+
+                    groundChunk.transform.position = new Vector2(
+                        loader.GroundChunkHalfWidth
+                        - loader.CameraHalfWidthInWorld
+                        + Camera.main.transform.localPosition.x
+                        + FindObjectOfType<Player>().transform.position.x,
+                        loader.CenterObjectVertically(groundChunk));
+                }
+            }
+        }
+
+        void GenerateAtmosphericPhenomenaInfinitely()
         {
             const float maxOffCameraOffsetY = 1.0f;
             const float minOffScreenOffsetX = 1.0f;
@@ -131,12 +137,13 @@ namespace Level
                             + loader.GroundChunkWidth
                             + loader.GroundChunkHalfWidth
                             - Camera.main.transform.localPosition.x,
-                            CenterObjectVertically(loader.GroundChunksPool[i]));
+                            loader.CenterObjectVertically(
+                            loader.GroundChunksPool[i]));
                     }
                     else if (i != CurrentGroundChunkIndex)
                     {
                         loader.GroundChunksPool[i].transform.position =
-                            graveyardPosition;
+                            loader.graveyardPosition;
                     }
                 }
                 NextGroundChunkTransitionX += loader.GroundChunkWidth;

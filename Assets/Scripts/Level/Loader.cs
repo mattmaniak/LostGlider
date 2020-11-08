@@ -5,9 +5,18 @@ using UnityEngine;
 
 namespace Level
 {
-    [RequireComponent(typeof(Generator))]
     internal sealed class Loader : MonoBehaviour
     {
+#region Constants
+        internal readonly Vector2 graveyardPosition = new Vector2(-100.0f, 0.0f);
+        const int groundChunksMin = 3;
+        const string AtmoshericPhenomenaConfigName =
+            @"Text/Level/AtmosphericPhenomena/config";
+
+        const string AtmosphericPhenomenaPoolName = "AtmosphericPhenomenaPool";
+        const string GroundChunksPoolName = "GroundChunksPool";
+#endregion
+
 #region Prefabs
         [SerializeField]
         GameObject atmosphericPhenomenonPrefab;
@@ -17,15 +26,6 @@ namespace Level
 #endregion
 
         Generator generator;
-
-#region Constants
-        const int groundChunksMin = 3;
-        const string AtmoshericPhenomenaConfigName =
-            @"Text/Level/AtmosphericPhenomena/config";
-
-        const string AtmosphericPhenomenaPoolName = "AtmosphericPhenomenaPool";
-        const string GroundChunksPoolName = "GroundChunksPool";
-#endregion
 
         internal float CameraHalfWidthInWorld { get; set; }
         internal float CameraWidthInWorld
@@ -49,10 +49,33 @@ namespace Level
         GameObject GroundChunksParent { get; set; }
 #endregion
 
+        void Awake()
+        {
+            CameraHalfWidthInWorld = Camera.main.ScreenToWorldPoint(new Vector3(
+                Screen.width, 0.0f, 0.0f)).x;
+            try
+            {
+                InitializeAtmosphericPhenomenaPool();
+                InitializeGroundChunksPool();
+                ConfigureAtmosphericPhenomena();
+            }
+            catch (System.Exception ex)
+            {
+                if (DebugUtils.GlobalEnabler.activated)
+                {
+                    Debug.Log(ex);
+                }
+                Utils.UnityQuit.Quit(1);
+            }
+        }
+
         void Start()
         {
-            generator = GetComponent<Generator>();
+            generator = gameObject.AddComponent<Generator>();
         }
+
+        internal float CenterObjectVertically(in GameObject go) =>
+            go.GetComponent<SpriteRenderer>().sprite.bounds.size.y / 2.0f;
 
         public void ConfigureAtmosphericPhenomena()
         {
@@ -81,8 +104,6 @@ namespace Level
             string[] spritesNames = Directory.GetFiles(
                 Path.Combine(@"Assets/Resources/", spritesPath), "*.psd");
             int initialStreamIndex = Random.Range(0, spritesNames.Length);
-
-            generator.InitialAtmosphericPhenomenon = true;
 
             AtmosphericPhenomenaParent = new GameObject(
                 AtmosphericPhenomenaPoolName);
@@ -134,14 +155,6 @@ namespace Level
 
             GroundChunksParent = new GameObject(GroundChunksPoolName);
 
-            generator.CurrentGroundChunkIndex = Random.Range(0,
-                spritesNames.Length);
-            
-            generator.NextGroundChunkTransitionX = generator.
-                CameraLeftEdgeInWorldX;
-            
-            generator.InitialGroundChunk = true;
-
             if (spritesNames.Length < groundChunksMin)
             {
                 if (DebugUtils.GlobalEnabler.activated)
@@ -170,19 +183,19 @@ namespace Level
                 GroundChunksPool[i].transform.parent =
                     GroundChunksParent.transform;
 
-                if (i == generator.CurrentGroundChunkIndex)
-                {
-                    var groundChunk = GroundChunksPool[i];
+                // if (i == generator.CurrentGroundChunkIndex)
+                // {
+                //     var groundChunk = GroundChunksPool[i];
 
-                    GroundChunkWidth = groundChunk.
-                        GetComponent<SpriteRenderer>().sprite.bounds.size.x;
+                //     GroundChunkWidth = groundChunk.
+                //         GetComponent<SpriteRenderer>().sprite.bounds.size.x;
 
-                    groundChunk.transform.position = new Vector2(
-                        GroundChunkHalfWidth - CameraHalfWidthInWorld
-                        + Camera.main.transform.localPosition.x
-                        + FindObjectOfType<Player>().transform.position.x,
-                        generator.CenterObjectVertically(groundChunk));
-                }
+                //     groundChunk.transform.position = new Vector2(
+                //         GroundChunkHalfWidth - CameraHalfWidthInWorld
+                //         + Camera.main.transform.localPosition.x
+                //         + FindObjectOfType<Player>().transform.position.x,
+                //         CenterObjectVertically(groundChunk));
+                // }
             }
         }
 
@@ -207,7 +220,7 @@ namespace Level
                 }
                 throw new FileNotFoundException(errMsg);
             }
-            go.transform.position = generator.graveyardPosition;        
+            go.transform.position = graveyardPosition;        
             goBoxCollider = go.GetComponent<BoxCollider2D>();
             goSpriteRenderer = go.GetComponent<SpriteRenderer>();
 
