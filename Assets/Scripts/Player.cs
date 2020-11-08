@@ -63,7 +63,7 @@ public class Player : MonoBehaviour
         if (collider.name.Contains("AtmosphericPhenomenon"))
         {
             var phenomenon = collider.gameObject.
-                GetComponent<Level.AtmosphericPhenomenon>();
+                GetComponent<Level.AtmosphericPhenomenonConfig>();
 
             LiftRatio = phenomenon.LiftRatio;
 

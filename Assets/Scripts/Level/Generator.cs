@@ -15,15 +15,6 @@ namespace Level
         int? previousAirStreamIndex;
         int? previousGroundChunkIndex;
 
-        internal List<GameObject> AtmosphericPhenomenaPool
-        {
-            get;
-            set;
-        } = new List<GameObject>();
-
-        internal List<GameObject> GroundChunksPool { get; set; } =
-            new List<GameObject>();
-
         internal bool InitialAtmosphericPhenomenon { get; set; }
         internal bool InitialGroundChunk { get; set; }
         internal float CameraLeftEdgeInWorldX
@@ -75,8 +66,8 @@ namespace Level
             const float minOffScreenOffsetX = 1.0f;
             const float maxOffScreenOffsetX = 2.0f;
 
-            GameObject atmosphericPhenomenon =
-                AtmosphericPhenomenaPool[NextAirStreamIndex];
+            GameObject atmosphericPhenomenon = loader.AtmosphericPhenomenaPool
+                [NextAirStreamIndex];
             Vector2 newPosition;
 
             if (InitialAtmosphericPhenomenon || (CameraLeftEdgeInWorldX
@@ -88,13 +79,12 @@ namespace Level
                 do
                 {
                     NextAirStreamIndex = Random.Range(0,
-                        AtmosphericPhenomenaPool.Count);
+                        loader.AtmosphericPhenomenaPool.Count);
                 }
                 while (NextAirStreamIndex == previousAirStreamIndex);
 
-                newPosition.x = Random.Range(
-                    CameraLeftEdgeInWorldX + loader.CameraWidthInWorld
-                    + minOffScreenOffsetX,
+                newPosition.x = Random.Range(CameraLeftEdgeInWorldX
+                    + loader.CameraWidthInWorld + minOffScreenOffsetX,
                     CameraLeftEdgeInWorldX + loader.CameraWidthInWorld
                     + maxOffScreenOffsetX
                     - Camera.main.transform.localPosition.x);
@@ -103,7 +93,7 @@ namespace Level
                     Camera.main.transform.position.y - maxOffCameraOffsetY,
                     Camera.main.transform.position.y + maxOffCameraOffsetY);
 
-                AtmosphericPhenomenaPool[NextAirStreamIndex].
+                loader.AtmosphericPhenomenaPool[NextAirStreamIndex].
                     transform.position = newPosition;
 
                 InitialAtmosphericPhenomenon = false;
@@ -126,26 +116,26 @@ namespace Level
 
                 do
                 {
-                    NextGroundChunkIndex = Random.Range(
-                        0, GroundChunksPool.Count);
+                    NextGroundChunkIndex = Random.Range(0,
+                        loader.GroundChunksPool.Count);
                 }
                 while ((NextGroundChunkIndex == previousGroundChunkIndex)
                        || (NextGroundChunkIndex == CurrentGroundChunkIndex));
 
-                for (int i = 0; i < GroundChunksPool.Count; i++)
+                for (int i = 0; i < loader.GroundChunksPool.Count; i++)
                 {
                     if (i == NextGroundChunkIndex)
                     {
-                        GroundChunksPool[i].transform.position = new Vector2(
-                            NextGroundChunkTransitionX
+                        loader.GroundChunksPool[i].transform.position =
+                            new Vector2(NextGroundChunkTransitionX
                             + loader.GroundChunkWidth
                             + loader.GroundChunkHalfWidth
                             - Camera.main.transform.localPosition.x,
-                            CenterObjectVertically(GroundChunksPool[i]));
+                            CenterObjectVertically(loader.GroundChunksPool[i]));
                     }
                     else if (i != CurrentGroundChunkIndex)
                     {
-                        GroundChunksPool[i].transform.position =
+                        loader.GroundChunksPool[i].transform.position =
                             graveyardPosition;
                     }
                 }

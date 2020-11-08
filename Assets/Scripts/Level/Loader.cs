@@ -35,6 +35,15 @@ namespace Level
         internal float GroundChunkHalfWidth { get => GroundChunkWidth / 2.0f; }
         internal float GroundChunkWidth { get; set; }
 
+        internal List<GameObject> AtmosphericPhenomenaPool
+        {
+            get;
+            set;
+        } = new List<GameObject>();
+
+        internal List<GameObject> GroundChunksPool { get; set; } =
+            new List<GameObject>();
+
 #region Parents
         GameObject AtmosphericPhenomenaParent { get; set; }
         GameObject GroundChunksParent { get; set; }
@@ -55,9 +64,8 @@ namespace Level
 
             for (int i = 0; i < deserializedData.Length; i++)
             {
-                var phenomenon =
-                    generator.AtmosphericPhenomenaPool[i].
-                    GetComponent<AtmosphericPhenomenon>();
+                var phenomenon = AtmosphericPhenomenaPool[i].
+                    GetComponent<AtmosphericPhenomenonConfig>();
                 
                 phenomenon.Initialize(deserializedData[i].LiftRatio,
                     deserializedData[i].RelativeProbabilityPercentage,
@@ -85,16 +93,16 @@ namespace Level
 
                 try
                 {
-                    generator.AtmosphericPhenomenaPool.Add(
+                    AtmosphericPhenomenaPool.Add(
                         CreateObjectFromPrefab(atmosphericPhenomenonPrefab,
                         Path.Combine(spritesPath, spriteName)));
 
-                    if (generator.AtmosphericPhenomenaPool[generator.
+                    if (AtmosphericPhenomenaPool[
                         AtmosphericPhenomenaPool.Count - 1].
                         GetComponent<SpriteRenderer>().sprite.name.
                         Contains("cumulonimbus"))
                     {
-                        generator.AtmosphericPhenomenaPool[generator.
+                        AtmosphericPhenomenaPool[
                             AtmosphericPhenomenaPool.Count - 1].
                             GetComponent<BoxCollider2D>().isTrigger = false;
                     }
@@ -107,13 +115,12 @@ namespace Level
                     }
                     Utils.UnityQuit.Quit(1);
                 }            
-                generator.AtmosphericPhenomenaPool[generator.AtmosphericPhenomenaPool.Count - 1].
+                AtmosphericPhenomenaPool[AtmosphericPhenomenaPool.Count - 1].
                     transform.parent = AtmosphericPhenomenaParent.transform;
 
-                var atmosphericPhenomenon = generator.
-                    AtmosphericPhenomenaPool
-                    [generator.AtmosphericPhenomenaPool.Count - 1].
-                    GetComponent<AtmosphericPhenomenon>();
+                var atmosphericPhenomenon = AtmosphericPhenomenaPool
+                    [AtmosphericPhenomenaPool.Count - 1].
+                    GetComponent<AtmosphericPhenomenonConfig>();
             }
         }
 
@@ -127,8 +134,8 @@ namespace Level
 
             GroundChunksParent = new GameObject(GroundChunksPoolName);
 
-            generator.CurrentGroundChunkIndex = Random.Range(
-                0, spritesNames.Length);
+            generator.CurrentGroundChunkIndex = Random.Range(0,
+                spritesNames.Length);
             
             generator.NextGroundChunkTransitionX = generator.
                 CameraLeftEdgeInWorldX;
@@ -148,7 +155,7 @@ namespace Level
             {
                 try
                 {
-                    generator.GroundChunksPool.Add(
+                    GroundChunksPool.Add(
                         CreateObjectFromPrefab(groundChunkPrefab,
                         Path.Combine(spritesPath, spriteNamePrefix) + i));
                 }
@@ -160,12 +167,12 @@ namespace Level
                     }
                     Utils.UnityQuit.Quit(1);
                 }
-                generator.GroundChunksPool[i].transform.parent =
+                GroundChunksPool[i].transform.parent =
                     GroundChunksParent.transform;
 
                 if (i == generator.CurrentGroundChunkIndex)
                 {
-                    var groundChunk = generator.GroundChunksPool[i];
+                    var groundChunk = GroundChunksPool[i];
 
                     GroundChunkWidth = groundChunk.
                         GetComponent<SpriteRenderer>().sprite.bounds.size.x;
@@ -214,13 +221,13 @@ namespace Level
 
     internal static class AtmoshericPhenomenaConfigReader
     {
-        public static T[] Deserialize<T>(string serializedData)
+        public static T[] Deserialize<T>(string serialized)
         {
             try
             {
                 return JsonUtility.
-                    FromJson<AtmoshericPhenomenaConfigContent<T>>(
-                    serializedData).AtmosphericPhenomena;
+                    FromJson<AtmoshericPhenomenaConfigContent<T>>(serialized).
+                    AtmosphericPhenomena;
             }
             catch (System.Exception ex)
             {
