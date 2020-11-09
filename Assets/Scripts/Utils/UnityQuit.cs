@@ -2,7 +2,7 @@
 
 namespace Utils
 {
-    public static class UnityQuit
+    static class UnityQuit
     {
         public static void Quit(int exitCode = 0)
         {

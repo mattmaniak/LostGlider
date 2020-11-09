@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Level
 {
     [RequireComponent(typeof(Loader))]
-    internal sealed class Generator : MonoBehaviour
+    sealed class Generator : MonoBehaviour
     {
         int? previousAirStreamIndex;
         int? previousGroundChunkIndex;

@@ -1,11 +1,36 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
 namespace Level
 {
-    sealed class Loader : MonoBehaviour
+    static class AtmoshericPhenomenaConfigReader
+    {
+        public static T[] Deserialize<T>(string serialized)
+        {
+            try
+            {
+                return JsonUtility.
+                    FromJson<AtmoshericPhenomenaConfigContent<T>>(serialized).
+                    AtmosphericPhenomena;
+            }
+            catch (Exception ex)
+            {
+                DebugUtils.GlobalEnabler.LogException(ex);
+                return null;
+            }
+        }
+    }
+
+    [Serializable]
+    class AtmoshericPhenomenaConfigContent<T>
+    {
+        public T[] AtmosphericPhenomena;
+    }
+
+    class Loader : MonoBehaviour
     {
 #region Constants
         public readonly Vector2 graveyardPosition = new Vector2(-100.0f, 0.0f);
@@ -129,7 +154,8 @@ namespace Level
 
             string[] spritesNames = Directory.GetFiles(
                 Path.Combine(@"Assets/Resources/", spritesPath), "*.psd");
-            int initialStreamIndex = Random.Range(0, spritesNames.Length);
+            int initialStreamIndex = UnityEngine.Random.Range(0,
+                spritesNames.Length);
 
             AtmosphericPhenomenaParent = new GameObject(
                 AtmosphericPhenomenaPoolName);
@@ -205,29 +231,5 @@ namespace Level
                     GroundChunksParent.transform;
             }
         }
-    }
-
-    internal static class AtmoshericPhenomenaConfigReader
-    {
-        public static T[] Deserialize<T>(string serialized)
-        {
-            try
-            {
-                return JsonUtility.
-                    FromJson<AtmoshericPhenomenaConfigContent<T>>(serialized).
-                    AtmosphericPhenomena;
-            }
-            catch (System.Exception ex)
-            {
-                DebugUtils.GlobalEnabler.LogException(ex);
-                return null;
-            }
-        }
-    }
-
-    [System.Serializable]
-    internal class AtmoshericPhenomenaConfigContent<T>
-    {
-        public T[] AtmosphericPhenomena;
     }
 }

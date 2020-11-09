@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class InGameMenuButtons : MonoBehaviour
+class InGameMenuButtons : MonoBehaviour
 {
     public void SwitchSceneToMainMenu()
     {

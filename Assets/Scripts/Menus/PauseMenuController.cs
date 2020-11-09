@@ -3,7 +3,7 @@ using UnityEngine.SceneManagement;
 
 namespace Menus
 {    
-    public class PauseMenuController : MonoBehaviour
+    class PauseMenuController : MonoBehaviour
     {
         [SerializeField]
         GameObject pauseButton;
@@ -11,7 +11,7 @@ namespace Menus
         [SerializeField]
         GameObject[] pauseMenuButtons;
 
-        internal bool Paused { get; set; } = false;
+        public bool Paused { get; set; } = false;
         bool PausedBefore { get; set; } = false;
 
         void Update()

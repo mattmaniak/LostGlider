@@ -3,7 +3,7 @@ using UnityEngine.SceneManagement;
 
 namespace Menus
 {
-    public class GameOverMenuController : MonoBehaviour
+    class GameOverMenuController : MonoBehaviour
     {
         [SerializeField]
         GameObject[] gameOverMenuButtons;

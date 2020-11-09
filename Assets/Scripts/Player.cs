@@ -3,7 +3,7 @@
 [RequireComponent(typeof(BoxCollider2D))]
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(SpriteRenderer))]
-public class Player : MonoBehaviour
+class Player : MonoBehaviour
 {
     const float initialAltitude = 2.0f;
     const float maxFallingSpeed = 0.1f; // Per one second.

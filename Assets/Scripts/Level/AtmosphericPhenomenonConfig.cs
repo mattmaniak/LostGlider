@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Level
 {
-    internal class AtmosphericPhenomenonConfig : MonoBehaviour
+    class AtmosphericPhenomenonConfig : MonoBehaviour
     {
         public float LiftRatio { get; private set; }
         public int RelativeProbabilityPercentage { get; private set; }
@@ -25,7 +25,7 @@ namespace Level
     }
 
     [Serializable]
-    internal class AtmosphericPhenomenonJson
+    class AtmosphericPhenomenonJson
     {
         public float[] DirectionalSpeed;
         public float LiftRatio;

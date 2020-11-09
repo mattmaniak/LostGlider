@@ -3,7 +3,7 @@ using UnityEngine.SceneManagement;
 
 namespace Menus
 {
-    public class MainMenuController : MonoBehaviour
+    class MainMenuController : MonoBehaviour
     {
         public void SwitchSceneToLevel()
         {
