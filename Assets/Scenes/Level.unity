@@ -243,6 +243,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   innerJoystick: {fileID: 1154896341}
+  playerTransform: {fileID: 2029498115}
 --- !u!1 &60693361
 GameObject:
   m_ObjectHideFlags: 0
@@ -851,6 +852,7 @@ MonoBehaviour:
   - {fileID: 840544593}
   - {fileID: 1352357745}
   - {fileID: 1615772515}
+  playerTransform: {fileID: 2029498115}
 --- !u!1 &429254876
 GameObject:
   m_ObjectHideFlags: 0

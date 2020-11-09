@@ -32,6 +32,7 @@ namespace Level
         {
             get => CameraHalfWidthInWorld * 2.0f;
         }
+
         public float GroundChunkHalfWidth { get => GroundChunkWidth / 2.0f; }
         public float GroundChunkWidth { get; set; }
 

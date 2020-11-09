@@ -7,6 +7,9 @@ public class Controls : MonoBehaviour
 {
     [SerializeField]
     Transform innerJoystick;
+
+    [SerializeField]
+    Transform playerTransform;
     
     const int paddingPx = 128;
 
@@ -14,6 +17,7 @@ public class Controls : MonoBehaviour
     bool JoystickPressed { get; set; }
     float DeltaDirection { get; set; }
     float InnerJoysticSliderSize { get; set; }
+    Player @Player { get => playerTransform.gameObject.GetComponent<Player>(); }
     Vector2 DragPoint { get; set; }
 
     void FixedUpdate()
@@ -36,7 +40,7 @@ public class Controls : MonoBehaviour
 
     void Update()
     {
-        if (!FindObjectOfType<Player>().Alive)
+        if (!Player.Alive)
         {
             ControlsEnabled = false;
         }
@@ -129,23 +133,21 @@ public class Controls : MonoBehaviour
 
     void MovePlayerVertically()
     {
-        var player = FindObjectOfType<Player>();
-        float deltaY = player.Speed * DeltaDirection * Time.deltaTime;
+        float deltaY = Player.Speed * DeltaDirection * Time.deltaTime;
 
-        player.transform.Translate(new Vector3(0.0f, deltaY, 0.0f));
+        Player.transform.Translate(new Vector3(0.0f, deltaY, 0.0f));
     }
 
     void SwitchPlayerGravity()
     {
-        var playerRigidbody = FindObjectOfType<Player>().
-            GetComponent<Rigidbody2D>();
+        var playerRigidbody = Player.GetComponent<Rigidbody2D>();
 
         if (FindObjectOfType<Menus.PauseMenuController>().Paused)
         {
             playerRigidbody.Sleep();
             ControlsEnabled = false;
         }
-        else if (FindObjectOfType<Player>().Alive)
+        else if (Player.Alive)
         {
             playerRigidbody.WakeUp();
             ControlsEnabled = true;

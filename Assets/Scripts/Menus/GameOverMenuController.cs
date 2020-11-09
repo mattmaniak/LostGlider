@@ -8,28 +8,41 @@ namespace Menus
         [SerializeField]
         GameObject[] gameOverMenuButtons;
 
+        [SerializeField]
+        Transform playerTransform;
+
+        bool PlayerAlive
+        {
+            get
+            {
+                return playerTransform.gameObject.GetComponent<Player>().Alive;
+            }
+            set 
+            {
+                playerTransform.gameObject.GetComponent<Player>().Alive = value;
+            }
+        }
+
         bool PlayerAliveBefore { get; set; }
 
         void Start()
         {
-            PlayerAliveBefore = FindObjectOfType<Player>().Alive;
+            PlayerAliveBefore = PlayerAlive;
         }
 
         void Update()
         {
-            var player = FindObjectOfType<Player>();
-
-            if (player.Alive != PlayerAliveBefore)
+            if (PlayerAlive != PlayerAliveBefore)
             {
-                ToggleVisibilityOfGUI(!player.Alive);
-                PlayerAliveBefore = player.Alive;
+                ToggleVisibilityOfGUI(!PlayerAlive);
+                PlayerAliveBefore = PlayerAlive;
             }
         }
 
         public void RestartCurrentLevel()
         {
             SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().name);
-            FindObjectOfType<Player>().Alive = true;
+            PlayerAlive = true;
         }
 
         void ToggleVisibilityOfGUI(bool toggled)

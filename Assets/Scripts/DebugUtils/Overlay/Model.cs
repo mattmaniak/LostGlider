@@ -38,7 +38,6 @@ namespace DebugUtils
             }
 
             internal string UnityProjectInfo { get; private set; }
-
             internal string WipLabel
             {
                 get => "WORK IN PROGRESS - "
