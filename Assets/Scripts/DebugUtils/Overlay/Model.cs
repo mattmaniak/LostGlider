@@ -67,10 +67,7 @@ namespace DebugUtils
                 }
                 catch (IndexOutOfRangeException ex)
                 {
-                    if (DebugUtils.GlobalEnabler.activated)
-                    {
-                        Debug.Log(ex);
-                    }
+                    GlobalEnabler.LogException(ex);
                 }
 
                 // Remove the relative directory that points to a branch file.
@@ -101,10 +98,7 @@ namespace DebugUtils
                 }
                 catch (Exception ex)
                 {
-                    if (DebugUtils.GlobalEnabler.activated)
-                    {
-                        Debug.Log(ex);
-                    }
+                    GlobalEnabler.LogException(ex);
                     return null;
                 }
             }

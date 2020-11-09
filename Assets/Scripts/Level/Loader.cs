@@ -59,10 +59,7 @@ namespace Level
             }
             catch (System.Exception ex)
             {
-                if (DebugUtils.GlobalEnabler.activated)
-                {
-                    Debug.Log(ex);
-                }
+                DebugUtils.GlobalEnabler.LogException(ex, this);
                 Utils.UnityQuit.Quit(1);
             }
         }
@@ -91,7 +88,7 @@ namespace Level
 
                 if (DebugUtils.GlobalEnabler.activated)
                 {
-                    Debug.Log(errMsg);
+                    DebugUtils.GlobalEnabler.LogError(errMsg);
                 }
                 throw new FileNotFoundException(errMsg);
             }
@@ -159,10 +156,7 @@ namespace Level
                 }
                 catch (FileNotFoundException ex)
                 {
-                    if (DebugUtils.GlobalEnabler.activated)
-                    {
-                        Debug.Log(ex);
-                    }
+                    DebugUtils.GlobalEnabler.LogException(ex, this);
                     Utils.UnityQuit.Quit(1);
                 }            
                 AtmosphericPhenomenaPool[AtmosphericPhenomenaPool.Count - 1].
@@ -188,7 +182,8 @@ namespace Level
             {
                 if (DebugUtils.GlobalEnabler.activated)
                 {
-                    Debug.Log(GetType().Name + " initialization aborted. "
+                    DebugUtils.GlobalEnabler.LogError(GetType().Name
+                        + " initialization aborted. "
                         + $"At least {groundChunksMin} grounds needed.");
                 }
                 Utils.UnityQuit.Quit(1);
@@ -203,10 +198,7 @@ namespace Level
                 }
                 catch (FileNotFoundException ex)
                 {
-                    if (DebugUtils.GlobalEnabler.activated)
-                    {
-                        Debug.Log(ex);
-                    }
+                    DebugUtils.GlobalEnabler.LogException(ex, this);
                     Utils.UnityQuit.Quit(1);
                 }
                 GroundChunksPool[i].transform.parent =
@@ -227,10 +219,7 @@ namespace Level
             }
             catch (System.Exception ex)
             {
-                if (DebugUtils.GlobalEnabler.activated)
-                {
-                    Debug.Log(ex);
-                }
+                DebugUtils.GlobalEnabler.LogException(ex);
                 return null;
             }
         }
