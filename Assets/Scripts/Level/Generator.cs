@@ -13,11 +13,15 @@ namespace Level
 
         public bool InitialAtmosphericPhenomenon { get; set; }
         public bool InitialGroundChunk { get; set; }
+
         public float CameraLeftEdgeInWorldX
         {
-            get => Camera.main.transform.position.x
+            get
+            {
+                return Camera.main.transform.position.x
                 - loader.CameraHalfWidthInWorld
                 + Camera.main.transform.localPosition.x;
+            }
         }
 
         public float NextGroundChunkTransitionX { get; set; }
@@ -32,6 +36,7 @@ namespace Level
 
             CurrentGroundChunkIndex = Random.Range(0,
                 loader.GroundChunksPool.Count);
+
             NextGroundChunkTransitionX = CameraLeftEdgeInWorldX;
             InitialAtmosphericPhenomenon = InitialGroundChunk = true;
 

@@ -17,7 +17,12 @@ class Controls : MonoBehaviour
     bool JoystickPressed { get; set; }
     float DeltaDirection { get; set; }
     float InnerJoysticSliderSize { get; set; }
-    Player @Player { get => playerTransform.gameObject.GetComponent<Player>(); }
+
+    Player @Player
+    {
+        get { return playerTransform.gameObject.GetComponent<Player>(); }
+    }
+
     Vector2 DragPoint { get; set; }
 
     void FixedUpdate()

@@ -18,12 +18,19 @@ namespace DebugUtils
             static Model() { }
             Model() { }
 
-            public static Model Instance { get => instance; }
+            public static Model Instance
+            {
+                get { return instance; }
+            }
 #endregion
 
 #region Directories
             string GitBranchBasename { get; set; }
-            string GitRepoPath { get => Application.dataPath + @"/../.git/"; }
+
+            string GitRepoPath
+            { 
+                get { return Application.dataPath + @"/../.git/"; }
+            }
 #endregion
 
 #region Git data holders
@@ -33,15 +40,22 @@ namespace DebugUtils
 
             internal string GitRepoSummary
             {
-                get => debugLabel + "Modifying last Git revision: "
-                       + GitShortRev + " on branch: " + GitBranch;
+                get
+                {
+                    return debugLabel + "Modifying last Git revision: "
+                        + GitShortRev + " on branch: " + GitBranch;
+                }
             }
 
             internal string UnityProjectInfo { get; private set; }
+
             internal string WipLabel
             {
-                get => "WORK IN PROGRESS - "
-                       + "DOES NOT REPRESENT FINAL LOOK OF THE GAME";
+                get
+                {
+                    return "WORK IN PROGRESS - "
+                        + "DOES NOT REPRESENT FINAL LOOK OF THE GAME";
+                }
             }
 
             internal void UpdateModel()

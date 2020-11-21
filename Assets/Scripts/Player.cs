@@ -13,9 +13,21 @@ class Player : MonoBehaviour
     public bool Alive { get; set; } = true;
     public float Speed { get; private set; }
 
-    bool Movement { set => Speed = value ? maxSpeed : 0.0f; }
-    bool InSoaringLift { get => LiftRatio != 0.0f; }
-    float Altitude { get => transform.position.y; }
+    bool Movement
+    {
+        set {Speed = value ? maxSpeed : 0.0f; }
+    }
+    
+    bool InSoaringLift
+    {
+        get { return LiftRatio != 0.0f; }
+    }
+
+    float Altitude
+    {
+        get { return transform.position.y; }
+    }
+    
     float LiftRatio { get; set; }
 
     void Awake()

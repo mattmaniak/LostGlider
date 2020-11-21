@@ -53,12 +53,17 @@ namespace Level
         Generator generator;
 
         public float CameraHalfWidthInWorld { get; set; }
+
         public float CameraWidthInWorld
         {
-            get => CameraHalfWidthInWorld * 2.0f;
+            get { return CameraHalfWidthInWorld * 2.0f; }
         }
 
-        public float GroundChunkHalfWidth { get => GroundChunkWidth / 2.0f; }
+        public float GroundChunkHalfWidth
+        {
+            get { return GroundChunkWidth / 2.0f; }
+        }
+
         public float GroundChunkWidth { get; set; }
 
         public List<GameObject> AtmosphericPhenomenaPool { get; set; } =
@@ -94,8 +99,11 @@ namespace Level
             generator = gameObject.AddComponent<Generator>();
         }
 
-        public float CenterObjectVertically(in GameObject go) =>
-            go.GetComponent<SpriteRenderer>().sprite.bounds.size.y / 2.0f;
+        public float CenterObjectVertically(in GameObject go)
+        {
+            return go.GetComponent<SpriteRenderer>().sprite.bounds.size.y
+                / 2.0f;
+        }
 
         GameObject CreateObjectFromPrefab(in GameObject prefab, string basename)
         {
