@@ -2518,8 +2518,8 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!61 &2029498117
-BoxCollider2D:
+--- !u!60 &2029498117
+PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -2541,9 +2541,22 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 1.28, y: 0.32}
-  m_EdgeRadius: 0
+  m_Points:
+    m_Paths:
+    - - {x: -0.12, y: 0.12}
+      - {x: -0.34, y: 0.06}
+      - {x: -0.47, y: 0.16}
+      - {x: -0.61, y: 0.16}
+      - {x: -0.64, y: 0.12}
+      - {x: -0.64, y: -0.099999994}
+      - {x: -0.59, y: -0.14999999}
+      - {x: -0.42999998, y: -0.11}
+      - {x: -0.24, y: -0.099999994}
+      - {x: -0.01, y: -0.16}
+      - {x: 0.42999998, y: -0.16}
+      - {x: 0.48, y: -0.12}
+      - {x: 0.48, y: -0.03}
+      - {x: 0.28, y: 0.11}
 --- !u!114 &2029498118
 MonoBehaviour:
   m_ObjectHideFlags: 0
