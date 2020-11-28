@@ -1,5 +1,5 @@
 # Lost Glider
-An Android game prototyp with mechanics based on the Flappy Bird.
+An Android game prototype with mechanics based on the Flappy Bird.
 
 ## Technical info and rules
 - Develop with **Unity 2019.4.10**.
