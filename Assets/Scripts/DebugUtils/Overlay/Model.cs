@@ -9,18 +9,18 @@ namespace DebugUtils
     {
         sealed class Model
         {
-            static readonly Model instance = new Model();
+            static readonly Lazy<Model> instance = new Lazy<Model>(
+                () => new Model());
 
             const string debugLabel = "[DEBUG] ";
             const string onErrorPlaceholder = "[not found]";
 
 #region Singleton handling
-            static Model() { }
             Model() { }
 
             public static Model Instance
             {
-                get { return instance; }
+                get { return instance.Value; }
             }
 #endregion
 
