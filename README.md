@@ -1,4 +1,4 @@
-# Lost Glider
+# <img src='icon.png' width='32'> Lost Glider
 An Android game prototype with mechanics based on the Flappy Bird.
 
 ## Technical info and rules
