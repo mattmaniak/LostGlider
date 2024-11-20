@@ -32,7 +32,7 @@ a speed brake and other controls. There is a need to use soaring lifts and
 clouds in clouds to fly as long as possible and to avoid storms.
 
 ## 3. Technology
-**Unity 2019.4.10** engine with a 2D template. No external assets. Excluding sound.
+**Unity 2020.3.48f1** engine with a 2D template. No external assets. Excluding sound.
 
 ## 4. Overview
 
